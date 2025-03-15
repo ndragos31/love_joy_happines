@@ -112,53 +112,6 @@ export default function Hero() {
               className="object-cover"
               priority
             />
-
-            {/* Floating product badges */}
-            <div className="absolute top-6 right-6 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg z-20 flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-primary"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  />
-                </svg>
-              </div>
-              <div>
-                <p className="font-medium text-foreground">Stickers</p>
-                <p className="text-sm text-foreground/70">50+ designs</p>
-              </div>
-            </div>
-
-            <div className="absolute bottom-6 left-6 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg z-20 flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-secondary"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"
-                  />
-                </svg>
-              </div>
-              <div>
-                <p className="font-medium text-foreground">Banners</p>
-                <p className="text-sm text-foreground/70">Custom designs</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>
