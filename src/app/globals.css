@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+:root {
+  /* Love Joy Happiness Color Scheme */
+  --primary: #ff6b6b;      /* Coral Pink - Vibrant and joyful */
+  --secondary: #4ecdc4;    /* Turquoise - Fresh and happy */
+  --accent: #ffe66d;       /* Soft Yellow - Bright and cheerful */
+  --background: #ffffff;   /* White background */
+  --foreground: #333333;   /* Dark gray text */
+  --gray-light: #f8f9fa;   /* Light gray for sections */
+  --gray-medium: #e9ecef;  /* Medium gray for borders */
+  --success: #6bde8f;      /* Green for success messages */
+  --error: #ff6b6b;        /* Red for error messages */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-gray-light: var(--gray-light);
+  --color-gray-medium: var(--gray-medium);
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1a1a1a;
+    --foreground: #f5f5f5;
+    --gray-light: #2a2a2a;
+    --gray-medium: #3a3a3a;
+    /* Keep vibrant colors similar in dark mode */
+    --primary: #ff7b7b;
+    --secondary: #5edcd4;
+    --accent: #fff67d;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Common button styles */
+.btn {
+  @apply px-4 py-2 rounded-md font-medium transition-all duration-200;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+  @apply hover:opacity-90;
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+  color: white;
+  @apply hover:opacity-90;
+}
+
+.btn-outline {
+  border: 1px solid var(--gray-medium);
+  @apply hover:bg-gray-light;
+}
+
+/* Container for consistent spacing */
+.container-custom {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
