@@ -1,6 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { useTranslation } from "../hooks/useTranslation";
 
 export default function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer className="bg-gray-light dark:bg-gray-900 pt-12 pb-8">
       <div className="container-custom">
@@ -11,8 +16,7 @@ export default function Footer() {
               Love Joy Happiness
             </h3>
             <p className="text-foreground mb-4">
-              Bringing color and joy to your life with our beautiful stickers,
-              banners, and merchandise.
+              {t("footer.companyDescription")}
             </p>
             <div className="flex space-x-4">
               <a
@@ -50,14 +54,16 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div className="col-span-1">
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              {t("footer.quickLinks")}
+            </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Home
+                  {t("nav.home")}
                 </Link>
               </li>
               <li>
@@ -65,7 +71,7 @@ export default function Footer() {
                   href="/products"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  All Products
+                  {t("footer.allProducts")}
                 </Link>
               </li>
               <li>
@@ -73,7 +79,7 @@ export default function Footer() {
                   href="/stickers"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Stickers
+                  {t("nav.stickers")}
                 </Link>
               </li>
               <li>
@@ -81,7 +87,7 @@ export default function Footer() {
                   href="/banners"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Banners
+                  {t("nav.banners")}
                 </Link>
               </li>
               <li>
@@ -89,7 +95,7 @@ export default function Footer() {
                   href="/about"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  About Us
+                  {t("footer.aboutUs")}
                 </Link>
               </li>
             </ul>
@@ -97,14 +103,16 @@ export default function Footer() {
 
           {/* Customer Service */}
           <div className="col-span-1">
-            <h3 className="text-lg font-semibold mb-4">Customer Service</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              {t("footer.customerService")}
+            </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/contact"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Contact Us
+                  {t("footer.contactUs")}
                 </Link>
               </li>
               <li>
@@ -112,7 +120,7 @@ export default function Footer() {
                   href="/faq"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  FAQ
+                  {t("footer.faq")}
                 </Link>
               </li>
               <li>
@@ -120,7 +128,7 @@ export default function Footer() {
                   href="/shipping"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Shipping & Returns
+                  {t("footer.shippingReturns")}
                 </Link>
               </li>
               <li>
@@ -128,7 +136,7 @@ export default function Footer() {
                   href="/privacy"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Privacy Policy
+                  {t("footer.privacyPolicy")}
                 </Link>
               </li>
               <li>
@@ -136,7 +144,7 @@ export default function Footer() {
                   href="/terms"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Terms & Conditions
+                  {t("footer.termsConditions")}
                 </Link>
               </li>
             </ul>
@@ -144,19 +152,18 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div className="col-span-1">
-            <h3 className="text-lg font-semibold mb-4">Stay Updated</h3>
-            <p className="text-foreground mb-4">
-              Subscribe to our newsletter for updates, new products, and special
-              offers.
-            </p>
+            <h3 className="text-lg font-semibold mb-4">
+              {t("footer.stayUpdated")}
+            </h3>
+            <p className="text-foreground mb-4">{t("footer.newsletterText")}</p>
             <form className="flex flex-col space-y-2">
               <input
                 type="email"
-                placeholder="Your email address"
+                placeholder={t("newsletter.placeholder")}
                 className="px-4 py-2 border border-gray-medium rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <button type="submit" className="btn btn-primary">
-                Subscribe
+                {t("newsletter.subscribe")}
               </button>
             </form>
           </div>
@@ -164,8 +171,8 @@ export default function Footer() {
 
         <div className="border-t border-gray-medium mt-8 pt-8 text-center">
           <p className="text-foreground">
-            &copy; {new Date().getFullYear()} Love Joy Happiness. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} Love Joy Happiness.{" "}
+            {t("footer.allRightsReserved")}
           </p>
         </div>
       </div>
