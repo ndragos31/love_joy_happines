@@ -1,10 +1,15 @@
+"use client";
+
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import Categories from "./components/Categories";
 import FeaturedProducts from "./components/FeaturedProducts";
 import Footer from "./components/Footer";
+import { useTranslation } from "./hooks/useTranslation";
 
 export default function Home() {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -18,11 +23,10 @@ export default function Home() {
           <div className="container-custom">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                What Our Customers Say
+                {t("testimonials.title")}
               </h2>
               <p className="text-foreground/70 max-w-2xl mx-auto">
-                Don&apos;t just take our word for it - hear from our happy
-                customers who have experienced the joy of our products.
+                {t("testimonials.subtitle")}
               </p>
             </div>
 
@@ -109,17 +113,16 @@ export default function Home() {
           <div className="container-custom">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-                Join Our Newsletter
+                {t("newsletter.title")}
               </h2>
               <p className="text-foreground/70 mb-8">
-                Subscribe to our newsletter for updates on new products, special
-                offers, and a regular dose of happiness in your inbox.
+                {t("newsletter.subtitle")}
               </p>
 
               <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
                 <input
                   type="email"
-                  placeholder="Your email address"
+                  placeholder={t("newsletter.placeholder")}
                   className="flex-grow px-4 py-3 rounded-md border border-gray-medium focus:outline-none focus:ring-2 focus:ring-primary"
                   required
                 />
@@ -127,7 +130,7 @@ export default function Home() {
                   type="submit"
                   className="btn btn-primary px-6 py-3 whitespace-nowrap"
                 >
-                  Subscribe
+                  {t("newsletter.subscribe")}
                 </button>
               </form>
             </div>

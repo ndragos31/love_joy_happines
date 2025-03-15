@@ -2,9 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useTranslation } from "../hooks/useTranslation";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <nav className="fixed top-0 left-0 right-0 w-full z-50 bg-white dark:bg-gray-900 shadow-sm">
@@ -23,36 +26,37 @@ export default function Navbar() {
               href="/"
               className="text-foreground hover:text-primary transition-colors duration-200"
             >
-              Home
+              {t("nav.home")}
             </Link>
             <Link
               href="/products"
               className="text-foreground hover:text-primary transition-colors duration-200"
             >
-              Products
+              {t("nav.products")}
             </Link>
             <Link
               href="/stickers"
               className="text-foreground hover:text-primary transition-colors duration-200"
             >
-              Stickers
+              {t("nav.stickers")}
             </Link>
             <Link
               href="/banners"
               className="text-foreground hover:text-primary transition-colors duration-200"
             >
-              Banners
+              {t("nav.banners")}
             </Link>
             <Link
               href="/about"
               className="text-foreground hover:text-primary transition-colors duration-200"
             >
-              About
+              {t("nav.about")}
             </Link>
           </div>
 
-          {/* Cart and Account */}
+          {/* Cart, Account, and Language Switcher */}
           <div className="hidden md:flex items-center space-x-4">
+            <LanguageSwitcher />
             <Link
               href="/cart"
               className="text-foreground hover:text-primary transition-colors duration-200 relative"
@@ -113,52 +117,34 @@ export default function Navbar() {
                 href="/"
                 className="text-foreground hover:text-primary transition-colors duration-200"
               >
-                Home
+                {t("nav.home")}
               </Link>
               <Link
                 href="/products"
                 className="text-foreground hover:text-primary transition-colors duration-200"
               >
-                Products
+                {t("nav.products")}
               </Link>
               <Link
                 href="/stickers"
                 className="text-foreground hover:text-primary transition-colors duration-200"
               >
-                Stickers
+                {t("nav.stickers")}
               </Link>
               <Link
                 href="/banners"
                 className="text-foreground hover:text-primary transition-colors duration-200"
               >
-                Banners
+                {t("nav.banners")}
               </Link>
               <Link
                 href="/about"
                 className="text-foreground hover:text-primary transition-colors duration-200"
               >
-                About
+                {t("nav.about")}
               </Link>
               <div className="flex space-x-4 pt-2">
-                <Link
-                  href="/account"
-                  className="text-foreground hover:text-primary transition-colors duration-200"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
-                </Link>
+                <LanguageSwitcher />
                 <Link
                   href="/cart"
                   className="text-foreground hover:text-primary transition-colors duration-200 relative"

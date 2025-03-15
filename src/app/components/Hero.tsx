@@ -1,7 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslation } from "../hooks/useTranslation";
 
 export default function Hero() {
+  const { t } = useTranslation();
+
   return (
     <div className="relative bg-gray-light dark:bg-gray-900 overflow-hidden">
       {/* Background pattern */}
@@ -27,20 +32,19 @@ export default function Hero() {
             </h1>
 
             <p className="text-lg md:text-xl text-foreground/80">
-              Brighten your day with our colorful collection of stickers,
-              banners, and merchandise that spread love, joy, and happiness.
+              {t("hero.subtitle")}
             </p>
 
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 pt-4">
               <Link href="/products">
                 <button className="btn btn-primary px-8 py-3 text-lg">
-                  Shop Now
+                  {t("hero.shopNow")}
                 </button>
               </Link>
 
               <Link href="/about">
                 <button className="btn btn-outline px-8 py-3 text-lg">
-                  Learn More
+                  {t("hero.exploreCollection")}
                 </button>
               </Link>
             </div>

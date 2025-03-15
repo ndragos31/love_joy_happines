@@ -1,88 +1,92 @@
-import Link from "next/link";
+"use client";
 
-const categories = [
-  {
-    name: "Stickers",
-    description: "Colorful stickers to brighten your day",
-    image: "/images/categories/stickers.jpg",
-    link: "/stickers",
-    color: "from-primary/20 to-primary/40",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-8 w-8 text-primary"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "Banners",
-    description: "Custom banners for any occasion",
-    image: "/images/categories/banners.jpg",
-    link: "/banners",
-    color: "from-secondary/20 to-secondary/40",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-8 w-8 text-secondary"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "Merchandise",
-    description: "Spread joy with our branded merchandise",
-    image: "/images/categories/merchandise.jpg",
-    link: "/merchandise",
-    color: "from-accent/20 to-accent/40",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-8 w-8 text-accent dark:text-yellow-400"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-        />
-      </svg>
-    ),
-  },
-];
+import Link from "next/link";
+import { useTranslation } from "../hooks/useTranslation";
 
 export default function Categories() {
+  const { t } = useTranslation();
+
+  const categories = [
+    {
+      name: t("categories.stickers"),
+      description: "Colorful stickers to brighten your day",
+      image: "/images/categories/stickers.jpg",
+      link: "/stickers",
+      color: "from-primary/20 to-primary/40",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-8 w-8 text-primary"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+          />
+        </svg>
+      ),
+    },
+    {
+      name: t("categories.banners"),
+      description: "Custom banners for any occasion",
+      image: "/images/categories/banners.jpg",
+      link: "/banners",
+      color: "from-secondary/20 to-secondary/40",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-8 w-8 text-secondary"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"
+          />
+        </svg>
+      ),
+    },
+    {
+      name: "Merchandise",
+      description: "Spread joy with our branded merchandise",
+      image: "/images/categories/merchandise.jpg",
+      link: "/merchandise",
+      color: "from-accent/20 to-accent/40",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-8 w-8 text-accent dark:text-yellow-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+          />
+        </svg>
+      ),
+    },
+  ];
+
   return (
     <section className="py-16 bg-gray-light dark:bg-gray-800">
       <div className="container-custom">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Shop by Category
+            {t("categories.title")}
           </h2>
           <p className="text-foreground/70 max-w-2xl mx-auto">
-            Explore our range of products designed to bring more love, joy, and
-            happiness into your life.
+            {t("categories.subtitle")}
           </p>
         </div>
 
@@ -106,7 +110,7 @@ export default function Categories() {
                     {category.description}
                   </p>
                   <div className="flex items-center text-primary font-medium">
-                    <span>Shop Now</span>
+                    <span>{t("categories.viewAll")}</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1"
