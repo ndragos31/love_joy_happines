@@ -8,7 +8,6 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div id="navbar-spacer" className="h-0 md:h-0"></div>
       <main className="flex-grow">
         <Hero />
         <Categories />
@@ -22,8 +21,8 @@ export default function Home() {
                 What Our Customers Say
               </h2>
               <p className="text-foreground/70 max-w-2xl mx-auto">
-                Don't just take our word for it - hear from our happy customers
-                who have experienced the joy of our products.
+                Don&apos;t just take our word for it - hear from our happy
+                customers who have experienced the joy of our products.
               </p>
             </div>
 
@@ -46,9 +45,9 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-foreground/80 italic">
-                  "I absolutely love the stickers I ordered! They're vibrant,
-                  durable, and bring so much joy to my laptop and water bottle.
-                  Will definitely be ordering more!"
+                  &ldquo;I absolutely love the stickers I ordered! They&apos;re
+                  vibrant, durable, and bring so much joy to my laptop and water
+                  bottle. Will definitely be ordering more!&rdquo;
                 </p>
               </div>
 
@@ -70,9 +69,9 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-foreground/80 italic">
-                  "The custom banner I ordered for my daughter's birthday party
-                  was perfect! Great quality, vibrant colors, and it arrived
-                  earlier than expected. Highly recommend!"
+                  &ldquo;The custom banner I ordered for my daughter&apos;s
+                  birthday party was perfect! Great quality, vibrant colors, and
+                  it arrived earlier than expected. Highly recommend!&rdquo;
                 </p>
               </div>
 
@@ -96,9 +95,9 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-foreground/80 italic">
-                  "I bought the 'Joy' coffee mug and it makes me smile every
-                  morning. The quality is excellent and the design is even more
-                  vibrant in person. Love it!"
+                  &ldquo;I bought the &lsquo;Joy&rsquo; coffee mug and it makes
+                  me smile every morning. The quality is excellent and the
+                  design is even more vibrant in person. Love it!&rdquo;
                 </p>
               </div>
             </div>
