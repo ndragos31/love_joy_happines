@@ -36,12 +36,17 @@ export default function ContactPage() {
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitSuccess(true);
-      setFormData({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-      });
+      try {
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+      } catch (error) {
+        console.error("Error resetting form:", error);
+        setSubmitError(true);
+      }
     }, 1500);
   };
 

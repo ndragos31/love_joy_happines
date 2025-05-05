@@ -5,54 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
+import { useCart } from "@/lib/context/CartContext";
 
 export default function CartPage() {
-  // Sample cart items
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: "1",
-      name: "Autocolant 'Bucurie'",
-      price: 15,
-      quantity: 2,
-      image: "/img/products/sticker1.jpg",
-    },
-    {
-      id: "2",
-      name: "Banner 'Dragoste'",
-      price: 45,
-      quantity: 1,
-      image: "/img/products/banner1.jpg",
-    },
-  ]);
+  const { items, updateQuantity, removeItem, clearCart, subtotal } = useCart();
 
-  const updateQuantity = (id: string, newQuantity: number) => {
-    if (newQuantity < 1) return;
-
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
-
-  const removeItem = (id: string) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  // Calculate subtotal, shipping, and total
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-  const shipping = subtotal > 0 ? 15 : 0; // Free shipping over a certain amount could be implemented
+  // Shipping cost calculation
+  const shipping = subtotal > 200 ? 0 : 15; // Free shipping over 200 Lei
   const total = subtotal + shipping;
 
   return (
@@ -62,7 +21,7 @@ export default function CartPage() {
         <div className="container-custom py-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-8">Coșul tău</h1>
 
-          {cartItems.length === 0 ? (
+          {items.length === 0 ? (
             <div className="text-center py-12">
               <div className="bg-gray-light dark:bg-gray-800 p-8 rounded-lg max-w-md mx-auto">
                 <svg
@@ -100,23 +59,32 @@ export default function CartPage() {
                 <div className="bg-gray-light dark:bg-gray-800 rounded-lg overflow-hidden">
                   <div className="p-6 border-b border-gray-200 dark:border-gray-700">
                     <h2 className="text-xl font-semibold">
-                      Produse ({cartItems.length})
+                      Produse ({items.length})
                     </h2>
                   </div>
 
                   <div>
-                    {cartItems.map((item) => (
+                    {items.map((item) => (
                       <div
                         key={item.id}
                         className="p-6 border-b border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row items-start gap-4"
                       >
                         <div className="relative w-24 h-24 rounded-md overflow-hidden">
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fill
-                            className="object-cover"
-                          />
+                          {item.product.images &&
+                          item.product.images.length > 0 ? (
+                            <Image
+                              src={item.product.images[0].src}
+                              alt={
+                                item.product.images[0].alt || item.product.name
+                              }
+                              fill
+                              className="object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500">
+                              No image
+                            </div>
+                          )}
                         </div>
 
                         <div className="flex-grow">
@@ -125,10 +93,10 @@ export default function CartPage() {
                               href={`/products/${item.id}`}
                               className="font-semibold hover:text-primary transition-colors"
                             >
-                              {item.name}
+                              {item.product.name}
                             </Link>
                             <div className="mt-2 sm:mt-0 font-semibold text-primary">
-                              {item.price} lei
+                              {item.product.price} lei
                             </div>
                           </div>
 
@@ -229,7 +197,7 @@ export default function CartPage() {
                     </Link>
 
                     <button
-                      onClick={() => setCartItems([])}
+                      onClick={() => clearCart()}
                       className="text-red-500 hover:text-red-700 transition-colors flex items-center"
                     >
                       <svg
@@ -256,44 +224,52 @@ export default function CartPage() {
               <div className="lg:col-span-1">
                 <div className="bg-gray-light dark:bg-gray-800 rounded-lg overflow-hidden">
                   <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <h2 className="text-xl font-semibold">Sumar comandă</h2>
+                    <h2 className="text-xl font-semibold">Rezumat comandă</h2>
                   </div>
 
-                  <div className="p-6 space-y-4">
-                    <div className="flex justify-between">
-                      <span className="text-foreground/70">Subtotal</span>
-                      <span>{subtotal} lei</span>
-                    </div>
-
-                    <div className="flex justify-between">
-                      <span className="text-foreground/70">Livrare</span>
-                      <span>{shipping} lei</span>
-                    </div>
-
-                    <div className="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between font-semibold">
-                      <span>Total</span>
-                      <span className="text-primary">{total} lei</span>
-                    </div>
-
-                    <Link href="/checkout">
-                      <button className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 rounded-md transition-colors mt-4">
-                        Continuă spre finalizare
-                      </button>
-                    </Link>
-
-                    <div className="text-center text-foreground/70 text-sm mt-4">
-                      <p>Metodele de plată acceptate:</p>
-                      <div className="flex justify-center space-x-2 mt-2">
-                        <span className="bg-white dark:bg-gray-700 p-1 rounded">
-                          💳
-                        </span>
-                        <span className="bg-white dark:bg-gray-700 p-1 rounded">
-                          🏦
-                        </span>
-                        <span className="bg-white dark:bg-gray-700 p-1 rounded">
-                          💰
+                  <div className="p-6">
+                    <div className="space-y-4">
+                      <div className="flex justify-between">
+                        <span className="text-foreground/70">Subtotal</span>
+                        <span className="font-medium">
+                          {subtotal.toFixed(2)} lei
                         </span>
                       </div>
+                      <div className="flex justify-between">
+                        <span className="text-foreground/70">
+                          Transport{" "}
+                          {shipping === 0 && (
+                            <span className="text-green-600 dark:text-green-500 text-xs ml-1">
+                              (Gratuit)
+                            </span>
+                          )}
+                        </span>
+                        <span className="font-medium">
+                          {shipping > 0
+                            ? `${shipping.toFixed(2)} lei`
+                            : "Gratuit"}
+                        </span>
+                      </div>
+
+                      <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+                        <div className="flex justify-between">
+                          <span className="font-semibold">Total</span>
+                          <span className="font-bold text-xl text-primary">
+                            {total.toFixed(2)} lei
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button className="w-full mt-8 bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-md transition-colors">
+                      Finalizează comanda
+                    </button>
+
+                    <div className="mt-6 text-sm text-foreground/60">
+                      <p>
+                        * Preturile includ TVA. Transportul este gratuit pentru
+                        comenzi peste 200 lei.
+                      </p>
                     </div>
                   </div>
                 </div>

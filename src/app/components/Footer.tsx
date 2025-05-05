@@ -4,8 +4,26 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-light dark:bg-gray-900 pt-12 pb-8">
-      <div className="container-custom">
+    <footer className="bg-gray-light dark:bg-gray-900">
+      {/* Top decorative section with background */}
+      <div className="bg-primary/5 dark:bg-primary/10 py-6 relative overflow-hidden">
+        <div className="container-custom relative z-10">
+          <div className="flex justify-center">
+            <div className="flex items-center space-x-2">
+              <div className="h-px w-12 bg-primary/30"></div>
+              <div className="w-3 h-3 rotate-45 bg-primary/20"></div>
+              <div className="text-primary font-medium">Love Joy Happiness</div>
+              <div className="w-3 h-3 rotate-45 bg-primary/20"></div>
+              <div className="h-px w-12 bg-primary/30"></div>
+            </div>
+          </div>
+        </div>
+        {/* Decorative circles */}
+        <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-primary/5 dark:bg-primary/5"></div>
+        <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-primary/5 dark:bg-primary/5"></div>
+      </div>
+
+      <div className="container-custom pt-12 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Company Info */}
           <div className="col-span-1">
@@ -145,7 +163,18 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-medium mt-8 pt-8 text-center">
+        {/* Decorative Divider */}
+        <div className="mt-12 mb-8 flex items-center justify-center">
+          <div className="flex-grow h-px bg-gray-200 dark:bg-gray-700 max-w-xs"></div>
+          <div className="mx-4 flex space-x-2">
+            <span className="h-2 w-2 rounded-full bg-primary"></span>
+            <span className="h-2 w-2 rounded-full bg-primary opacity-75"></span>
+            <span className="h-2 w-2 rounded-full bg-primary opacity-50"></span>
+          </div>
+          <div className="flex-grow h-px bg-gray-200 dark:bg-gray-700 max-w-xs"></div>
+        </div>
+
+        <div className="text-center">
           <p className="text-foreground">
             &copy; {new Date().getFullYear()} Love Joy Happiness. Toate
             drepturile rezervate.

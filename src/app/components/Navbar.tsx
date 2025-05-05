@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { navItems, userNavItems } from "../data/navigation";
+import { navItems, userNavItems } from "@/lib/constants/navigation";
+import { useCart } from "@/lib/context/CartContext";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { totalItems } = useCart();
 
   return (
     <nav className="fixed top-0 left-0 right-0 w-full z-50 bg-white dark:bg-gray-900 shadow-sm">
@@ -56,7 +58,7 @@ export default function Navbar() {
                       />
                     </svg>
                     <span className="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                      0
+                      {totalItems}
                     </span>
                   </>
                 ) : (
@@ -131,7 +133,7 @@ export default function Navbar() {
                           />
                         </svg>
                         <span className="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                          0
+                          {totalItems}
                         </span>
                       </>
                     ) : (

@@ -1,8 +1,4 @@
-export type NavItem = {
-  title: string;
-  href: string;
-  description?: string;
-};
+import { NavItem } from "../types/navigation";
 
 export const navItems: NavItem[] = [
   {
