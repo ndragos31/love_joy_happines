@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
     WOOCOMMERCE_CONSUMER_KEY: process.env.WOOCOMMERCE_CONSUMER_KEY,
     WOOCOMMERCE_CONSUMER_SECRET: process.env.WOOCOMMERCE_CONSUMER_SECRET,
   },
+  images: {
+    domains: ["lovejoyhappiness.store"],
+  },
 };
 
 export default nextConfig;
