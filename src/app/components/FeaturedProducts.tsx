@@ -2,20 +2,17 @@
 
 import { featuredProducts } from "../data/products";
 import ProductCard from "./ProductCard";
-import { useTranslation } from "../hooks/useTranslation";
 
 export default function FeaturedProducts() {
-  const { t } = useTranslation();
-
   return (
     <section className="py-16 bg-white dark:bg-gray-900">
       <div className="container-custom">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            {t("featuredProducts.title")}
+            Produse Recomandate
           </h2>
           <p className="text-foreground/70 max-w-2xl mx-auto">
-            {t("featuredProducts.subtitle")}
+            Verifică cele mai populare articole ale noastre
           </p>
         </div>
 
@@ -35,7 +32,7 @@ export default function FeaturedProducts() {
 
         <div className="text-center mt-12">
           <a href="/products" className="btn btn-primary px-8 py-3">
-            {t("categories.viewAll")}
+            Vezi Toate
           </a>
         </div>
       </div>

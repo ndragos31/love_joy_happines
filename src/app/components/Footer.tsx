@@ -1,11 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useTranslation } from "../hooks/useTranslation";
 
 export default function Footer() {
-  const { t } = useTranslation();
-
   return (
     <footer className="bg-gray-light dark:bg-gray-900 pt-12 pb-8">
       <div className="container-custom">
@@ -16,7 +13,8 @@ export default function Footer() {
               Love Joy Happiness
             </h3>
             <p className="text-foreground mb-4">
-              {t("footer.companyDescription")}
+              Aducem culoare și bucurie în viața ta cu autocolantele, bannerele
+              și produsele noastre frumoase.
             </p>
             <div className="flex space-x-4">
               <a
@@ -54,16 +52,14 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div className="col-span-1">
-            <h3 className="text-lg font-semibold mb-4">
-              {t("footer.quickLinks")}
-            </h3>
+            <h3 className="text-lg font-semibold mb-4">Link-uri Rapide</h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  {t("nav.home")}
+                  Acasă
                 </Link>
               </li>
               <li>
@@ -71,7 +67,7 @@ export default function Footer() {
                   href="/products"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  {t("footer.allProducts")}
+                  Toate Produsele
                 </Link>
               </li>
               <li>
@@ -79,7 +75,7 @@ export default function Footer() {
                   href="/stickers"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  {t("nav.stickers")}
+                  Autocolante
                 </Link>
               </li>
               <li>
@@ -87,7 +83,7 @@ export default function Footer() {
                   href="/banners"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  {t("nav.banners")}
+                  Bannere
                 </Link>
               </li>
               <li>
@@ -95,7 +91,7 @@ export default function Footer() {
                   href="/about"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  {t("footer.aboutUs")}
+                  Despre Noi
                 </Link>
               </li>
             </ul>
@@ -103,16 +99,14 @@ export default function Footer() {
 
           {/* Customer Service */}
           <div className="col-span-1">
-            <h3 className="text-lg font-semibold mb-4">
-              {t("footer.customerService")}
-            </h3>
+            <h3 className="text-lg font-semibold mb-4">Servicii Clienți</h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/contact"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  {t("footer.contactUs")}
+                  Contactează-ne
                 </Link>
               </li>
               <li>
@@ -120,7 +114,7 @@ export default function Footer() {
                   href="/faq"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  {t("footer.faq")}
+                  Întrebări Frecvente
                 </Link>
               </li>
               <li>
@@ -128,7 +122,7 @@ export default function Footer() {
                   href="/shipping"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  {t("footer.shippingReturns")}
+                  Livrare și Returnări
                 </Link>
               </li>
               <li>
@@ -136,7 +130,7 @@ export default function Footer() {
                   href="/privacy"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  {t("footer.privacyPolicy")}
+                  Politica de Confidențialitate
                 </Link>
               </li>
               <li>
@@ -144,7 +138,7 @@ export default function Footer() {
                   href="/terms"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  {t("footer.termsConditions")}
+                  Termeni și Condiții
                 </Link>
               </li>
             </ul>
@@ -152,18 +146,19 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div className="col-span-1">
-            <h3 className="text-lg font-semibold mb-4">
-              {t("footer.stayUpdated")}
-            </h3>
-            <p className="text-foreground mb-4">{t("footer.newsletterText")}</p>
+            <h3 className="text-lg font-semibold mb-4">Rămâi Informat</h3>
+            <p className="text-foreground mb-4">
+              Abonează-te la newsletter-ul nostru pentru actualizări, produse
+              noi și oferte speciale.
+            </p>
             <form className="flex flex-col space-y-2">
               <input
                 type="email"
-                placeholder={t("newsletter.placeholder")}
+                placeholder="Adresa ta de email"
                 className="px-4 py-2 border border-gray-medium rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <button type="submit" className="btn btn-primary">
-                {t("newsletter.subscribe")}
+                Abonează-te
               </button>
             </form>
           </div>
@@ -171,8 +166,8 @@ export default function Footer() {
 
         <div className="border-t border-gray-medium mt-8 pt-8 text-center">
           <p className="text-foreground">
-            &copy; {new Date().getFullYear()} Love Joy Happiness.{" "}
-            {t("footer.allRightsReserved")}
+            &copy; {new Date().getFullYear()} Love Joy Happiness. Toate
+            drepturile rezervate.
           </p>
         </div>
       </div>

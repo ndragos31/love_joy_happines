@@ -2,12 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import LanguageSwitcher from "./LanguageSwitcher";
-import { useTranslation } from "../hooks/useTranslation";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { t } = useTranslation();
 
   return (
     <nav className="fixed top-0 left-0 right-0 w-full z-50 bg-white dark:bg-gray-900 shadow-sm">
@@ -26,37 +23,36 @@ export default function Navbar() {
               href="/"
               className="text-foreground hover:text-primary transition-colors duration-200"
             >
-              {t("nav.home")}
+              Acasă
             </Link>
             <Link
               href="/products"
               className="text-foreground hover:text-primary transition-colors duration-200"
             >
-              {t("nav.products")}
+              Produse
             </Link>
             <Link
               href="/stickers"
               className="text-foreground hover:text-primary transition-colors duration-200"
             >
-              {t("nav.stickers")}
+              Autocolante
             </Link>
             <Link
               href="/banners"
               className="text-foreground hover:text-primary transition-colors duration-200"
             >
-              {t("nav.banners")}
+              Bannere
             </Link>
             <Link
               href="/about"
               className="text-foreground hover:text-primary transition-colors duration-200"
             >
-              {t("nav.about")}
+              Despre
             </Link>
           </div>
 
-          {/* Cart, Account, and Language Switcher */}
+          {/* Cart and Account */}
           <div className="hidden md:flex items-center space-x-4">
-            <LanguageSwitcher />
             <Link
               href="/cart"
               className="text-foreground hover:text-primary transition-colors duration-200 relative"
@@ -117,34 +113,33 @@ export default function Navbar() {
                 href="/"
                 className="text-foreground hover:text-primary transition-colors duration-200"
               >
-                {t("nav.home")}
+                Acasă
               </Link>
               <Link
                 href="/products"
                 className="text-foreground hover:text-primary transition-colors duration-200"
               >
-                {t("nav.products")}
+                Produse
               </Link>
               <Link
                 href="/stickers"
                 className="text-foreground hover:text-primary transition-colors duration-200"
               >
-                {t("nav.stickers")}
+                Autocolante
               </Link>
               <Link
                 href="/banners"
                 className="text-foreground hover:text-primary transition-colors duration-200"
               >
-                {t("nav.banners")}
+                Bannere
               </Link>
               <Link
                 href="/about"
                 className="text-foreground hover:text-primary transition-colors duration-200"
               >
-                {t("nav.about")}
+                Despre
               </Link>
               <div className="flex space-x-4 pt-2">
-                <LanguageSwitcher />
                 <Link
                   href="/cart"
                   className="text-foreground hover:text-primary transition-colors duration-200 relative"

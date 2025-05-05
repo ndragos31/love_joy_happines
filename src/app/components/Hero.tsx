@@ -2,11 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useTranslation } from "../hooks/useTranslation";
 
 export default function Hero() {
-  const { t } = useTranslation();
-
   return (
     <div className="relative bg-gray-light dark:bg-gray-900 overflow-hidden">
       {/* Background pattern */}
@@ -32,19 +29,20 @@ export default function Hero() {
             </h1>
 
             <p className="text-lg md:text-xl text-foreground/80">
-              {t("hero.subtitle")}
+              Autocolante frumoase, bannere și produse care răspândesc dragoste
+              și fericire
             </p>
 
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 pt-4">
               <Link href="/products">
                 <button className="btn btn-primary px-8 py-3 text-lg">
-                  {t("hero.shopNow")}
+                  Cumpără Acum
                 </button>
               </Link>
 
               <Link href="/about">
                 <button className="btn btn-outline px-8 py-3 text-lg">
-                  {t("hero.exploreCollection")}
+                  Explorează Colecția
                 </button>
               </Link>
             </div>
@@ -101,7 +99,7 @@ export default function Hero() {
                 </div>
               </div>
               <span className="text-foreground/70">
-                Trusted by 1000+ happy customers
+                Apreciat de peste 1000+ clienți fericiți
               </span>
             </div>
           </div>
@@ -110,7 +108,7 @@ export default function Hero() {
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 z-10 rounded-lg"></div>
             <Image
               src="/images/hero-image.jpg"
-              alt="Colorful stickers and banners"
+              alt="Autocolante și bannere colorate"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover"
