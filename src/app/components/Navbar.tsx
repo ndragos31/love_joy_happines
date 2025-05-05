@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { navItems, userNavItems } from "../data/navigation";
+import { navItems, userNavItems } from "@/lib/constants/navigation";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

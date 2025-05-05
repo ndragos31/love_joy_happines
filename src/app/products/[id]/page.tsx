@@ -1,25 +1,81 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import { getProductById, products } from "../../data/products";
+import { Product } from "@/lib/types/product";
 
 export default function ProductDetailPage() {
   const params = useParams();
   const productId = params.id as string;
-  const product = getProductById(productId);
 
-  const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] || "");
-  const [selectedColor, setSelectedColor] = useState(
-    product?.colors?.[0] || ""
-  );
+  // For now, using a temporary placeholder product instead of fetching
+  // Later this would be replaced with a fetch to the API
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // This is a temporary placeholder. In the future, we would fetch the product from the API
+    // Example: fetch(`/api/products?id=${productId}`)
+
+    // Simulating API fetch with placeholder product
+    setTimeout(() => {
+      if (
+        productId === "placeholder1" ||
+        productId === "placeholder2" ||
+        productId === "placeholder3"
+      ) {
+        setProduct({
+          id: productId,
+          name: `Sample Product ${productId.slice(-1)}`,
+          price: 29.99,
+          image: "/images/placeholder.jpg",
+          category: "Sample",
+          description: "This is a placeholder product description.",
+          details:
+            "Detailed information about this product would go here. This includes materials, dimensions, care instructions, and other relevant details.",
+          sizes: ["Small", "Medium", "Large"],
+          colors: ["Red", "Blue", "Green"],
+          featured: true,
+        });
+      } else {
+        setError("Product not found");
+      }
+      setLoading(false);
+    }, 500);
+  }, [productId]);
+
+  const [selectedSize, setSelectedSize] = useState<string>("");
+  const [selectedColor, setSelectedColor] = useState<string>("");
   const [quantity, setQuantity] = useState(1);
 
-  if (!product) {
+  // Set default selections when product is loaded
+  useEffect(() => {
+    if (product) {
+      setSelectedSize(product.sizes?.[0] || "");
+      setSelectedColor(product.colors?.[0] || "");
+    }
+  }, [product]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-grow pt-24 pb-16 flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4">Loading product...</h1>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error || !product) {
     return (
       <div className="min-h-screen flex flex-col">
         <Navbar />
@@ -39,10 +95,25 @@ export default function ProductDetailPage() {
     );
   }
 
-  // Find related products (same category, excluding current product)
-  const relatedProducts = products
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 3);
+  // Temporary placeholder related products
+  const relatedProducts: Product[] = [
+    {
+      id: "related1",
+      name: "Related Product 1",
+      price: 19.99,
+      image: "/images/placeholder.jpg",
+      category: product.category,
+      description: "A related product in the same category.",
+    },
+    {
+      id: "related2",
+      name: "Related Product 2",
+      price: 24.99,
+      image: "/images/placeholder.jpg",
+      category: product.category,
+      description: "Another related product suggestion.",
+    },
+  ];
 
   const handleAddToCart = () => {
     // Add to cart functionality would go here
@@ -249,33 +320,29 @@ export default function ProductDetailPage() {
             <div className="mt-16">
               <h2 className="text-2xl font-bold mb-8">Produse Similare</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {relatedProducts.map((relatedProduct) => (
+                {relatedProducts.map((relProd) => (
                   <div
-                    key={relatedProduct.id}
-                    className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+                    key={relProd.id}
+                    className="bg-white dark:bg-gray-800 rounded-lg shadow p-6"
                   >
-                    <div className="relative h-64 w-full overflow-hidden">
+                    <div className="relative h-48 mb-4 rounded overflow-hidden">
                       <Image
-                        src={relatedProduct.image}
-                        alt={relatedProduct.name}
+                        src={relProd.image}
+                        alt={relProd.name}
                         fill
                         className="object-cover"
                       />
                     </div>
-                    <div className="p-4">
-                      <h3 className="text-lg font-semibold mb-2">
-                        {relatedProduct.name}
-                      </h3>
-                      <p className="text-primary font-bold mb-4">
-                        ${relatedProduct.price.toFixed(2)}
-                      </p>
-                      <Link
-                        href={`/products/${relatedProduct.id}`}
-                        className="block text-center py-2 bg-secondary text-white rounded-md hover:bg-secondary/90 transition-colors"
-                      >
-                        Vezi Produsul
-                      </Link>
-                    </div>
+                    <h3 className="font-semibold mb-2">{relProd.name}</h3>
+                    <p className="text-primary font-bold mb-2">
+                      ${relProd.price.toFixed(2)}
+                    </p>
+                    <Link
+                      href={`/products/${relProd.id}`}
+                      className="text-sm text-primary hover:underline"
+                    >
+                      Vezi Detalii
+                    </Link>
                   </div>
                 ))}
               </div>

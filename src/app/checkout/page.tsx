@@ -529,11 +529,11 @@ export default function CheckoutPage() {
                 <div className="p-6">
                   <div className="space-y-4 mb-6">
                     <div className="flex justify-between">
-                      <span>Autocolant 'Bucurie' (2)</span>
+                      <span>Autocolant &apos;Bucurie&apos; (2)</span>
                       <span>30 lei</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Banner 'Dragoste' (1)</span>
+                      <span>Banner &apos;Dragoste&apos; (1)</span>
                       <span>45 lei</span>
                     </div>
                   </div>

@@ -1,9 +1,41 @@
 "use client";
 
-import { featuredProducts } from "../data/products";
+import Link from "next/link";
 import ProductCard from "./ProductCard";
+import { Product } from "@/lib/types/product";
 
 export default function FeaturedProducts() {
+  // Temporary placeholder products instead of fetching
+  const featuredProducts: Product[] = [
+    {
+      id: "placeholder1",
+      name: "Sample Product 1",
+      price: 19.99,
+      image: "/images/placeholder.jpg",
+      category: "Sample",
+      description: "This is a placeholder product description.",
+      featured: true,
+    },
+    {
+      id: "placeholder2",
+      name: "Sample Product 2",
+      price: 29.99,
+      image: "/images/placeholder.jpg",
+      category: "Sample",
+      description: "Another placeholder product for display purposes.",
+      featured: true,
+    },
+    {
+      id: "placeholder3",
+      name: "Sample Product 3",
+      price: 39.99,
+      image: "/images/placeholder.jpg",
+      category: "Sample",
+      description: "A third placeholder product to fill the grid.",
+      featured: true,
+    },
+  ];
+
   return (
     <section className="py-16 bg-white dark:bg-gray-900">
       <div className="container-custom">
@@ -31,9 +63,9 @@ export default function FeaturedProducts() {
         </div>
 
         <div className="text-center mt-12">
-          <a href="/products" className="btn btn-primary px-8 py-3">
+          <Link href="/products" className="btn btn-primary px-8 py-3">
             Vezi Toate
-          </a>
+          </Link>
         </div>
       </div>
     </section>
