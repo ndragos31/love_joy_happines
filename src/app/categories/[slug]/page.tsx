@@ -8,6 +8,7 @@ import { Category } from "@/lib/types/category";
 import { Product } from "@/lib/types/product";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
+import ProductCard from "@/app/components/ProductCard";
 
 export default function CategoryPage() {
   const params = useParams();
@@ -109,46 +110,7 @@ export default function CategoryPage() {
               {products.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {products.map((product) => (
-                    <Link
-                      href={`/products/${product.id}`}
-                      key={product.id}
-                      className="group"
-                    >
-                      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden transition duration-300 hover:shadow-md">
-                        <div className="aspect-square relative overflow-hidden">
-                          {product.images && product.images[0] ? (
-                            <Image
-                              src={product.images[0].src}
-                              alt={product.images[0].alt || product.name}
-                              fill
-                              className="object-contain p-2 transition-transform group-hover:scale-105"
-                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                            />
-                          ) : (
-                            <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                              <span className="text-gray-400 dark:text-gray-500">
-                                No image
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                        <div className="p-4">
-                          <h3 className="font-medium text-foreground truncate">
-                            {product.name}
-                          </h3>
-                          <div className="mt-2 flex justify-between items-center">
-                            <span className="text-primary font-semibold">
-                              {product.price} Lei
-                            </span>
-                            <span className="text-sm text-gray-500 dark:text-gray-400">
-                              {product.stock_status === "instock"
-                                ? "In stoc"
-                                : "Stoc epuizat"}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
+                    <ProductCard key={product.id} product={product} />
                   ))}
                 </div>
               ) : (

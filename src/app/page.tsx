@@ -57,10 +57,10 @@ export default function Home() {
               <div className="bg-gray-light dark:bg-gray-800 p-6 rounded-lg">
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mr-4">
-                    <span className="text-primary font-bold">JD</span>
+                    <span className="text-primary font-bold">AP</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold">Jane Doe</h4>
+                    <h4 className="font-semibold">Ana Popescu</h4>
                     <div className="flex text-yellow-400">
                       <span>★</span>
                       <span>★</span>
@@ -71,10 +71,10 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-foreground/80 italic">
-                  &ldquo;Îmi plac foarte mult autocolantele pe care le-am
-                  comandat! Sunt vibrante, durabile și aduc multă bucurie
-                  laptopului și sticlei mele de apă. Cu siguranță voi comanda
-                  mai multe!&rdquo;
+                  &ldquo;Autocolantele personalizate pentru laptopul meu sunt
+                  fantastice! Culorile sunt vibrante, iar calitatea este mult
+                  peste așteptări. Chiar după luni de utilizare, nu s-au
+                  deteriorat deloc. Le recomand tuturor prietenilor mei!&rdquo;
                 </p>
               </div>
 
@@ -82,10 +82,10 @@ export default function Home() {
               <div className="bg-gray-light dark:bg-gray-800 p-6 rounded-lg">
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center mr-4">
-                    <span className="text-secondary font-bold">MS</span>
+                    <span className="text-secondary font-bold">MI</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold">Mike Smith</h4>
+                    <h4 className="font-semibold">Mihai Ionescu</h4>
                     <div className="flex text-yellow-400">
                       <span>★</span>
                       <span>★</span>
@@ -96,10 +96,11 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-foreground/80 italic">
-                  &ldquo;Bannerul personalizat pe care l-am comandat pentru ziua
-                  fiicei mele a fost perfect! Calitate excelentă, culori
-                  vibrante și a sosit mai devreme decât mă așteptam. Recomand cu
-                  încredere!&rdquo;
+                  &ldquo;Am comandat etichete personalizate pentru evenimentul
+                  firmei noastre și rezultatul a fost impecabil. Designul
+                  elegant și detaliile fine au impresionat pe toată lumea.
+                  Livrarea a fost rapidă și serviciul clienți excelent. Vom
+                  reveni cu siguranță!&rdquo;
                 </p>
               </div>
 
@@ -108,11 +109,11 @@ export default function Home() {
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center mr-4">
                     <span className="text-accent dark:text-yellow-400 font-bold">
-                      AJ
+                      EC
                     </span>
                   </div>
                   <div>
-                    <h4 className="font-semibold">Alex Johnson</h4>
+                    <h4 className="font-semibold">Elena Cojocaru</h4>
                     <div className="flex text-yellow-400">
                       <span>★</span>
                       <span>★</span>
@@ -123,41 +124,16 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-foreground/80 italic">
-                  &ldquo;Am cumpărat cana de cafea &lsquo;Bucurie&rsquo; și mă
-                  face să zâmbesc în fiecare dimineață. Calitatea este
-                  excelentă, iar designul este chiar mai vibrant în realitate. O
-                  iubesc!&rdquo;
+                  &ldquo;Bannerul aniversar pentru petrecerea fiicei mele a fost
+                  minunat! Toată lumea a făcut poze cu el. Calitatea printului a
+                  fost excepțională, iar materialul foarte rezistent. Apreciez
+                  foarte mult atenția la detalii și promptitudinea cu care a
+                  fost livrat.&rdquo;
                 </p>
               </div>
             </div>
           </div>
         </section>
-
-        {/* Decorative Divider */}
-        <div className="py-16 bg-primary/10 dark:bg-primary/5">
-          <div className="container-custom">
-            <div className="flex items-center justify-center">
-              <div className="w-1/4 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent"></div>
-              <div className="mx-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8 text-primary"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                  />
-                </svg>
-              </div>
-              <div className="w-1/4 h-px bg-gradient-to-r from-primary/60 via-primary/60 to-transparent"></div>
-            </div>
-          </div>
-        </div>
       </main>
       <Footer />
     </div>
