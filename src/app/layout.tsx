@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { LanguageProvider } from "./context/LanguageContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,10 +13,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Love Joy Happiness | Stickers, Banners & More",
+  title: "Love Joy Happiness | Autocolante, Bannere și Altele",
   description:
-    "Shop our collection of beautiful stickers, banners, and other merchandise that bring love, joy, and happiness to your life.",
-  keywords: "stickers, banners, merchandise, love, joy, happiness, e-commerce",
+    "Cumpără din colecția noastră de autocolante frumoase, bannere și alte produse care aduc dragoste, bucurie și fericire în viața ta.",
+  keywords:
+    "autocolante, bannere, produse, dragoste, bucurie, fericire, e-commerce",
 };
 
 export default function RootLayout({
@@ -26,13 +26,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ro">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <LanguageProvider>
-          <main className="pt-16">{children}</main>
-        </LanguageProvider>
+        <main className="pt-16">{children}</main>
       </body>
     </html>
   );

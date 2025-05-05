@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useTranslation } from "../hooks/useTranslation";
 
 interface ProductCardProps {
   id: string;
@@ -23,7 +22,6 @@ export default function ProductCard({
   description,
 }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const { t } = useTranslation();
 
   return (
     <div
@@ -62,7 +60,7 @@ export default function ProductCard({
           <div className="flex space-x-2">
             <button
               className="bg-secondary text-white p-2 rounded-full hover:opacity-90 transition-opacity"
-              aria-label={t("featuredProducts.addToCart")}
+              aria-label="Adaugă în Coș"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +81,7 @@ export default function ProductCard({
             <Link href={`/products/${id}`}>
               <button
                 className="bg-gray-light dark:bg-gray-700 text-foreground p-2 rounded-full hover:bg-gray-medium dark:hover:bg-gray-600 transition-colors"
-                aria-label={t("featuredProducts.viewProduct")}
+                aria-label="Vezi Produsul"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

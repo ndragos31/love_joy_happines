@@ -5,11 +5,8 @@ import Navbar from "./components/Navbar";
 import Categories from "./components/Categories";
 import FeaturedProducts from "./components/FeaturedProducts";
 import Footer from "./components/Footer";
-import { useTranslation } from "./hooks/useTranslation";
 
 export default function Home() {
-  const { t } = useTranslation();
-
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -23,10 +20,11 @@ export default function Home() {
           <div className="container-custom">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                {t("testimonials.title")}
+                Ce Spun Clienții Noștri
               </h2>
               <p className="text-foreground/70 max-w-2xl mx-auto">
-                {t("testimonials.subtitle")}
+                Nu ne crede doar pe cuvânt - ascultă de la clienții noștri
+                fericiți care au experimentat bucuria produselor noastre.
               </p>
             </div>
 
@@ -49,9 +47,10 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-foreground/80 italic">
-                  &ldquo;I absolutely love the stickers I ordered! They&apos;re
-                  vibrant, durable, and bring so much joy to my laptop and water
-                  bottle. Will definitely be ordering more!&rdquo;
+                  &ldquo;Îmi plac foarte mult autocolantele pe care le-am
+                  comandat! Sunt vibrante, durabile și aduc multă bucurie
+                  laptopului și sticlei mele de apă. Cu siguranță voi comanda
+                  mai multe!&rdquo;
                 </p>
               </div>
 
@@ -73,9 +72,10 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-foreground/80 italic">
-                  &ldquo;The custom banner I ordered for my daughter&apos;s
-                  birthday party was perfect! Great quality, vibrant colors, and
-                  it arrived earlier than expected. Highly recommend!&rdquo;
+                  &ldquo;Bannerul personalizat pe care l-am comandat pentru ziua
+                  fiicei mele a fost perfect! Calitate excelentă, culori
+                  vibrante și a sosit mai devreme decât mă așteptam. Recomand cu
+                  încredere!&rdquo;
                 </p>
               </div>
 
@@ -99,9 +99,10 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-foreground/80 italic">
-                  &ldquo;I bought the &lsquo;Joy&rsquo; coffee mug and it makes
-                  me smile every morning. The quality is excellent and the
-                  design is even more vibrant in person. Love it!&rdquo;
+                  &ldquo;Am cumpărat cana de cafea &lsquo;Bucurie&rsquo; și mă
+                  face să zâmbesc în fiecare dimineață. Calitatea este
+                  excelentă, iar designul este chiar mai vibrant în realitate. O
+                  iubesc!&rdquo;
                 </p>
               </div>
             </div>
@@ -113,16 +114,18 @@ export default function Home() {
           <div className="container-custom">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-                {t("newsletter.title")}
+                Abonează-te la Newsletter
               </h2>
               <p className="text-foreground/70 mb-8">
-                {t("newsletter.subtitle")}
+                Abonează-te la newsletter-ul nostru pentru actualizări despre
+                produse noi, oferte speciale și o doză regulată de fericire în
+                inbox-ul tău.
               </p>
 
               <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
                 <input
                   type="email"
-                  placeholder={t("newsletter.placeholder")}
+                  placeholder="Adresa ta de email"
                   className="flex-grow px-4 py-3 rounded-md border border-gray-medium focus:outline-none focus:ring-2 focus:ring-primary"
                   required
                 />
@@ -130,7 +133,7 @@ export default function Home() {
                   type="submit"
                   className="btn btn-primary px-6 py-3 whitespace-nowrap"
                 >
-                  {t("newsletter.subscribe")}
+                  Abonează-te
                 </button>
               </form>
             </div>

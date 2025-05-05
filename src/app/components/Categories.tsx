@@ -1,15 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useTranslation } from "../hooks/useTranslation";
 
 export default function Categories() {
-  const { t } = useTranslation();
-
   const categories = [
     {
-      name: t("categories.stickers"),
-      description: "Colorful stickers to brighten your day",
+      name: "Autocolante",
+      description: "Autocolante colorate pentru a-ți înviora ziua",
       image: "/images/categories/stickers.jpg",
       link: "/stickers",
       color: "from-primary/20 to-primary/40",
@@ -31,8 +28,8 @@ export default function Categories() {
       ),
     },
     {
-      name: t("categories.banners"),
-      description: "Custom banners for any occasion",
+      name: "Bannere",
+      description: "Bannere personalizate pentru orice ocazie",
       image: "/images/categories/banners.jpg",
       link: "/banners",
       color: "from-secondary/20 to-secondary/40",
@@ -54,8 +51,8 @@ export default function Categories() {
       ),
     },
     {
-      name: "Merchandise",
-      description: "Spread joy with our branded merchandise",
+      name: "Produse",
+      description: "Răspândește bucurie cu produsele noastre personalizate",
       image: "/images/categories/merchandise.jpg",
       link: "/merchandise",
       color: "from-accent/20 to-accent/40",
@@ -83,10 +80,11 @@ export default function Categories() {
       <div className="container-custom">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            {t("categories.title")}
+            Cumpără după Categorie
           </h2>
           <p className="text-foreground/70 max-w-2xl mx-auto">
-            {t("categories.subtitle")}
+            Răsfoiește colecția noastră de produse concepute pentru a aduce
+            bucurie în viața ta
           </p>
         </div>
 
@@ -110,7 +108,7 @@ export default function Categories() {
                     {category.description}
                   </p>
                   <div className="flex items-center text-primary font-medium">
-                    <span>{t("categories.viewAll")}</span>
+                    <span>Vezi Toate</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1"
