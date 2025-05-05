@@ -79,15 +79,9 @@ export default function Hero() {
               dragoste și fericire
             </p>
 
-            <div className="flex flex-row space-x-4 pt-6">
-              <Link href="/products">
-                <button className="bg-[#ff6b6b] hover:bg-[#ff5252] text-white font-medium rounded-md px-8 py-3 text-lg transition-colors">
-                  Cumpără Acum
-                </button>
-              </Link>
-
+            <div className="flex flex-row pt-6">
               <Link href="/about">
-                <button className="border border-gray-300 hover:border-gray-400 text-gray-700 dark:text-gray-200 font-medium rounded-md px-8 py-3 text-lg transition-colors">
+                <button className="bg-[#ff6b6b] hover:bg-[#ff5252] text-white font-medium rounded-md px-8 py-3 text-lg transition-colors cursor-pointer">
                   Explorează Colecția
                 </button>
               </Link>
@@ -187,7 +181,7 @@ export default function Hero() {
                     alt={category.image.alt || category.name}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover"
+                    className="object-cover bg-white dark:bg-gray-900"
                     priority={index === 0}
                   />
                 </div>
