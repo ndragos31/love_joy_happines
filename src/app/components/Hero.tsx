@@ -5,107 +5,57 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <div className="relative bg-gray-light dark:bg-gray-900 overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff6b6b' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            backgroundSize: "60px 60px",
-          }}
-        ></div>
-      </div>
+    <div className="relative bg-white dark:bg-gray-900 overflow-hidden">
+      {/* Subtle background elements */}
+      <div className="absolute top-20 right-20 w-32 h-32 rounded-full bg-[#ff6b6b]/5 blur-2xl"></div>
+      <div className="absolute bottom-20 left-20 w-40 h-40 rounded-full bg-[#4ecdc4]/5 blur-3xl"></div>
+      <div className="absolute top-40 left-1/4 w-24 h-24 rounded-full bg-[#ffdd67]/5 blur-xl"></div>
 
       <div className="container-custom py-16 md:py-24 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="flex flex-col space-y-6">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground">
-              <span className="text-primary">Love</span>,{" "}
-              <span className="text-secondary">Joy</span> &{" "}
-              <span className="text-accent dark:text-yellow-400">
+            <h1 className="font-bold text-foreground">
+              <span className="text-5xl md:text-6xl lg:text-7xl text-[#ff6b6b]">
+                Love
+              </span>
+              <span className="text-5xl md:text-6xl lg:text-7xl">,</span>{" "}
+              <span className="text-5xl md:text-6xl lg:text-7xl text-[#4ecdc4]">
+                Joy
+              </span>{" "}
+              <span className="text-5xl md:text-6xl lg:text-7xl">&</span>
+              <br />
+              <span className="text-5xl md:text-6xl lg:text-7xl text-[#ffdd67]">
                 Happiness
               </span>
             </h1>
 
-            <p className="text-lg md:text-xl text-foreground/80">
-              Autocolante frumoase, bannere și produse care răspândesc dragoste
-              și fericire
+            <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mt-4">
+              Autocolante frumoase, bannere și produse care răspândesc
+              <br />
+              dragoste și fericire
             </p>
 
-            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 pt-4">
+            <div className="flex flex-row space-x-4 pt-6">
               <Link href="/products">
-                <button className="btn btn-primary px-8 py-3 text-lg">
+                <button className="bg-[#ff6b6b] hover:bg-[#ff5252] text-white font-medium rounded-md px-8 py-3 text-lg transition-colors">
                   Cumpără Acum
                 </button>
               </Link>
 
               <Link href="/about">
-                <button className="btn btn-outline px-8 py-3 text-lg">
+                <button className="border border-gray-300 hover:border-gray-400 text-gray-700 dark:text-gray-200 font-medium rounded-md px-8 py-3 text-lg transition-colors">
                   Explorează Colecția
                 </button>
               </Link>
             </div>
-
-            <div className="flex items-center space-x-4 pt-4">
-              <div className="flex -space-x-2">
-                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </div>
-                <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-white">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M20 12H4"
-                    />
-                  </svg>
-                </div>
-                <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-foreground">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                    />
-                  </svg>
-                </div>
-              </div>
-              <span className="text-foreground/70">
-                Apreciat de peste 1000+ clienți fericiți
-              </span>
-            </div>
           </div>
 
-          <div className="relative h-[400px] md:h-[500px] rounded-lg overflow-hidden shadow-xl">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 z-10 rounded-lg"></div>
+          <div className="relative h-[400px] md:h-[500px] rounded-lg overflow-hidden shadow-lg">
+            <div className="absolute inset-0 bg-gradient-to-br from-transparent to-white/5 z-10 pointer-events-none"></div>
+
+            <div className="absolute top-4 right-4 w-12 h-12 rounded-full border-4 border-white/20 z-10"></div>
+            <div className="absolute bottom-6 left-6 w-8 h-8 rounded-full bg-[#4ecdc4]/20 z-10"></div>
+
             <Image
               src="/images/hero-image.jpg"
               alt="Autocolante și bannere colorate"

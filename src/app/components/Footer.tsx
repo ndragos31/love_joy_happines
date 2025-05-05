@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-light dark:bg-gray-900 pt-12 pb-8">
       <div className="container-custom">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Company Info */}
           <div className="col-span-1">
             <h3 className="text-xl font-bold text-primary mb-4">
@@ -142,25 +142,6 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div className="col-span-1">
-            <h3 className="text-lg font-semibold mb-4">Rămâi Informat</h3>
-            <p className="text-foreground mb-4">
-              Abonează-te la newsletter-ul nostru pentru actualizări, produse
-              noi și oferte speciale.
-            </p>
-            <form className="flex flex-col space-y-2">
-              <input
-                type="email"
-                placeholder="Adresa ta de email"
-                className="px-4 py-2 border border-gray-medium rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <button type="submit" className="btn btn-primary">
-                Abonează-te
-              </button>
-            </form>
           </div>
         </div>
 
