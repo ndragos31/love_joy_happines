@@ -13,6 +13,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { stripePromise } from "@/lib/stripe";
+import Image from "next/image";
 
 // Payment form component
 function CheckoutForm({ onSuccess }: { onSuccess: () => void }) {
@@ -84,10 +85,10 @@ function CheckoutForm({ onSuccess }: { onSuccess: () => void }) {
 
 export default function CheckoutPage() {
   const [step, setStep] = useState(1);
-  const { items, subtotal } = useCart();
+  const { items, subtotal, clearCart, removeItem } = useCart();
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<"card" | "ramburs">(
-    "card"
+    "ramburs"
   );
   const [formData, setFormData] = useState({
     // Shipping information
@@ -108,6 +109,10 @@ export default function CheckoutPage() {
     shippingMethod: "standard",
   });
   const [orderNumber, setOrderNumber] = useState<string>("");
+  const [orderItems, setOrderItems] = useState<typeof items>([]);
+  const [finalSubtotal, setFinalSubtotal] = useState<number>(0);
+  const [finalShipping, setFinalShipping] = useState<number>(0);
+  const [finalTotal, setFinalTotal] = useState<number>(0);
 
   // Shipping cost calculation based on subtotal and shipping method
   const getShippingCost = (method: string) => {
@@ -116,8 +121,7 @@ export default function CheckoutPage() {
   };
 
   const shipping = getShippingCost(formData.shippingMethod);
-  const rambursExtra = paymentMethod === "ramburs" ? 15 : 0;
-  const total = subtotal + shipping + rambursExtra;
+  const total = subtotal + shipping;
 
   useEffect(() => {
     if (step === 2 && paymentMethod === "card") {
@@ -144,16 +148,6 @@ export default function CheckoutPage() {
     }
   }, [step, total, paymentMethod]);
 
-  useEffect(() => {
-    if (step === 3) {
-      // Generate unique order number when reaching confirmation step
-      const uniqueId = uuidv4();
-      const orderPrefix = "LJH";
-      const year = new Date().getFullYear();
-      setOrderNumber(`${orderPrefix}-${uniqueId.slice(0, 8)}-${year}`);
-    }
-  }, [step]);
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -164,15 +158,105 @@ export default function CheckoutPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Handle autofill
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const autofillInputs = document.querySelectorAll(
+        "input:-webkit-autofill"
+      );
+      autofillInputs.forEach((input) => {
+        const inputElement = input as HTMLInputElement;
+        if (inputElement.value && inputElement.name) {
+          setFormData((prev) => {
+            if (
+              prev[inputElement.name as keyof typeof prev] !==
+              inputElement.value
+            ) {
+              return {
+                ...prev,
+                [inputElement.name]: inputElement.value,
+              };
+            }
+            return prev;
+          });
+        }
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const sendOrderEmails = async () => {
+    try {
+      const orderDetails = {
+        orderNumber,
+        customerName: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+        city: formData.city,
+        county: formData.county,
+        postalCode: formData.postalCode,
+        items: items.map((item) => ({
+          name: item.product.name,
+          quantity: item.quantity,
+          price: Number(item.product.price),
+        })),
+        subtotal,
+        shipping,
+        total,
+        paymentMethod: paymentMethod === "card" ? "Card" : "Ramburs",
+      };
+
+      const response = await fetch("/api/send-order-emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderDetails),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send order emails");
+      }
+
+      await response.json();
+    } catch (error) {
+      console.error("Failed to send order confirmation emails:", error);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (step === 1) {
       setStep(2);
     } else if (step === 2 && paymentMethod === "ramburs") {
-      // Skip Stripe and go directly to confirmation for ramburs
+      // Generate order number before setting step to 3
+      const uniqueId = uuidv4();
+      const orderPrefix = "LJH";
+      const year = new Date().getFullYear();
+      const newOrderNumber = `${orderPrefix}-${uniqueId.slice(0, 8)}-${year}`;
+      setOrderNumber(newOrderNumber);
+      // Store current cart items and totals
+      setOrderItems([...items]);
+      setFinalSubtotal(subtotal);
+      setFinalShipping(shipping);
+      setFinalTotal(total);
+      // Then set step to 3
       setStep(3);
     }
   };
+
+  // Separate useEffect for handling order completion actions
+  useEffect(() => {
+    if (step === 3 && orderNumber) {
+      // Send confirmation emails
+      sendOrderEmails().then(() => {
+        // Clear the cart only after emails are sent
+        clearCart();
+      });
+    }
+  }, [step, orderNumber]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -305,6 +389,13 @@ export default function CheckoutPage() {
                           name="email"
                           value={formData.email}
                           onChange={handleChange}
+                          onBlur={(e) => {
+                            console.log(
+                              "Email field blur event:",
+                              e.target.value
+                            );
+                            handleChange(e);
+                          }}
                           required
                           className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
                         />
@@ -657,7 +748,7 @@ export default function CheckoutPage() {
                       <p className="text-foreground/70 mb-2">{orderNumber}</p>
                       <p className="font-semibold">Total:</p>
                       <p className="text-foreground/70">
-                        {total.toFixed(2)} lei
+                        {finalTotal.toFixed(2)} lei
                       </p>
                     </div>
 
@@ -681,17 +772,71 @@ export default function CheckoutPage() {
 
                 <div className="p-6">
                   <div className="space-y-4 mb-6">
-                    {items.map((item) => (
-                      <div key={item.id} className="flex justify-between">
-                        <span>
-                          {item.product.name} ({item.quantity})
-                        </span>
-                        <span>
-                          {(Number(item.product.price) * item.quantity).toFixed(
-                            2
-                          )}{" "}
-                          lei
-                        </span>
+                    {(step === 3 ? orderItems : items).map((item) => (
+                      <div key={item.id} className="flex items-center gap-3">
+                        <Link
+                          href={`/products/${item.id}`}
+                          className="relative w-16 h-16 flex-shrink-0 rounded-md overflow-hidden hover:opacity-80 transition-opacity"
+                        >
+                          {item.product.images &&
+                          item.product.images.length > 0 ? (
+                            <Image
+                              src={item.product.images[0].src}
+                              alt={
+                                item.product.images[0].alt || item.product.name
+                              }
+                              fill
+                              className="object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500">
+                              No image
+                            </div>
+                          )}
+                        </Link>
+                        <div className="flex-grow min-w-0">
+                          <div className="flex items-start justify-between gap-2">
+                            <Link
+                              href={`/products/${item.id}`}
+                              className="text-sm font-medium truncate hover:text-primary transition-colors"
+                            >
+                              {item.product.name}
+                            </Link>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm whitespace-nowrap">
+                                {(
+                                  Number(item.product.price) * item.quantity
+                                ).toFixed(2)}{" "}
+                                lei
+                              </span>
+                              {step < 3 && (
+                                <button
+                                  onClick={() => removeItem(item.id)}
+                                  className="text-red-500 hover:text-red-700 transition-colors p-1 cursor-pointer"
+                                  title="Elimină produsul"
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-4 w-4"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M6 18L18 6M6 6l12 12"
+                                    />
+                                  </svg>
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                          <span className="text-sm text-gray-500">
+                            Cantitate: {item.quantity}
+                          </span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -699,22 +844,27 @@ export default function CheckoutPage() {
                   <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-4">
                     <div className="flex justify-between">
                       <span className="text-foreground/70">Subtotal</span>
-                      <span>{subtotal.toFixed(2)} lei</span>
+                      <span>
+                        {step === 3
+                          ? finalSubtotal.toFixed(2)
+                          : subtotal.toFixed(2)}{" "}
+                        lei
+                      </span>
                     </div>
 
                     <div className="flex justify-between">
                       <span className="text-foreground/70">
                         Transport{" "}
-                        {shipping === 0 && (
+                        {(step === 3 ? finalShipping : shipping) === 0 && (
                           <span className="text-green-600 dark:text-green-500 text-xs ml-1">
                             (Gratuit)
                           </span>
                         )}
                       </span>
                       <span>
-                        {shipping === 0
+                        {(step === 3 ? finalShipping : shipping) === 0
                           ? "Gratuit"
-                          : `${shipping.toFixed(2)} lei ${
+                          : `${(step === 3 ? finalShipping : shipping).toFixed(2)} lei ${
                               formData.shippingMethod === "express"
                                 ? "(Express)"
                                 : ""
@@ -722,17 +872,11 @@ export default function CheckoutPage() {
                       </span>
                     </div>
 
-                    {paymentMethod === "ramburs" && (
-                      <div className="flex justify-between">
-                        <span className="text-foreground/70">Cost ramburs</span>
-                        <span>{rambursExtra.toFixed(2)} lei</span>
-                      </div>
-                    )}
-
                     <div className="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between font-semibold">
                       <span>Total</span>
                       <span className="text-primary">
-                        {total.toFixed(2)} lei
+                        {step === 3 ? finalTotal.toFixed(2) : total.toFixed(2)}{" "}
+                        lei
                       </span>
                     </div>
                   </div>
