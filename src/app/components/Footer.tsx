@@ -90,7 +90,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/stickers"
+                  href="/categories/autocolante"
                   className="text-foreground hover:text-primary transition-colors"
                 >
                   Autocolante
@@ -98,10 +98,18 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/banners"
+                  href="/categories/etichete"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Bannere
+                  Etichete
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/categories/flyere"
+                  className="text-foreground hover:text-primary transition-colors"
+                >
+                  Flyere
                 </Link>
               </li>
               <li>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Image from "next/image";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -267,21 +268,15 @@ export default function ContactPage() {
                     </div>
                   </div>
                 </div>
-
-                <h3 className="text-xl font-semibold mb-4">Program</h3>
-                <div className="bg-gray-light dark:bg-gray-800 rounded-lg p-6">
-                  <div className="flex justify-between mb-2">
-                    <span>Luni - Vineri:</span>
-                    <span>09:00 - 18:00</span>
-                  </div>
-                  <div className="flex justify-between mb-2">
-                    <span>Sâmbătă:</span>
-                    <span>10:00 - 16:00</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Duminică:</span>
-                    <span>Închis</span>
-                  </div>
+                <div className="flex justify-center mt-6">
+                  <Image
+                    src="/logo dreptunghi.jpg"
+                    alt="Love Joy Happiness Logo"
+                    width={300}
+                    height={80}
+                    className="object-contain"
+                    priority
+                  />
                 </div>
               </div>
             </div>
