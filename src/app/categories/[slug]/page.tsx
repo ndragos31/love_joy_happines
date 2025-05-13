@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+import { useParams } from "next/navigation";
 import { Category } from "@/lib/types/category";
 import { Product } from "@/lib/types/product";
 import Navbar from "@/app/components/Navbar";

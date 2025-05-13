@@ -140,8 +140,12 @@ export async function POST(req: Request) {
       message: "Emails sent successfully",
     });
   } catch (error) {
+    console.error("Failed to send order emails:", error);
     return NextResponse.json(
-      { error: "Failed to send order emails" },
+      {
+        error: "Failed to send order emails",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
       { status: 500 }
     );
   }
