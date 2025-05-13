@@ -8,6 +8,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { Product } from "@/lib/types/product";
 import { useCart } from "@/lib/context/CartContext";
+import ProductImageGallery from "@/app/components/ProductImageGallery";
 
 export default function ProductPage() {
   const params = useParams();
@@ -147,11 +148,14 @@ export default function ProductPage() {
         <div className="container-custom">
           {/* Breadcrumbs */}
           <div className="mb-8 text-sm text-foreground/70">
-            <Link href="/" className="hover:text-primary">
+            <Link href="/" className="hover:text-primary cursor-pointer">
               Acasă
             </Link>{" "}
             /{" "}
-            <Link href="/products" className="hover:text-primary">
+            <Link
+              href="/products"
+              className="hover:text-primary cursor-pointer"
+            >
               Produse
             </Link>{" "}
             {product.categories && product.categories.length > 0 && (
@@ -159,7 +163,7 @@ export default function ProductPage() {
                 /{" "}
                 <Link
                   href={`/categories/${product.categories[0].slug}`}
-                  className="hover:text-primary"
+                  className="hover:text-primary cursor-pointer"
                 >
                   {product.categories[0].name}
                 </Link>{" "}
@@ -173,52 +177,12 @@ export default function ProductPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-0">
               {/* Product images - 5 columns on large screens */}
               <div className="lg:col-span-5 p-6 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700">
-                <div className="space-y-4">
-                  {/* Main product image */}
-                  <div className="aspect-square relative bg-white rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-                    {product.images && product.images.length > 0 ? (
-                      <Image
-                        src={product.images[currentImageIndex].src}
-                        alt={
-                          product.images[currentImageIndex].alt || product.name
-                        }
-                        fill
-                        className="object-contain p-4"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-                        priority
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
-                        <span className="text-gray-400">Fără imagine</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Thumbnail gallery */}
-                  {product.images && product.images.length > 1 && (
-                    <div className="flex space-x-2 overflow-x-auto pb-2">
-                      {product.images.map((image, index) => (
-                        <button
-                          key={image.id}
-                          onClick={() => setCurrentImageIndex(index)}
-                          className={`relative h-16 w-16 flex-shrink-0 rounded-md border-2 transition-all ${
-                            currentImageIndex === index
-                              ? "border-primary"
-                              : "border-gray-200 dark:border-gray-700"
-                          }`}
-                        >
-                          <Image
-                            src={image.src}
-                            alt={image.alt || `Product image ${index + 1}`}
-                            fill
-                            className="object-contain p-1"
-                            sizes="80px"
-                          />
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                {product.images && (
+                  <ProductImageGallery
+                    images={product.images}
+                    productName={product.name}
+                  />
+                )}
               </div>
 
               {/* Product info - 4 columns on large screens */}
@@ -234,7 +198,7 @@ export default function ProductPage() {
                       <Link
                         key={category.id}
                         href={`/categories/${category.slug}`}
-                        className="text-xs inline-block bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-2.5 py-1 rounded-full transition-colors"
+                        className="text-xs inline-block bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-2.5 py-1 rounded-full transition-colors cursor-pointer"
                       >
                         {category.name}
                       </Link>
@@ -282,7 +246,7 @@ export default function ProductPage() {
                         <button
                           type="button"
                           onClick={decrementQuantity}
-                          className="px-3 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                          className="px-3 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
                         >
                           -
                         </button>
@@ -296,12 +260,12 @@ export default function ProductPage() {
                           onChange={(e) =>
                             setQuantity(parseInt(e.target.value) || 1)
                           }
-                          className="w-12 border-0 text-center focus:ring-0 p-0 bg-transparent text-gray-900 dark:text-white"
+                          className="w-12 border-0 text-center focus:ring-0 p-0 bg-transparent text-gray-900 dark:text-white cursor-text [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         />
                         <button
                           type="button"
                           onClick={incrementQuantity}
-                          className="px-3 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                          className="px-3 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
                         >
                           +
                         </button>
@@ -311,7 +275,7 @@ export default function ProductPage() {
                     <button
                       onClick={handleAddToCart}
                       disabled={addingToCart}
-                      className={`w-full py-3 px-4 rounded-md text-white font-medium transition-colors ${
+                      className={`w-full py-3 px-4 rounded-md text-white font-medium transition-colors cursor-pointer ${
                         addingToCart
                           ? "bg-gray-400"
                           : "bg-primary hover:bg-primary/90"
@@ -388,7 +352,7 @@ export default function ProductPage() {
               <div className="flex">
                 <button
                   onClick={() => setActiveTab("description")}
-                  className={`px-6 py-3 text-sm font-medium ${
+                  className={`px-6 py-3 text-sm font-medium cursor-pointer ${
                     activeTab === "description"
                       ? "text-primary border-b-2 border-primary"
                       : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
@@ -398,7 +362,7 @@ export default function ProductPage() {
                 </button>
                 <button
                   onClick={() => setActiveTab("specifications")}
-                  className={`px-6 py-3 text-sm font-medium ${
+                  className={`px-6 py-3 text-sm font-medium cursor-pointer ${
                     activeTab === "specifications"
                       ? "text-primary border-b-2 border-primary"
                       : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
@@ -408,7 +372,7 @@ export default function ProductPage() {
                 </button>
                 <button
                   onClick={() => setActiveTab("shipping")}
-                  className={`px-6 py-3 text-sm font-medium ${
+                  className={`px-6 py-3 text-sm font-medium cursor-pointer ${
                     activeTab === "shipping"
                       ? "text-primary border-b-2 border-primary"
                       : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
