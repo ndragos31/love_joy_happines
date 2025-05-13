@@ -1,14 +1,94 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { v4 as uuidv4 } from "uuid";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useCart } from "@/lib/context/CartContext";
+import { Elements } from "@stripe/react-stripe-js";
+import {
+  PaymentElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+import { stripePromise } from "@/lib/stripe";
+
+// Payment form component
+function CheckoutForm({ onSuccess }: { onSuccess: () => void }) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [error, setError] = useState<string | null>(null);
+  const [processing, setProcessing] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("🔵 Starting payment submission...");
+
+    if (!stripe || !elements) {
+      console.warn("⚠️ Stripe or Elements not loaded");
+      return;
+    }
+
+    setProcessing(true);
+    setError(null);
+
+    console.log("🔄 Submitting payment details...");
+    const { error: submitError } = await elements.submit();
+    if (submitError) {
+      console.error("❌ Error submitting payment details:", submitError);
+      setError(
+        submitError.message || "A apărut o eroare la procesarea plății."
+      );
+      setProcessing(false);
+      return;
+    }
+
+    console.log("✅ Payment details submitted successfully");
+    console.log("🔄 Confirming payment...");
+
+    const { error: confirmError } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: `${window.location.origin}/checkout/success`,
+      },
+    });
+
+    if (confirmError) {
+      console.error("❌ Error confirming payment:", confirmError);
+      setError(
+        confirmError.message || "A apărut o eroare la procesarea plății."
+      );
+      setProcessing(false);
+      return;
+    }
+
+    console.log("✅ Payment confirmed successfully");
+    onSuccess();
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <PaymentElement />
+      {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
+      <button
+        type="submit"
+        disabled={!stripe || processing}
+        className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+      >
+        {processing ? "Se procesează..." : "Plătește"}
+      </button>
+    </form>
+  );
+}
 
 export default function CheckoutPage() {
   const [step, setStep] = useState(1);
   const { items, subtotal } = useCart();
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<"card" | "ramburs">(
+    "card"
+  );
   const [formData, setFormData] = useState({
     // Shipping information
     firstName: "",
@@ -27,6 +107,52 @@ export default function CheckoutPage() {
     // Shipping method
     shippingMethod: "standard",
   });
+  const [orderNumber, setOrderNumber] = useState<string>("");
+
+  // Shipping cost calculation based on subtotal and shipping method
+  const getShippingCost = (method: string) => {
+    if (subtotal > 200) return 0; // Free shipping over 200 Lei
+    return method === "standard" ? 15 : 25; // 15 lei for standard, 25 for express
+  };
+
+  const shipping = getShippingCost(formData.shippingMethod);
+  const rambursExtra = paymentMethod === "ramburs" ? 15 : 0;
+  const total = subtotal + shipping + rambursExtra;
+
+  useEffect(() => {
+    if (step === 2 && paymentMethod === "card") {
+      console.log("🔵 Initializing payment intent...");
+      console.log("💰 Total amount:", total);
+
+      fetch("/api/create-payment-intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: total }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("✅ Received client secret from server");
+          setClientSecret(data.clientSecret);
+        })
+        .catch((err) => {
+          console.error("❌ Error loading Stripe:", err);
+          console.error("Error details:", {
+            message: err instanceof Error ? err.message : "Unknown error",
+            stack: err instanceof Error ? err.stack : undefined,
+          });
+        });
+    }
+  }, [step, total, paymentMethod]);
+
+  useEffect(() => {
+    if (step === 3) {
+      // Generate unique order number when reaching confirmation step
+      const uniqueId = uuidv4();
+      const orderPrefix = "LJH";
+      const year = new Date().getFullYear();
+      setOrderNumber(`${orderPrefix}-${uniqueId.slice(0, 8)}-${year}`);
+    }
+  }, [step]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -42,21 +168,18 @@ export default function CheckoutPage() {
     e.preventDefault();
     if (step === 1) {
       setStep(2);
-    } else if (step === 2) {
+    } else if (step === 2 && paymentMethod === "ramburs") {
+      // Skip Stripe and go directly to confirmation for ramburs
       setStep(3);
     }
   };
-
-  // Shipping cost calculation
-  const shipping = subtotal > 200 ? 0 : 15; // Free shipping over 200 Lei
-  const total = subtotal + shipping;
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow pt-24 pb-16">
         <div className="container-custom py-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold mb-8 cursor-pointer">
             Finalizare Comandă
           </h1>
 
@@ -282,7 +405,7 @@ export default function CheckoutPage() {
                         Metodă de livrare
                       </p>
                       <div className="space-y-3">
-                        <label className="flex items-center p-3 border border-gray-300 dark:border-gray-700 rounded-md">
+                        <label className="flex items-center p-4 border border-gray-300 dark:border-gray-700 rounded-md cursor-pointer hover:border-[#ff6b6b] transition-colors">
                           <input
                             type="radio"
                             name="shippingMethod"
@@ -291,15 +414,21 @@ export default function CheckoutPage() {
                             onChange={handleChange}
                             className="mr-3"
                           />
-                          <div>
+                          <div className="flex-grow">
                             <p className="font-medium">Livrare standard</p>
                             <p className="text-foreground/70 text-sm">
                               2-4 zile lucrătoare
                             </p>
                           </div>
-                          <span className="ml-auto">15 lei</span>
+                          <span className="ml-auto">
+                            {subtotal > 200 ? (
+                              <span className="text-green-600">Gratuit</span>
+                            ) : (
+                              "15 lei"
+                            )}
+                          </span>
                         </label>
-                        <label className="flex items-center p-3 border border-gray-300 dark:border-gray-700 rounded-md">
+                        <label className="flex items-center p-4 border border-gray-300 dark:border-gray-700 rounded-md cursor-pointer hover:border-[#ff6b6b] transition-colors">
                           <input
                             type="radio"
                             name="shippingMethod"
@@ -308,13 +437,19 @@ export default function CheckoutPage() {
                             onChange={handleChange}
                             className="mr-3"
                           />
-                          <div>
+                          <div className="flex-grow">
                             <p className="font-medium">Livrare rapidă</p>
                             <p className="text-foreground/70 text-sm">
                               1-2 zile lucrătoare
                             </p>
                           </div>
-                          <span className="ml-auto">25 lei</span>
+                          <span className="ml-auto">
+                            {subtotal > 200 ? (
+                              <span className="text-green-600">Gratuit</span>
+                            ) : (
+                              "25 lei"
+                            )}
+                          </span>
                         </label>
                       </div>
                     </div>
@@ -354,97 +489,32 @@ export default function CheckoutPage() {
               {step === 2 && (
                 <div className="bg-gray-light dark:bg-gray-800 rounded-lg overflow-hidden">
                   <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <h2 className="text-xl font-semibold">
-                      Informații de plată
-                    </h2>
+                    <h2 className="text-xl font-semibold">Metodă de plată</h2>
                   </div>
-                  <form onSubmit={handleSubmit} className="p-6">
-                    <div className="mb-6">
-                      <label
-                        htmlFor="cardName"
-                        className="block text-sm font-medium mb-1"
-                      >
-                        Nume pe card <span className="text-[#ff6b6b]">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="cardName"
-                        name="cardName"
-                        value={formData.cardName}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
-                      />
-                    </div>
-
-                    <div className="mb-6">
-                      <label
-                        htmlFor="cardNumber"
-                        className="block text-sm font-medium mb-1"
-                      >
-                        Număr card <span className="text-[#ff6b6b]">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="cardNumber"
-                        name="cardNumber"
-                        value={formData.cardNumber}
-                        onChange={handleChange}
-                        required
-                        placeholder="0000 0000 0000 0000"
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                      <div>
-                        <label
-                          htmlFor="cardExpiry"
-                          className="block text-sm font-medium mb-1"
-                        >
-                          Data expirării{" "}
-                          <span className="text-[#ff6b6b]">*</span>
-                        </label>
+                  <div className="p-6">
+                    <div className="space-y-4 mb-8">
+                      <label className="flex items-center p-4 border border-gray-300 dark:border-gray-700 rounded-md cursor-pointer hover:border-[#ff6b6b] transition-colors">
                         <input
-                          type="text"
-                          id="cardExpiry"
-                          name="cardExpiry"
-                          value={formData.cardExpiry}
-                          onChange={handleChange}
-                          required
-                          placeholder="MM/YY"
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
+                          type="radio"
+                          name="paymentMethod"
+                          value="card"
+                          checked={paymentMethod === "card"}
+                          onChange={(e) =>
+                            setPaymentMethod(
+                              e.target.value as "card" | "ramburs"
+                            )
+                          }
+                          className="mr-3"
                         />
-                      </div>
-                      <div>
-                        <label
-                          htmlFor="cardCVC"
-                          className="block text-sm font-medium mb-1"
-                        >
-                          CVC <span className="text-[#ff6b6b]">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          id="cardCVC"
-                          name="cardCVC"
-                          value={formData.cardCVC}
-                          onChange={handleChange}
-                          required
-                          placeholder="000"
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex justify-between mt-8">
-                      <button
-                        type="button"
-                        onClick={() => setStep(1)}
-                        className="text-primary hover:underline flex items-center"
-                      >
+                        <div className="flex-grow">
+                          <p className="font-medium">Card bancar</p>
+                          <p className="text-sm text-foreground/70">
+                            Plătește în siguranță cu cardul tău
+                          </p>
+                        </div>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 mr-1"
+                          className="h-6 w-6 text-[#ff6b6b]"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -453,19 +523,100 @@ export default function CheckoutPage() {
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             strokeWidth={2}
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
                           />
                         </svg>
-                        Înapoi la livrare
-                      </button>
-                      <button
-                        type="submit"
-                        className="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-md transition-colors"
-                      >
-                        Finalizează comanda
-                      </button>
+                      </label>
+
+                      <label className="flex items-center p-4 border border-gray-300 dark:border-gray-700 rounded-md cursor-pointer hover:border-[#ff6b6b] transition-colors">
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          value="ramburs"
+                          checked={paymentMethod === "ramburs"}
+                          onChange={(e) =>
+                            setPaymentMethod(
+                              e.target.value as "card" | "ramburs"
+                            )
+                          }
+                          className="mr-3"
+                        />
+                        <div className="flex-grow">
+                          <p className="font-medium">
+                            Plată la livrare (Ramburs)
+                          </p>
+                          <p className="text-sm text-foreground/70">
+                            Cost adițional: 15 lei
+                          </p>
+                        </div>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6 text-[#ff6b6b]"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                          />
+                        </svg>
+                      </label>
                     </div>
-                  </form>
+
+                    {paymentMethod === "card" && clientSecret && (
+                      <Elements
+                        stripe={stripePromise}
+                        options={{
+                          clientSecret,
+                          appearance: {
+                            theme: "stripe",
+                            variables: {
+                              colorPrimary: "#ff6b6b",
+                            },
+                          },
+                        }}
+                      >
+                        <CheckoutForm onSuccess={() => setStep(3)} />
+                      </Elements>
+                    )}
+
+                    {paymentMethod === "ramburs" && (
+                      <form onSubmit={handleSubmit} className="mt-6">
+                        <div className="flex justify-between">
+                          <button
+                            type="button"
+                            onClick={() => setStep(1)}
+                            className="text-primary hover:underline flex items-center cursor-pointer"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-1"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                              />
+                            </svg>
+                            Înapoi la livrare
+                          </button>
+                          <button
+                            type="submit"
+                            className="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-md transition-colors cursor-pointer"
+                          >
+                            Finalizează comanda
+                          </button>
+                        </div>
+                      </form>
+                    )}
+                  </div>
                 </div>
               )}
 
@@ -503,10 +654,7 @@ export default function CheckoutPage() {
 
                     <div className="bg-white dark:bg-gray-900 rounded-lg p-4 mb-6 max-w-md mx-auto">
                       <p className="font-semibold">Număr comandă:</p>
-                      <p className="text-foreground/70 mb-2">
-                        #LJH-{Math.floor(Math.random() * 10000)}-
-                        {new Date().getFullYear()}
-                      </p>
+                      <p className="text-foreground/70 mb-2">{orderNumber}</p>
                       <p className="font-semibold">Total:</p>
                       <p className="text-foreground/70">
                         {total.toFixed(2)} lei
@@ -564,11 +712,22 @@ export default function CheckoutPage() {
                         )}
                       </span>
                       <span>
-                        {shipping > 0
-                          ? `${shipping.toFixed(2)} lei`
-                          : "Gratuit"}
+                        {shipping === 0
+                          ? "Gratuit"
+                          : `${shipping.toFixed(2)} lei ${
+                              formData.shippingMethod === "express"
+                                ? "(Express)"
+                                : ""
+                            }`}
                       </span>
                     </div>
+
+                    {paymentMethod === "ramburs" && (
+                      <div className="flex justify-between">
+                        <span className="text-foreground/70">Cost ramburs</span>
+                        <span>{rambursExtra.toFixed(2)} lei</span>
+                      </div>
+                    )}
 
                     <div className="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between font-semibold">
                       <span>Total</span>
