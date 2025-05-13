@@ -263,7 +263,7 @@ export default function CartPage() {
 
                     <Link
                       href="/checkout"
-                      className="block w-full mt-8 bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-md transition-colors text-center"
+                      className="block w-full mt-8 bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-md transition-colors text-center cursor-pointer"
                     >
                       Finalizează comanda
                     </Link>
