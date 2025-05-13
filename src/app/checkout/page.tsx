@@ -4,9 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { useCart } from "@/lib/context/CartContext";
 
 export default function CheckoutPage() {
   const [step, setStep] = useState(1);
+  const { items, subtotal } = useCart();
   const [formData, setFormData] = useState({
     // Shipping information
     firstName: "",
@@ -45,8 +47,8 @@ export default function CheckoutPage() {
     }
   };
 
-  const subtotal = 75; // This would be calculated based on cart items
-  const shipping = 15;
+  // Shipping cost calculation
+  const shipping = subtotal > 200 ? 0 : 15; // Free shipping over 200 Lei
   const total = subtotal + shipping;
 
   return (
@@ -135,7 +137,7 @@ export default function CheckoutPage() {
                           htmlFor="firstName"
                           className="block text-sm font-medium mb-1"
                         >
-                          Prenume
+                          Prenume <span className="text-[#ff6b6b]">*</span>
                         </label>
                         <input
                           type="text"
@@ -144,7 +146,7 @@ export default function CheckoutPage() {
                           value={formData.firstName}
                           onChange={handleChange}
                           required
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800"
+                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
                         />
                       </div>
                       <div>
@@ -152,7 +154,7 @@ export default function CheckoutPage() {
                           htmlFor="lastName"
                           className="block text-sm font-medium mb-1"
                         >
-                          Nume
+                          Nume <span className="text-[#ff6b6b]">*</span>
                         </label>
                         <input
                           type="text"
@@ -161,7 +163,7 @@ export default function CheckoutPage() {
                           value={formData.lastName}
                           onChange={handleChange}
                           required
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800"
+                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
                         />
                       </div>
                     </div>
@@ -172,7 +174,7 @@ export default function CheckoutPage() {
                           htmlFor="email"
                           className="block text-sm font-medium mb-1"
                         >
-                          Email
+                          Email <span className="text-[#ff6b6b]">*</span>
                         </label>
                         <input
                           type="email"
@@ -181,7 +183,7 @@ export default function CheckoutPage() {
                           value={formData.email}
                           onChange={handleChange}
                           required
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800"
+                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
                         />
                       </div>
                       <div>
@@ -189,7 +191,7 @@ export default function CheckoutPage() {
                           htmlFor="phone"
                           className="block text-sm font-medium mb-1"
                         >
-                          Telefon
+                          Telefon <span className="text-[#ff6b6b]">*</span>
                         </label>
                         <input
                           type="tel"
@@ -198,7 +200,7 @@ export default function CheckoutPage() {
                           value={formData.phone}
                           onChange={handleChange}
                           required
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800"
+                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
                         />
                       </div>
                     </div>
@@ -208,7 +210,7 @@ export default function CheckoutPage() {
                         htmlFor="address"
                         className="block text-sm font-medium mb-1"
                       >
-                        Adresă
+                        Adresă <span className="text-[#ff6b6b]">*</span>
                       </label>
                       <input
                         type="text"
@@ -217,7 +219,7 @@ export default function CheckoutPage() {
                         value={formData.address}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
                       />
                     </div>
 
@@ -227,7 +229,7 @@ export default function CheckoutPage() {
                           htmlFor="city"
                           className="block text-sm font-medium mb-1"
                         >
-                          Oraș
+                          Oraș <span className="text-[#ff6b6b]">*</span>
                         </label>
                         <input
                           type="text"
@@ -236,7 +238,7 @@ export default function CheckoutPage() {
                           value={formData.city}
                           onChange={handleChange}
                           required
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800"
+                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
                         />
                       </div>
                       <div>
@@ -244,7 +246,7 @@ export default function CheckoutPage() {
                           htmlFor="county"
                           className="block text-sm font-medium mb-1"
                         >
-                          Județ
+                          Județ <span className="text-[#ff6b6b]">*</span>
                         </label>
                         <input
                           type="text"
@@ -253,7 +255,7 @@ export default function CheckoutPage() {
                           value={formData.county}
                           onChange={handleChange}
                           required
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800"
+                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
                         />
                       </div>
                       <div>
@@ -261,7 +263,7 @@ export default function CheckoutPage() {
                           htmlFor="postalCode"
                           className="block text-sm font-medium mb-1"
                         >
-                          Cod Poștal
+                          Cod Poștal <span className="text-[#ff6b6b]">*</span>
                         </label>
                         <input
                           type="text"
@@ -270,7 +272,7 @@ export default function CheckoutPage() {
                           value={formData.postalCode}
                           onChange={handleChange}
                           required
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800"
+                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
                         />
                       </div>
                     </div>
@@ -340,7 +342,7 @@ export default function CheckoutPage() {
                       </Link>
                       <button
                         type="submit"
-                        className="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-md transition-colors"
+                        className="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-md transition-colors cursor-pointer"
                       >
                         Continuă la plată
                       </button>
@@ -362,7 +364,7 @@ export default function CheckoutPage() {
                         htmlFor="cardName"
                         className="block text-sm font-medium mb-1"
                       >
-                        Nume pe card
+                        Nume pe card <span className="text-[#ff6b6b]">*</span>
                       </label>
                       <input
                         type="text"
@@ -371,7 +373,7 @@ export default function CheckoutPage() {
                         value={formData.cardName}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
                       />
                     </div>
 
@@ -380,7 +382,7 @@ export default function CheckoutPage() {
                         htmlFor="cardNumber"
                         className="block text-sm font-medium mb-1"
                       >
-                        Număr card
+                        Număr card <span className="text-[#ff6b6b]">*</span>
                       </label>
                       <input
                         type="text"
@@ -390,7 +392,7 @@ export default function CheckoutPage() {
                         onChange={handleChange}
                         required
                         placeholder="0000 0000 0000 0000"
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
                       />
                     </div>
 
@@ -400,7 +402,8 @@ export default function CheckoutPage() {
                           htmlFor="cardExpiry"
                           className="block text-sm font-medium mb-1"
                         >
-                          Data expirării
+                          Data expirării{" "}
+                          <span className="text-[#ff6b6b]">*</span>
                         </label>
                         <input
                           type="text"
@@ -410,7 +413,7 @@ export default function CheckoutPage() {
                           onChange={handleChange}
                           required
                           placeholder="MM/YY"
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800"
+                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
                         />
                       </div>
                       <div>
@@ -418,7 +421,7 @@ export default function CheckoutPage() {
                           htmlFor="cardCVC"
                           className="block text-sm font-medium mb-1"
                         >
-                          CVC
+                          CVC <span className="text-[#ff6b6b]">*</span>
                         </label>
                         <input
                           type="text"
@@ -428,7 +431,7 @@ export default function CheckoutPage() {
                           onChange={handleChange}
                           required
                           placeholder="000"
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800"
+                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
                         />
                       </div>
                     </div>
@@ -505,7 +508,9 @@ export default function CheckoutPage() {
                         {new Date().getFullYear()}
                       </p>
                       <p className="font-semibold">Total:</p>
-                      <p className="text-foreground/70">{total} lei</p>
+                      <p className="text-foreground/70">
+                        {total.toFixed(2)} lei
+                      </p>
                     </div>
 
                     <Link
@@ -528,30 +533,48 @@ export default function CheckoutPage() {
 
                 <div className="p-6">
                   <div className="space-y-4 mb-6">
-                    <div className="flex justify-between">
-                      <span>Autocolant &apos;Bucurie&apos; (2)</span>
-                      <span>30 lei</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Banner &apos;Dragoste&apos; (1)</span>
-                      <span>45 lei</span>
-                    </div>
+                    {items.map((item) => (
+                      <div key={item.id} className="flex justify-between">
+                        <span>
+                          {item.product.name} ({item.quantity})
+                        </span>
+                        <span>
+                          {(Number(item.product.price) * item.quantity).toFixed(
+                            2
+                          )}{" "}
+                          lei
+                        </span>
+                      </div>
+                    ))}
                   </div>
 
                   <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-4">
                     <div className="flex justify-between">
                       <span className="text-foreground/70">Subtotal</span>
-                      <span>{subtotal} lei</span>
+                      <span>{subtotal.toFixed(2)} lei</span>
                     </div>
 
                     <div className="flex justify-between">
-                      <span className="text-foreground/70">Livrare</span>
-                      <span>{shipping} lei</span>
+                      <span className="text-foreground/70">
+                        Transport{" "}
+                        {shipping === 0 && (
+                          <span className="text-green-600 dark:text-green-500 text-xs ml-1">
+                            (Gratuit)
+                          </span>
+                        )}
+                      </span>
+                      <span>
+                        {shipping > 0
+                          ? `${shipping.toFixed(2)} lei`
+                          : "Gratuit"}
+                      </span>
                     </div>
 
                     <div className="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between font-semibold">
                       <span>Total</span>
-                      <span className="text-primary">{total} lei</span>
+                      <span className="text-primary">
+                        {total.toFixed(2)} lei
+                      </span>
                     </div>
                   </div>
                 </div>

@@ -29,9 +29,4 @@ export const userNavItems: NavItem[] = [
     href: "/cart",
     description: "Vezi coșul tău de cumpărături",
   },
-  {
-    title: "Cont",
-    href: "/account",
-    description: "Administrează contul tău",
-  },
 ];

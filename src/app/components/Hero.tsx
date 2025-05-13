@@ -58,22 +58,18 @@ export default function Hero() {
       <div className="container-custom py-16 md:py-24 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="flex flex-col space-y-6">
-            <h1 className="font-bold text-foreground">
-              <span className="text-5xl md:text-6xl lg:text-7xl text-[#ff6b6b]">
-                Love
-              </span>
-              <span className="text-5xl md:text-6xl lg:text-7xl">,</span>{" "}
-              <span className="text-5xl md:text-6xl lg:text-7xl text-[#4ecdc4]">
-                Joy
-              </span>{" "}
-              <span className="text-5xl md:text-6xl lg:text-7xl">&</span>
-              <br />
-              <span className="text-5xl md:text-6xl lg:text-7xl text-[#ffdd67]">
-                Happiness
-              </span>
-            </h1>
+            <div className="w-full max-w-[600px]">
+              <Image
+                src="/logo dreptunghi.jpg"
+                alt="Love Joy Happiness Logo"
+                width={600}
+                height={200}
+                priority
+                className="w-full h-auto"
+              />
+            </div>
 
-            <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mt-4">
+            <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mt-4 ml-8">
               Autocolante frumoase, bannere și produse care răspândesc
               <br />
               dragoste și fericire
@@ -81,7 +77,7 @@ export default function Hero() {
 
             <div className="flex flex-row pt-6">
               <Link href="/products">
-                <button className="bg-[#ff6b6b] hover:bg-[#ff5252] text-white font-medium rounded-md px-8 py-3 text-lg transition-colors cursor-pointer">
+                <button className="bg-[#ff6b6b] hover:bg-[#ff5252] text-white font-medium rounded-md px-8 py-3 text-lg transition-colors cursor-pointer ml-8">
                   Explorează Colecția
                 </button>
               </Link>

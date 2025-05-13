@@ -261,9 +261,12 @@ export default function CartPage() {
                       </div>
                     </div>
 
-                    <button className="w-full mt-8 bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-md transition-colors">
+                    <Link
+                      href="/checkout"
+                      className="block w-full mt-8 bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-md transition-colors text-center"
+                    >
                       Finalizează comanda
-                    </button>
+                    </Link>
 
                     <div className="mt-6 text-sm text-foreground/60">
                       <p>
