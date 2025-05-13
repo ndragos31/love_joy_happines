@@ -31,7 +31,11 @@ export interface Product {
   total_sales: number;
   virtual: boolean;
   downloadable: boolean;
-  downloads: any[];
+  downloads: Array<{
+    id: string;
+    name: string;
+    file: string;
+  }>;
   download_limit: number;
   download_expiry: number;
   tax_status: string;
@@ -72,10 +76,25 @@ export interface Product {
     slug: string;
   }[];
   images: ProductImage[];
-  attributes: any[];
-  default_attributes: any[];
+  attributes: Array<{
+    id: number;
+    name: string;
+    position: number;
+    visible: boolean;
+    variation: boolean;
+    options: string[];
+  }>;
+  default_attributes: Array<{
+    id: number;
+    name: string;
+    option: string;
+  }>;
   variations: number[];
   grouped_products: number[];
   menu_order: number;
-  meta_data: any[];
+  meta_data: Array<{
+    id: number;
+    key: string;
+    value: string | number | boolean | object;
+  }>;
 }

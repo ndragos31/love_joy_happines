@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { v4 as uuidv4 } from "uuid";
 import Navbar from "../components/Navbar";
@@ -186,7 +186,7 @@ export default function CheckoutPage() {
     return () => clearInterval(interval);
   }, []);
 
-  const sendOrderEmails = async () => {
+  const sendOrderEmails = useCallback(async () => {
     try {
       const orderDetails = {
         orderNumber,
@@ -224,7 +224,22 @@ export default function CheckoutPage() {
     } catch (error) {
       console.error("Failed to send order confirmation emails:", error);
     }
-  };
+  }, [
+    orderNumber,
+    formData.firstName,
+    formData.lastName,
+    formData.email,
+    formData.phone,
+    formData.address,
+    formData.city,
+    formData.county,
+    formData.postalCode,
+    items,
+    subtotal,
+    shipping,
+    total,
+    paymentMethod,
+  ]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -256,7 +271,7 @@ export default function CheckoutPage() {
         clearCart();
       });
     }
-  }, [step, orderNumber]);
+  }, [step, orderNumber, clearCart, sendOrderEmails]);
 
   return (
     <div className="min-h-screen flex flex-col">

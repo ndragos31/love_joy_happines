@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Product } from "@/lib/types/product";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
