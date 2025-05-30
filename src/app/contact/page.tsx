@@ -238,12 +238,12 @@ export default function ContactPage() {
                   />
                   <div className="w-full bg-primary/5 rounded-lg p-6">
                     <p className="text-center text-foreground/80 italic mb-2">
-                      "Creăm momente de fericire și bucurie pentru fiecare
-                      client"
+                      &ldquo;Creăm momente de fericire și bucurie pentru fiecare
+                      client&rdquo;
                     </p>
                     <p className="text-center text-foreground/80 italic">
-                      "Fiecare comandă este realizată cu dragoste și atenție la
-                      detalii"
+                      &ldquo;Fiecare comandă este realizată cu dragoste și
+                      atenție la detalii&rdquo;
                     </p>
                   </div>
                 </div>
