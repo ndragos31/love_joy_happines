@@ -105,8 +105,6 @@ export default function CheckoutPage() {
     cardNumber: "",
     cardExpiry: "",
     cardCVC: "",
-    // Shipping method
-    shippingMethod: "standard",
   });
   const [orderNumber, setOrderNumber] = useState<string>("");
   const [orderItems, setOrderItems] = useState<typeof items>([]);
@@ -114,13 +112,13 @@ export default function CheckoutPage() {
   const [finalShipping, setFinalShipping] = useState<number>(0);
   const [finalTotal, setFinalTotal] = useState<number>(0);
 
-  // Shipping cost calculation based on subtotal and shipping method
-  const getShippingCost = (method: string) => {
+  // Shipping cost calculation - fixed standard shipping
+  const getShippingCost = () => {
     if (subtotal > 200) return 0; // Free shipping over 200 Lei
-    return method === "standard" ? 15 : 25; // 15 lei for standard, 25 for express
+    return 15; // Standard shipping cost
   };
 
-  const shipping = getShippingCost(formData.shippingMethod);
+  const shipping = getShippingCost();
   const total = subtotal + shipping;
 
   useEffect(() => {
@@ -506,60 +504,6 @@ export default function CheckoutPage() {
                       </div>
                     </div>
 
-                    <div className="mb-6">
-                      <p className="block text-sm font-medium mb-2">
-                        Metodă de livrare
-                      </p>
-                      <div className="space-y-3">
-                        <label className="flex items-center p-4 border border-gray-300 dark:border-gray-700 rounded-md cursor-pointer hover:border-[#ff6b6b] transition-colors">
-                          <input
-                            type="radio"
-                            name="shippingMethod"
-                            value="standard"
-                            checked={formData.shippingMethod === "standard"}
-                            onChange={handleChange}
-                            className="mr-3"
-                          />
-                          <div className="flex-grow">
-                            <p className="font-medium">Livrare standard</p>
-                            <p className="text-foreground/70 text-sm">
-                              2-4 zile lucrătoare
-                            </p>
-                          </div>
-                          <span className="ml-auto">
-                            {subtotal > 200 ? (
-                              <span className="text-green-600">Gratuit</span>
-                            ) : (
-                              "15 lei"
-                            )}
-                          </span>
-                        </label>
-                        <label className="flex items-center p-4 border border-gray-300 dark:border-gray-700 rounded-md cursor-pointer hover:border-[#ff6b6b] transition-colors">
-                          <input
-                            type="radio"
-                            name="shippingMethod"
-                            value="express"
-                            checked={formData.shippingMethod === "express"}
-                            onChange={handleChange}
-                            className="mr-3"
-                          />
-                          <div className="flex-grow">
-                            <p className="font-medium">Livrare rapidă</p>
-                            <p className="text-foreground/70 text-sm">
-                              1-2 zile lucrătoare
-                            </p>
-                          </div>
-                          <span className="ml-auto">
-                            {subtotal > 200 ? (
-                              <span className="text-green-600">Gratuit</span>
-                            ) : (
-                              "25 lei"
-                            )}
-                          </span>
-                        </label>
-                      </div>
-                    </div>
-
                     <div className="flex justify-between mt-8">
                       <Link
                         href="/cart"
@@ -879,11 +823,7 @@ export default function CheckoutPage() {
                       <span>
                         {(step === 3 ? finalShipping : shipping) === 0
                           ? "Gratuit"
-                          : `${(step === 3 ? finalShipping : shipping).toFixed(2)} lei ${
-                              formData.shippingMethod === "express"
-                                ? "(Express)"
-                                : ""
-                            }`}
+                          : `${(step === 3 ? finalShipping : shipping).toFixed(2)} lei`}
                       </span>
                     </div>
 

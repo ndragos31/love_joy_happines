@@ -43,7 +43,7 @@ export default function AboutPage() {
               <div className="relative h-80 md:h-auto rounded-lg overflow-hidden shadow-xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent z-10"></div>
                 <Image
-                  src="/img/about/print-shop.jpg"
+                  src="/printing.jpg"
                   alt="Atelier modern de printare Love Joy Happiness"
                   fill
                   className="object-cover transform hover:scale-105 transition-transform duration-500"
@@ -51,7 +51,7 @@ export default function AboutPage() {
                 />
                 <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
                   <p className="text-white text-sm">
-                    Atelierul nostru modern de printare și personalizare
+                    Atelierul modern de printare și personalizare
                   </p>
                 </div>
               </div>

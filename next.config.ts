@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     WOOCOMMERCE_CONSUMER_SECRET: process.env.WOOCOMMERCE_CONSUMER_SECRET,
   },
   images: {
-    domains: ["lovejoyhappiness.store"],
+    domains: ["backend.lovejoyhappiness.store"],
   },
 };
 
