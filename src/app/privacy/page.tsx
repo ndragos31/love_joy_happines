@@ -131,7 +131,8 @@ export default function PrivacyPage() {
                   </li>
                   <li>Dreptul de rectificare a datelor incorecte</li>
                   <li>
-                    Dreptul de ștergere a datelor ("dreptul de a fi uitat")
+                    Dreptul de ștergere a datelor (&ldquo;dreptul de a fi
+                    uitat&rdquo;)
                   </li>
                   <li>Dreptul de restricționare a prelucrării</li>
                   <li>Dreptul la portabilitatea datelor</li>
