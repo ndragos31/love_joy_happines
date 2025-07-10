@@ -29,35 +29,34 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitSuccess(false);
+    setSubmitError(false);
 
     try {
-      // Here you would implement your email sending logic
-      // For example using a backend API endpoint or email service
-      // Example with fetch:
-      /*
-      const response = await fetch('/api/contact', {
-        method: 'POST',
+      const response = await fetch("/api/send-contact-email", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...formData,
-          to: "lovejoyhappinesscontact@yahoo.com"
-        }),
+        body: JSON.stringify(formData),
       });
 
-      if (!response.ok) throw new Error('Failed to send email');
-      */
+      if (!response.ok) {
+        throw new Error("Failed to send email");
+      }
 
-      // For now, simulating the email sending
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const result = await response.json();
 
-      setSubmitSuccess(true);
-      setFormData({
-        name: "",
-        email: "",
-        message: "",
-      });
+      if (result.success) {
+        setSubmitSuccess(true);
+        setFormData({
+          name: "",
+          email: "",
+          message: "",
+        });
+      } else {
+        throw new Error(result.error || "Failed to send email");
+      }
     } catch (error) {
       console.error("Error sending email:", error);
       setSubmitError(true);
@@ -69,7 +68,7 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow pt-24 pb-16">
+      <main className="flex-grow pt-8 md:pt-24 pb-16">
         <section className="py-8">
           <div className="container-custom">
             <h1 className="text-3xl md:text-4xl font-bold mb-8">
@@ -219,9 +218,9 @@ export default function ContactPage() {
                         />
                       </svg>
                     </div>
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <h3 className="font-semibold mb-1">Email</h3>
-                      <p className="text-foreground/80">
+                      <p className="text-foreground/80 break-all sm:break-normal text-sm sm:text-base">
                         lovejoyhappinesscontact@yahoo.com
                       </p>
                     </div>
