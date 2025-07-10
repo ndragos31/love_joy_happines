@@ -16,7 +16,7 @@ export default function CartPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow pt-24 pb-16">
+      <main className="flex-grow pt-8 md:pt-24 pb-16">
         <div className="container-custom py-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-8">Coșul tău</h1>
 

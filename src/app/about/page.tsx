@@ -8,7 +8,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow pt-24 pb-16">
+      <main className="flex-grow pt-8 md:pt-24 pb-16">
         <section className="py-8">
           <div className="container-custom">
             <h1 className="text-3xl md:text-4xl font-bold mb-8">Despre Noi</h1>
