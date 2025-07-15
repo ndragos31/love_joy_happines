@@ -76,7 +76,7 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-row pt-6">
-              <Link href="/products">
+              <Link href="/categories">
                 <button className="bg-[#ff6b6b] hover:bg-[#ff5252] text-white font-medium rounded-md px-8 py-3 text-lg transition-colors cursor-pointer ml-8">
                   Explorează Colecția
                 </button>

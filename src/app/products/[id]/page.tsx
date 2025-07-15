@@ -20,7 +20,6 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [addingToCart, setAddingToCart] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
-  const [activeTab, setActiveTab] = useState("description");
 
   useEffect(() => {
     async function fetchProduct() {
@@ -344,145 +343,71 @@ export default function ProductPage() {
             </div>
           </div>
 
-          {/* Additional product details */}
+          {/* Shipping information */}
           <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
             <div className="border-b border-gray-200 dark:border-gray-700">
               <div className="flex">
-                <button
-                  onClick={() => setActiveTab("description")}
-                  className={`px-6 py-3 text-sm font-medium cursor-pointer ${
-                    activeTab === "description"
-                      ? "text-primary border-b-2 border-primary"
-                      : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-                  }`}
-                >
-                  Detalii
-                </button>
-                <button
-                  onClick={() => setActiveTab("specifications")}
-                  className={`px-6 py-3 text-sm font-medium cursor-pointer ${
-                    activeTab === "specifications"
-                      ? "text-primary border-b-2 border-primary"
-                      : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-                  }`}
-                >
-                  Specificații
-                </button>
-                <button
-                  onClick={() => setActiveTab("shipping")}
-                  className={`px-6 py-3 text-sm font-medium cursor-pointer ${
-                    activeTab === "shipping"
-                      ? "text-primary border-b-2 border-primary"
-                      : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-                  }`}
-                >
+                <button className="px-6 py-3 text-sm font-medium cursor-pointer text-primary border-b-2 border-primary">
                   Livrare
                 </button>
               </div>
             </div>
             <div className="p-6">
-              {activeTab === "description" && (
-                <div className="prose prose-lg prose-primary max-w-none dark:prose-invert">
-                  <p>
-                    Acest produs se pretează pentru mai multe utilizări și este
-                    ideal pentru a fi folosit în diverse situații.
-                  </p>
-                </div>
-              )}
-              {activeTab === "specifications" && (
-                <div>
-                  <h3 className="text-lg font-medium mb-4">
-                    Specificații produs
-                  </h3>
-                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                      <tr>
-                        <td className="py-2 text-sm font-medium text-gray-500 dark:text-gray-400 w-1/3">
-                          SKU
-                        </td>
-                        <td className="py-2 text-sm text-gray-900 dark:text-gray-100">
-                          {product.id || "N/A"}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="py-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-                          Greutate
-                        </td>
-                        <td className="py-2 text-sm text-gray-900 dark:text-gray-100">
-                          {product.weight ? `${product.weight} kg` : "N/A"}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="py-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-                          Dimensiuni
-                        </td>
-                        <td className="py-2 text-sm text-gray-900 dark:text-gray-100">
-                          {product.dimensions
-                            ? `${product.dimensions.length} × ${product.dimensions.width} × ${product.dimensions.height} cm`
-                            : "N/A"}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              )}
-              {activeTab === "shipping" && (
-                <div>
-                  <h3 className="text-lg font-medium mb-4">
-                    Informații de livrare
-                  </h3>
-                  <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-                    <li className="flex items-start">
-                      <svg
-                        className="h-5 w-5 text-green-500 mr-2 mt-0.5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      Livrare în 24-48 de ore lucrătoare
-                    </li>
-                    <li className="flex items-start">
-                      <svg
-                        className="h-5 w-5 text-green-500 mr-2 mt-0.5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      Transport gratuit pentru comenzi peste 200 Lei
-                    </li>
-                    <li className="flex items-start">
-                      <svg
-                        className="h-5 w-5 text-green-500 mr-2 mt-0.5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      Plata ramburs sau online
-                    </li>
-                  </ul>
-                </div>
-              )}
+              <div>
+                <h3 className="text-lg font-medium mb-4">
+                  Informații de livrare
+                </h3>
+                <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                  <li className="flex items-start">
+                    <svg
+                      className="h-5 w-5 text-green-500 mr-2 mt-0.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    Livrare în 24-48 de ore lucrătoare
+                  </li>
+                  <li className="flex items-start">
+                    <svg
+                      className="h-5 w-5 text-green-500 mr-2 mt-0.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    Transport gratuit pentru comenzi peste 200 Lei
+                  </li>
+                  <li className="flex items-start">
+                    <svg
+                      className="h-5 w-5 text-green-500 mr-2 mt-0.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    Plata ramburs sau online
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

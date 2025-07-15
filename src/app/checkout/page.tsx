@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { v4 as uuidv4 } from "uuid";
 import Navbar from "../components/Navbar";
@@ -261,15 +261,33 @@ export default function CheckoutPage() {
   };
 
   // Separate useEffect for handling order completion actions
+  // Use a ref to track if emails have been sent to prevent duplicates
+  const emailsSentRef = useRef(false);
+
   useEffect(() => {
-    if (step === 3 && orderNumber) {
+    if (step === 3 && orderNumber && !emailsSentRef.current) {
+      console.log(
+        `🔵 Order completed, sending emails for order #${orderNumber}`
+      );
+      emailsSentRef.current = true;
+
       // Send confirmation emails
-      sendOrderEmails().then(() => {
-        // Clear the cart only after emails are sent
-        clearCart();
-      });
+      sendOrderEmails()
+        .then(() => {
+          console.log(`✅ Emails sent successfully for order #${orderNumber}`);
+          // Clear the cart only after emails are sent
+          clearCart();
+        })
+        .catch((error) => {
+          console.error(
+            `❌ Failed to send emails for order #${orderNumber}:`,
+            error
+          );
+          // Reset the flag so emails can be retried if needed
+          emailsSentRef.current = false;
+        });
     }
-  }, [step, orderNumber, clearCart, sendOrderEmails]);
+  }, [step, orderNumber, clearCart]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -596,7 +614,7 @@ export default function CheckoutPage() {
                             Plată la livrare (Ramburs)
                           </p>
                           <p className="text-sm text-foreground/70">
-                            Cost adițional: 15 lei
+                            Plătește la primirea coletului
                           </p>
                         </div>
                         <svg
