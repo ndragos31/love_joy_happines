@@ -19,7 +19,6 @@ export default function ProductsPage() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [requestedPages, setRequestedPages] = useState<Set<number>>(
@@ -66,7 +65,6 @@ export default function ProductsPage() {
           });
         }
 
-        setTotalPages(data.totalPages);
         setHasMore(page < data.totalPages);
 
         if (isInitial) {
@@ -144,7 +142,7 @@ export default function ProductsPage() {
       initialLoadRef.current = true;
       fetchProducts(1, true);
     }
-  }, []); // Empty dependency array since we only want this to run once
+  }, [fetchProducts]); // Include fetchProducts in dependency array
 
   const retryFetch = () => {
     setError("");

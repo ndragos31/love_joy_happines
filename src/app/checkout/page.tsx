@@ -287,7 +287,7 @@ export default function CheckoutPage() {
           emailsSentRef.current = false;
         });
     }
-  }, [step, orderNumber, clearCart]);
+  }, [step, orderNumber, clearCart, sendOrderEmails]);
 
   return (
     <div className="min-h-screen flex flex-col">
