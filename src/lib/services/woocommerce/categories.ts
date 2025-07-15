@@ -13,7 +13,6 @@ export async function getProductCategories(options = {}) {
     );
     return response.data;
   } catch (error) {
-    console.error("Error fetching WooCommerce product categories:", error);
     throw error;
   }
 }
@@ -28,10 +27,6 @@ export async function getProductCategoryById(id: number) {
     const response = await wooCommerceClient.get(`products/categories/${id}`);
     return response.data;
   } catch (error) {
-    console.error(
-      `Error fetching WooCommerce product category with ID ${id}:`,
-      error
-    );
     throw error;
   }
 }

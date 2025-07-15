@@ -12,24 +12,18 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(req: Request) {
   try {
-    console.log("🔵 Starting payment intent creation...");
-
     // Validate request body
     const body = await req.json();
     const { amount } = body;
 
     if (!amount || typeof amount !== "number" || amount <= 0) {
-      console.error("❌ Invalid amount provided:", amount);
       return NextResponse.json(
         { error: "Invalid amount. Amount must be a positive number." },
         { status: 400 }
       );
     }
 
-    console.log("💰 Amount received:", amount);
-
     // Create a PaymentIntent with the order amount and currency
-    console.log("🔄 Creating payment intent with Stripe...");
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100), // Stripe expects amounts in cents
       currency: "ron",
@@ -39,28 +33,13 @@ export async function POST(req: Request) {
       },
     });
 
-    console.log("✅ Payment intent created successfully:", {
-      id: paymentIntent.id,
-      amount: paymentIntent.amount,
-      currency: paymentIntent.currency,
-    });
-
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,
       paymentIntentId: paymentIntent.id,
     });
   } catch (err) {
-    console.error("❌ Error creating payment intent:", err);
-
     // Handle specific Stripe errors
     if (err instanceof Stripe.errors.StripeError) {
-      console.error("Stripe error details:", {
-        type: err.type,
-        code: err.code,
-        message: err.message,
-        statusCode: err.statusCode,
-      });
-
       // Return specific error messages for common issues
       if (err.type === "StripeAuthenticationError") {
         return NextResponse.json(
@@ -81,11 +60,6 @@ export async function POST(req: Request) {
         );
       }
     }
-
-    console.error("Error details:", {
-      message: err instanceof Error ? err.message : "Unknown error",
-      stack: err instanceof Error ? err.stack : undefined,
-    });
 
     return NextResponse.json(
       { error: "Error creating payment intent. Please try again." },

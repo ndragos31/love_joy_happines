@@ -10,7 +10,6 @@ export async function getProducts(options = {}) {
     const response = await wooCommerceClient.get("products", options);
     return response.data;
   } catch (error) {
-    console.error("Error fetching WooCommerce products:", error);
     throw error;
   }
 }
@@ -29,10 +28,6 @@ export async function getProductsWithPagination(options = {}) {
       totalPages: parseInt(response.headers["x-wp-totalpages"] || "0"),
     };
   } catch (error) {
-    console.error(
-      "Error fetching WooCommerce products with pagination:",
-      error
-    );
     throw error;
   }
 }
@@ -47,7 +42,6 @@ export async function getProductById(id: number) {
     const response = await wooCommerceClient.get(`products/${id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error fetching WooCommerce product with ID ${id}:`, error);
     throw error;
   }
 }
@@ -63,7 +57,6 @@ export async function getFeaturedProducts() {
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching featured WooCommerce products:", error);
     throw error;
   }
 }
@@ -80,7 +73,6 @@ export async function getProductsByCategory(categoryId: number) {
     });
     return response.data;
   } catch (error) {
-    console.error(`Error fetching products for category ${categoryId}:`, error);
     throw error;
   }
 }
