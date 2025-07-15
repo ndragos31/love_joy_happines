@@ -123,7 +123,7 @@ export default function CheckoutPage() {
         .then((data) => {
           setClientSecret(data.clientSecret);
         })
-        .catch((err) => {
+        .catch(() => {
           // Handle error silently or show user-friendly message
         });
     }
@@ -202,7 +202,7 @@ export default function CheckoutPage() {
       }
 
       await response.json();
-    } catch (error) {
+    } catch {
       // Handle error silently or show user-friendly message
     }
   }, [
@@ -257,7 +257,7 @@ export default function CheckoutPage() {
           // Clear the cart only after emails are sent
           clearCart();
         })
-        .catch((error) => {
+        .catch(() => {
           // Reset the flag so emails can be retried if needed
           emailsSentRef.current = false;
         });

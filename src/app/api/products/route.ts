@@ -67,7 +67,7 @@ export async function GET(request: Request) {
     // Otherwise fetch all products with any provided query params
     const products = await getProducts(params);
     return NextResponse.json(products);
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Failed to fetch products" },
       { status: 500 }

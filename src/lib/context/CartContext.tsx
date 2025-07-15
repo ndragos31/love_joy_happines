@@ -45,7 +45,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     if (savedCart) {
       try {
         setItems(JSON.parse(savedCart));
-      } catch (error) {
+      } catch {
         // Handle parsing error silently
       }
     }

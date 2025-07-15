@@ -81,7 +81,7 @@ export default function Categories() {
         const data: Category[] = await response.json();
         setCategories(data);
         setLoading(false);
-      } catch (error) {
+      } catch {
         setLoading(false);
       }
     }
