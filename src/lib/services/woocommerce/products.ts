@@ -16,6 +16,28 @@ export async function getProducts(options = {}) {
 }
 
 /**
+ * Fetches products with pagination info from WooCommerce
+ * @param {Object} options - Query parameters for the API request
+ * @returns {Promise<Object>} - A promise that resolves to an object with products, total, and totalPages
+ */
+export async function getProductsWithPagination(options = {}) {
+  try {
+    const response = await wooCommerceClient.get("products", options);
+    return {
+      products: response.data,
+      total: parseInt(response.headers["x-wp-total"] || "0"),
+      totalPages: parseInt(response.headers["x-wp-totalpages"] || "0"),
+    };
+  } catch (error) {
+    console.error(
+      "Error fetching WooCommerce products with pagination:",
+      error
+    );
+    throw error;
+  }
+}
+
+/**
  * Fetches a specific product by ID
  * @param {number} id - Product ID
  * @returns {Promise<Object>} - A promise that resolves to the product object

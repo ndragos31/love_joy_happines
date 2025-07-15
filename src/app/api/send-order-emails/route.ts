@@ -3,6 +3,9 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Simple in-memory cache to prevent duplicate email sends
+const processedOrders = new Map<string, number>();
+
 interface OrderDetails {
   orderNumber: string;
   customerName: string;
@@ -23,11 +26,58 @@ interface OrderDetails {
   paymentMethod: string;
 }
 
+// Helper function to add delay
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// Helper function to check if order was recently processed
+const isOrderRecentlyProcessed = (orderNumber: string): boolean => {
+  const now = Date.now();
+  const lastProcessed = processedOrders.get(orderNumber);
+
+  if (lastProcessed && now - lastProcessed < 300000) {
+    // 5 minutes
+    return true;
+  }
+
+  return false;
+};
+
+// Helper function to mark order as processed
+const markOrderAsProcessed = (orderNumber: string): void => {
+  processedOrders.set(orderNumber, Date.now());
+
+  // Clean up old entries (older than 10 minutes)
+  const tenMinutesAgo = Date.now() - 600000;
+  for (const [order, timestamp] of processedOrders.entries()) {
+    if (timestamp < tenMinutesAgo) {
+      processedOrders.delete(order);
+    }
+  }
+};
+
 export async function POST(req: Request) {
   try {
     const order: OrderDetails = await req.json();
 
-    // Send customer confirmation email
+    console.log(`🔵 Processing order emails for order #${order.orderNumber}`);
+
+    // Check if this order was recently processed
+    if (isOrderRecentlyProcessed(order.orderNumber)) {
+      console.log(
+        `⚠️ Order #${order.orderNumber} was recently processed, skipping email send`
+      );
+      return NextResponse.json({
+        success: true,
+        message: "Order already processed recently",
+        skipped: true,
+      });
+    }
+
+    // Mark order as being processed
+    markOrderAsProcessed(order.orderNumber);
+
+    // Send customer confirmation email first
+    console.log(`📧 Sending customer confirmation email to ${order.email}`);
     const customerEmail = await resend.emails.send({
       from: "Love Joy Happiness <onboarding@resend.dev>",
       to: order.email,
@@ -82,7 +132,16 @@ export async function POST(req: Request) {
       `,
     });
 
+    console.log(
+      `✅ Customer email sent successfully. ID: ${customerEmail.data?.id}`
+    );
+
+    // Add 10-second delay before sending company email
+    console.log(`⏳ Waiting 10 seconds before sending company notification...`);
+    await delay(10000);
+
     // Send company notification email
+    console.log(`📧 Sending company notification email`);
     const companyEmail = await resend.emails.send({
       from: "Love Joy Happiness <onboarding@resend.dev>",
       to: "lovejoyhappinesscontact@yahoo.com",
@@ -134,15 +193,24 @@ export async function POST(req: Request) {
       `,
     });
 
+    console.log(
+      `✅ Company email sent successfully. ID: ${companyEmail.data?.id}`
+    );
+    console.log(
+      `🎉 All emails sent successfully for order #${order.orderNumber}`
+    );
+
     return NextResponse.json({
-      customerEmail,
-      companyEmail,
+      success: true,
+      customerEmail: customerEmail.data,
+      companyEmail: companyEmail.data,
       message: "Emails sent successfully",
     });
   } catch (error) {
-    console.error("Failed to send order emails:", error);
+    console.error("❌ Failed to send order emails:", error);
     return NextResponse.json(
       {
+        success: false,
         error: "Failed to send order emails",
         details: error instanceof Error ? error.message : "Unknown error",
       },
