@@ -59,13 +59,8 @@ export async function POST(req: Request) {
   try {
     const order: OrderDetails = await req.json();
 
-    console.log(`🔵 Processing order emails for order #${order.orderNumber}`);
-
     // Check if this order was recently processed
     if (isOrderRecentlyProcessed(order.orderNumber)) {
-      console.log(
-        `⚠️ Order #${order.orderNumber} was recently processed, skipping email send`
-      );
       return NextResponse.json({
         success: true,
         message: "Order already processed recently",
@@ -77,7 +72,6 @@ export async function POST(req: Request) {
     markOrderAsProcessed(order.orderNumber);
 
     // Send customer confirmation email first
-    console.log(`📧 Sending customer confirmation email to ${order.email}`);
     const customerEmail = await resend.emails.send({
       from: "Love Joy Happiness <onboarding@resend.dev>",
       to: order.email,
@@ -132,16 +126,10 @@ export async function POST(req: Request) {
       `,
     });
 
-    console.log(
-      `✅ Customer email sent successfully. ID: ${customerEmail.data?.id}`
-    );
-
     // Add 10-second delay before sending company email
-    console.log(`⏳ Waiting 10 seconds before sending company notification...`);
     await delay(10000);
 
     // Send company notification email
-    console.log(`📧 Sending company notification email`);
     const companyEmail = await resend.emails.send({
       from: "Love Joy Happiness <onboarding@resend.dev>",
       to: "lovejoyhappinesscontact@yahoo.com",
@@ -193,13 +181,6 @@ export async function POST(req: Request) {
       `,
     });
 
-    console.log(
-      `✅ Company email sent successfully. ID: ${companyEmail.data?.id}`
-    );
-    console.log(
-      `🎉 All emails sent successfully for order #${order.orderNumber}`
-    );
-
     return NextResponse.json({
       success: true,
       customerEmail: customerEmail.data,
@@ -207,7 +188,6 @@ export async function POST(req: Request) {
       message: "Emails sent successfully",
     });
   } catch (error) {
-    console.error("❌ Failed to send order emails:", error);
     return NextResponse.json(
       {
         success: false,

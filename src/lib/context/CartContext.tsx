@@ -45,8 +45,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     if (savedCart) {
       try {
         setItems(JSON.parse(savedCart));
-      } catch (error) {
-        console.error("Failed to parse cart from localStorage", error);
+      } catch {
+        // Handle parsing error silently
       }
     }
     setMounted(true);

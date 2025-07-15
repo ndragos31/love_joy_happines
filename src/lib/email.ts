@@ -79,13 +79,11 @@ export async function sendCustomerOrderConfirmation(order: OrderDetails) {
     });
 
     if (error) {
-      console.error("Error sending customer confirmation email:", error);
       throw error;
     }
 
     return data;
   } catch (error) {
-    console.error("Failed to send customer confirmation email:", error);
     throw error;
   }
 }
@@ -144,13 +142,11 @@ export async function sendCompanyOrderNotification(order: OrderDetails) {
     });
 
     if (error) {
-      console.error("Error sending company notification email:", error);
       throw error;
     }
 
     return data;
   } catch (error) {
-    console.error("Failed to send company notification email:", error);
     throw error;
   }
 }

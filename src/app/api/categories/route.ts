@@ -23,8 +23,7 @@ export async function GET(request: Request) {
 
     const categories = await getProductCategories(params);
     return NextResponse.json(categories);
-  } catch (error) {
-    console.error("Error in categories API route:", error);
+  } catch {
     return NextResponse.json(
       { error: "Failed to fetch product categories" },
       { status: 500 }

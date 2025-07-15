@@ -24,29 +24,22 @@ function CheckoutForm({ onSuccess }: { onSuccess: () => void }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("🔵 Starting payment submission...");
 
     if (!stripe || !elements) {
-      console.warn("⚠️ Stripe or Elements not loaded");
       return;
     }
 
     setProcessing(true);
     setError(null);
 
-    console.log("🔄 Submitting payment details...");
     const { error: submitError } = await elements.submit();
     if (submitError) {
-      console.error("❌ Error submitting payment details:", submitError);
       setError(
         submitError.message || "A apărut o eroare la procesarea plății."
       );
       setProcessing(false);
       return;
     }
-
-    console.log("✅ Payment details submitted successfully");
-    console.log("🔄 Confirming payment...");
 
     const { error: confirmError } = await stripe.confirmPayment({
       elements,
@@ -56,7 +49,6 @@ function CheckoutForm({ onSuccess }: { onSuccess: () => void }) {
     });
 
     if (confirmError) {
-      console.error("❌ Error confirming payment:", confirmError);
       setError(
         confirmError.message || "A apărut o eroare la procesarea plății."
       );
@@ -64,7 +56,6 @@ function CheckoutForm({ onSuccess }: { onSuccess: () => void }) {
       return;
     }
 
-    console.log("✅ Payment confirmed successfully");
     onSuccess();
   };
 
@@ -123,9 +114,6 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (step === 2 && paymentMethod === "card") {
-      console.log("🔵 Initializing payment intent...");
-      console.log("💰 Total amount:", total);
-
       fetch("/api/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -133,15 +121,10 @@ export default function CheckoutPage() {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log("✅ Received client secret from server");
           setClientSecret(data.clientSecret);
         })
-        .catch((err) => {
-          console.error("❌ Error loading Stripe:", err);
-          console.error("Error details:", {
-            message: err instanceof Error ? err.message : "Unknown error",
-            stack: err instanceof Error ? err.stack : undefined,
-          });
+        .catch(() => {
+          // Handle error silently or show user-friendly message
         });
     }
   }, [step, total, paymentMethod]);
@@ -219,8 +202,8 @@ export default function CheckoutPage() {
       }
 
       await response.json();
-    } catch (error) {
-      console.error("Failed to send order confirmation emails:", error);
+    } catch {
+      // Handle error silently or show user-friendly message
     }
   }, [
     orderNumber,
@@ -266,23 +249,15 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (step === 3 && orderNumber && !emailsSentRef.current) {
-      console.log(
-        `🔵 Order completed, sending emails for order #${orderNumber}`
-      );
       emailsSentRef.current = true;
 
       // Send confirmation emails
       sendOrderEmails()
         .then(() => {
-          console.log(`✅ Emails sent successfully for order #${orderNumber}`);
           // Clear the cart only after emails are sent
           clearCart();
         })
-        .catch((error) => {
-          console.error(
-            `❌ Failed to send emails for order #${orderNumber}:`,
-            error
-          );
+        .catch(() => {
           // Reset the flag so emails can be retried if needed
           emailsSentRef.current = false;
         });
@@ -421,10 +396,6 @@ export default function CheckoutPage() {
                           value={formData.email}
                           onChange={handleChange}
                           onBlur={(e) => {
-                            console.log(
-                              "Email field blur event:",
-                              e.target.value
-                            );
                             handleChange(e);
                           }}
                           required
@@ -647,7 +618,23 @@ export default function CheckoutPage() {
                           },
                         }}
                       >
-                        <CheckoutForm onSuccess={() => setStep(3)} />
+                        <CheckoutForm
+                          onSuccess={() => {
+                            // Generate order number for card payments
+                            const uniqueId = uuidv4();
+                            const orderPrefix = "LJH";
+                            const year = new Date().getFullYear();
+                            const newOrderNumber = `${orderPrefix}-${uniqueId.slice(0, 8)}-${year}`;
+                            setOrderNumber(newOrderNumber);
+                            // Store current cart items and totals
+                            setOrderItems([...items]);
+                            setFinalSubtotal(subtotal);
+                            setFinalShipping(shipping);
+                            setFinalTotal(total);
+                            // Then set step to 3
+                            setStep(3);
+                          }}
+                        />
                       </Elements>
                     )}
 

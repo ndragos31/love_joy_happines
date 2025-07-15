@@ -79,11 +79,9 @@ export default function Categories() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data: Category[] = await response.json();
-        console.log("Categories data:", data);
         setCategories(data);
         setLoading(false);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
+      } catch {
         setLoading(false);
       }
     }
