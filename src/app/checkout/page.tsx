@@ -647,7 +647,23 @@ export default function CheckoutPage() {
                           },
                         }}
                       >
-                        <CheckoutForm onSuccess={() => setStep(3)} />
+                        <CheckoutForm
+                          onSuccess={() => {
+                            // Generate order number for card payments
+                            const uniqueId = uuidv4();
+                            const orderPrefix = "LJH";
+                            const year = new Date().getFullYear();
+                            const newOrderNumber = `${orderPrefix}-${uniqueId.slice(0, 8)}-${year}`;
+                            setOrderNumber(newOrderNumber);
+                            // Store current cart items and totals
+                            setOrderItems([...items]);
+                            setFinalSubtotal(subtotal);
+                            setFinalShipping(shipping);
+                            setFinalTotal(total);
+                            // Then set step to 3
+                            setStep(3);
+                          }}
+                        />
                       </Elements>
                     )}
 
