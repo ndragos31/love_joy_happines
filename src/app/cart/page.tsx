@@ -10,7 +10,7 @@ export default function CartPage() {
   const { items, updateQuantity, removeItem, clearCart, subtotal } = useCart();
 
   // Shipping cost calculation
-  const shipping = subtotal > 200 ? 0 : 15; // Free shipping over 200 Lei
+  const shipping = subtotal > 200 ? 0 : 20; // Free shipping over 200 Lei
   const total = subtotal + shipping;
 
   return (

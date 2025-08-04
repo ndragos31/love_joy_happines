@@ -138,7 +138,7 @@ export default function CheckoutPage() {
   // Shipping cost calculation - fixed standard shipping
   const getShippingCost = () => {
     if (subtotal > 200) return 0; // Free shipping over 200 Lei
-    return 15; // Standard shipping cost
+    return 20; // Standard shipping cost
   };
 
   const shipping = getShippingCost();
