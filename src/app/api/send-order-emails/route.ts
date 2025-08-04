@@ -24,8 +24,7 @@ interface OrderDetails {
   paymentMethod: string;
 }
 
-// Helper function to add delay
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 
 // Helper function to check if order was recently processed
 const isOrderRecentlyProcessed = (orderNumber: string): boolean => {
@@ -71,9 +70,6 @@ export async function POST(req: Request) {
 
     // Send customer confirmation email first
     const customerEmail = await sendCustomerOrderConfirmation(order);
-
-    // Add 10-second delay before sending company email
-    await delay(10000);
 
     // Send company notification email
     const companyEmail = await sendCompanyOrderNotification(order);

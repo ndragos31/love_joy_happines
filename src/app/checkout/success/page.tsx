@@ -1,18 +1,90 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/lib/context/CartContext";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 
+interface OrderData {
+  orderNumber: string;
+  customerName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  county: string;
+  postalCode: string;
+  items: Array<{
+    name: string;
+    quantity: number;
+    price: number;
+  }>;
+  subtotal: number;
+  shipping: number;
+  total: number;
+  paymentMethod: string;
+}
+
 export default function SuccessPage() {
   const { clearCart } = useCart();
+  const [emailsSent, setEmailsSent] = useState(false);
+  const [cartCleared, setCartCleared] = useState(false);
 
+  // Send emails only once
   useEffect(() => {
-    // Clear the cart after successful payment
-    clearCart();
-  }, [clearCart]);
+    const sendOrderEmails = async () => {
+      try {
+        // Get order data from sessionStorage
+        const pendingOrderData = sessionStorage.getItem("pendingOrder");
+
+        if (pendingOrderData && !emailsSent) {
+          const orderData: OrderData = JSON.parse(pendingOrderData);
+
+          // Send order emails
+          const response = await fetch("/api/send-order-emails", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(orderData),
+          });
+
+          if (response.ok) {
+            await response.json(); // Consume response
+            setEmailsSent(true);
+
+            // Clear cart after successful email sending
+            if (!cartCleared) {
+              clearCart();
+              setCartCleared(true);
+            }
+
+            // Remove order data from sessionStorage after successful email send
+            sessionStorage.removeItem("pendingOrder");
+          } else {
+            await response.text(); // Consume response
+            // Email sending failed - could log to error service in production
+          }
+        } else {
+          if (!pendingOrderData) {
+            // Clear cart anyway as fallback for card payments
+            if (!cartCleared) {
+              clearCart();
+              setCartCleared(true);
+            }
+          }
+        }
+      } catch {
+        // Error sending emails - could log to error service in production
+      }
+    };
+
+    // Only send emails if not already sent
+    if (!emailsSent) {
+      sendOrderEmails();
+    }
+  }, [emailsSent, cartCleared, clearCart]);
 
   return (
     <div className="min-h-screen flex flex-col">

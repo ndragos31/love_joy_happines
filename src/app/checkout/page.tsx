@@ -16,7 +16,33 @@ import { stripePromise } from "@/lib/stripe";
 import Image from "next/image";
 
 // Payment form component
-function CheckoutForm({ onSuccess }: { onSuccess: () => void }) {
+interface OrderData {
+  orderNumber: string;
+  customerName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  county: string;
+  postalCode: string;
+  items: Array<{
+    name: string;
+    quantity: number;
+    price: number;
+  }>;
+  subtotal: number;
+  shipping: number;
+  total: number;
+  paymentMethod: string;
+}
+
+function CheckoutForm({
+  onSuccess,
+  orderData,
+}: {
+  onSuccess: () => void;
+  orderData: OrderData;
+}) {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState<string | null>(null);
@@ -31,6 +57,11 @@ function CheckoutForm({ onSuccess }: { onSuccess: () => void }) {
 
     setProcessing(true);
     setError(null);
+
+    // Store order data before payment starts (in case of redirect)
+    if (orderData) {
+      sessionStorage.setItem("pendingOrder", JSON.stringify(orderData));
+    }
 
     const { error: submitError } = await elements.submit();
     if (submitError) {
@@ -56,6 +87,7 @@ function CheckoutForm({ onSuccess }: { onSuccess: () => void }) {
       return;
     }
 
+    // This will never be reached due to redirect, but keep for completeness
     onSuccess();
   };
 
@@ -619,20 +651,30 @@ export default function CheckoutPage() {
                         }}
                       >
                         <CheckoutForm
+                          orderData={{
+                            orderNumber: `LJH-${uuidv4().slice(
+                              0,
+                              8
+                            )}-${new Date().getFullYear()}`,
+                            customerName: `${formData.firstName} ${formData.lastName}`,
+                            email: formData.email,
+                            phone: formData.phone,
+                            address: formData.address,
+                            city: formData.city,
+                            county: formData.county,
+                            postalCode: formData.postalCode,
+                            items: items.map((item) => ({
+                              name: item.product.name,
+                              quantity: item.quantity,
+                              price: Number(item.product.price),
+                            })),
+                            subtotal,
+                            shipping,
+                            total,
+                            paymentMethod: "Card",
+                          }}
                           onSuccess={() => {
-                            // Generate order number for card payments
-                            const uniqueId = uuidv4();
-                            const orderPrefix = "LJH";
-                            const year = new Date().getFullYear();
-                            const newOrderNumber = `${orderPrefix}-${uniqueId.slice(0, 8)}-${year}`;
-                            setOrderNumber(newOrderNumber);
-                            // Store current cart items and totals
-                            setOrderItems([...items]);
-                            setFinalSubtotal(subtotal);
-                            setFinalShipping(shipping);
-                            setFinalTotal(total);
-                            // Then set step to 3
-                            setStep(3);
+                            // Payment successful callback (may not execute due to redirect)
                           }}
                         />
                       </Elements>
@@ -828,7 +870,9 @@ export default function CheckoutPage() {
                       <span>
                         {(step === 3 ? finalShipping : shipping) === 0
                           ? "Gratuit"
-                          : `${(step === 3 ? finalShipping : shipping).toFixed(2)} lei`}
+                          : `${(step === 3 ? finalShipping : shipping).toFixed(
+                              2
+                            )} lei`}
                       </span>
                     </div>
 

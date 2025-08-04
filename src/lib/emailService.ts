@@ -19,7 +19,7 @@ transporter.verify((error: Error | null) => {
   if (error) {
     console.error("Email configuration error:", error);
   } else {
-    console.log("Email server is ready to take our messages");
+    // Email server is ready
   }
 });
 
@@ -113,7 +113,7 @@ export async function sendCustomerOrderConfirmation(order: OrderDetails) {
 
   try {
     const result = await transporter.sendMail(mailOptions);
-    console.log("Customer email sent successfully:", result.messageId);
+    // Customer email sent successfully
     return { success: true, messageId: result.messageId };
   } catch (error) {
     console.error("Error sending customer email:", error);
@@ -180,7 +180,7 @@ export async function sendCompanyOrderNotification(order: OrderDetails) {
 
   try {
     const result = await transporter.sendMail(mailOptions);
-    console.log("Company email sent successfully:", result.messageId);
+    // Company email sent successfully
     return { success: true, messageId: result.messageId };
   } catch (error) {
     console.error("Error sending company email:", error);
@@ -255,7 +255,7 @@ export async function sendContactFormEmails(contactData: ContactFormData) {
       transporter.sendMail(customerMailOptions),
     ]);
 
-    console.log("Contact form emails sent successfully");
+    // Contact form emails sent successfully
     return {
       success: true,
       companyMessageId: companyResult.messageId,
