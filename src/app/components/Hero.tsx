@@ -70,9 +70,8 @@ export default function Hero() {
             </div>
 
             <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mt-4 ml-8">
-              Autocolante frumoase, bannere și produse care răspândesc
-              <br />
-              dragoste și fericire
+              Etichete, genți pentru uleiuri esențiale, flyere, stickere auto și
+              produse personalizate care răspândesc dragoste și fericire
             </p>
 
             <div className="flex flex-row pt-6">

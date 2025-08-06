@@ -13,25 +13,25 @@ export default function AboutPage() {
           <div className="container-custom">
             <h1 className="text-3xl md:text-4xl font-bold mb-8">Despre Noi</h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
-              <div>
-                <h2 className="text-2xl font-semibold mb-4 text-primary">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-16 items-center">
+              <div className="order-2 lg:order-1">
+                <h2 className="text-2xl font-semibold mb-6 text-primary">
                   Povestea Noastră
                 </h2>
-                <p className="text-foreground/80 mb-4">
+                <p className="text-foreground/80 mb-4 leading-relaxed">
                   Love Joy Happiness a luat naștere în 2025 din dorința de a
                   aduce culoare și personalitate în viața oamenilor prin creații
                   unice și personalizate. Totul a început cu o imprimantă și o
                   idee simplă: să transformăm viziunea clienților în realitate.
                 </p>
-                <p className="text-foreground/80 mb-4">
+                <p className="text-foreground/80 mb-4 leading-relaxed">
                   De la flyere care captează atenția, la autocolante creative și
                   etichete elegante pentru uleiuri esențiale, am crescut
                   constant pentru a oferi soluții complete de personalizare.
                   Fiecare proiect este o nouă oportunitate de a aduce bucurie și
                   de a da viață ideilor clienților noștri.
                 </p>
-                <p className="text-foreground/80">
+                <p className="text-foreground/80 leading-relaxed">
                   În prezent, ne mândrim cu un atelier modern dotat cu
                   echipamente de ultimă generație, care ne permite să oferim
                   produse de înaltă calitate. Fie că este vorba despre flyere
@@ -40,19 +40,16 @@ export default function AboutPage() {
                   și atenție la detalii în fiecare proiect.
                 </p>
               </div>
-              <div className="relative h-80 md:h-auto rounded-lg overflow-hidden shadow-xl">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent z-10"></div>
-                <Image
-                  src="/printing.jpg"
-                  alt="Atelier modern de printare Love Joy Happiness"
-                  fill
-                  className="object-cover transform hover:scale-105 transition-transform duration-500"
-                  priority
-                />
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
-                  <p className="text-white text-sm">
-                    Atelierul modern de printare și personalizare
-                  </p>
+
+              <div className="order-1 lg:order-2">
+                <div className="relative h-96 md:h-[500px] rounded-lg overflow-hidden shadow-lg">
+                  <Image
+                    src="/aboutus.jpeg"
+                    alt="Produsele noastre - etichete, uleiuri esențiale și personalizări"
+                    fill
+                    className="object-cover"
+                    priority
+                  />
                 </div>
               </div>
             </div>

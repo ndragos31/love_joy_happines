@@ -31,8 +31,9 @@ export default function Footer() {
               Love Joy Happiness
             </h3>
             <p className="text-foreground mb-4">
-              Aducem culoare și bucurie în viața ta cu autocolantele, bannerele
-              și produsele noastre frumoase.
+              Aducem culoare și bucurie în viața ta cu etichetele, gențile
+              pentru uleiuri esențiale, flyerele, stickerele auto și produsele
+              personalizate care răspândesc dragoste și fericire.
             </p>
             <div className="flex space-x-4">
               <a

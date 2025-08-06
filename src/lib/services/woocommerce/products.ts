@@ -64,12 +64,15 @@ export async function getFeaturedProducts() {
 /**
  * Fetches products by category ID
  * @param {number} categoryId - Category ID
+ * @param {Object} options - Additional query parameters
  * @returns {Promise<Array>} - A promise that resolves to an array of products
  */
-export async function getProductsByCategory(categoryId: number) {
+export async function getProductsByCategory(categoryId: number, options = {}) {
   try {
     const response = await wooCommerceClient.get("products", {
       category: categoryId,
+      per_page: 100, // Increase the limit to get more products
+      ...options,
     });
     return response.data;
   } catch (error) {

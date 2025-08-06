@@ -30,7 +30,26 @@ export async function GET(request: Request) {
 
     // If category ID is provided, fetch products by category
     if (categoryId && !isNaN(Number(categoryId))) {
-      const categoryProducts = await getProductsByCategory(Number(categoryId));
+      // Build query parameters for category products
+      const categoryParams: Record<string, string | number> = {};
+
+      // Add other query parameters
+      searchParams.forEach((value, key) => {
+        if (
+          key !== "id" &&
+          key !== "featured" &&
+          key !== "category" &&
+          key !== "page" &&
+          key !== "per_page"
+        ) {
+          categoryParams[key] = value;
+        }
+      });
+
+      const categoryProducts = await getProductsByCategory(
+        Number(categoryId),
+        categoryParams
+      );
       return NextResponse.json(categoryProducts);
     }
 
