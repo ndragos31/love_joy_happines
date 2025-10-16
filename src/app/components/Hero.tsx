@@ -55,28 +55,29 @@ export default function Hero() {
       <div className="absolute bottom-20 left-20 w-40 h-40 rounded-full bg-[#4ecdc4]/5 blur-3xl"></div>
       <div className="absolute top-40 left-1/4 w-24 h-24 rounded-full bg-[#ffdd67]/5 blur-xl"></div>
 
-      <div className="container-custom py-16 md:py-24 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="flex flex-col space-y-6">
-            <div className="w-full max-w-[600px]">
+      <div className="container-custom py-12 md:py-16 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center px-6 md:px-10">
+          <div className="flex flex-col space-y-4">
+            <div className="w-full max-w-[550px]">
               <Image
-                src="/logo dreptunghi.jpg"
+                src="/new_logo.jpeg"
                 alt="Love Joy Happiness Logo"
-                width={600}
-                height={200}
+                width={550}
+                height={183}
                 priority
-                className="w-full h-auto"
+                className="w-full h-auto object-cover"
+                style={{ objectPosition: "-60px 50%" }}
               />
             </div>
 
-            <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mt-4 ml-8">
+            <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300">
               Etichete, genți pentru uleiuri esențiale, flyere, stickere auto și
               produse personalizate care răspândesc dragoste și fericire
             </p>
 
-            <div className="flex flex-row pt-6">
+            <div className="flex flex-row">
               <Link href="/categories">
-                <button className="bg-[#ff6b6b] hover:bg-[#ff5252] text-white font-medium rounded-md px-8 py-3 text-lg transition-colors cursor-pointer ml-8">
+                <button className="bg-[#ff6b6b] hover:bg-[#ff5252] text-white font-medium rounded-md px-8 py-3 text-lg transition-colors cursor-pointer">
                   Explorează Colecția
                 </button>
               </Link>

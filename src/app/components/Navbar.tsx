@@ -15,7 +15,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <span className="text-2xl font-bold text-primary transition-colors duration-300">
+            <span className="text-2xl font-bold text-[#b200ff] transition-colors duration-300">
               Love Joy Happiness
             </span>
           </Link>
@@ -59,7 +59,7 @@ export default function Navbar() {
                           d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                         />
                       </svg>
-                      <span className="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      <span className="absolute -top-2 -right-2 bg-[#b200ff] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                         {totalItems}
                       </span>
                     </div>
@@ -137,7 +137,7 @@ export default function Navbar() {
                               d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                             />
                           </svg>
-                          <span className="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                          <span className="absolute -top-2 -right-2 bg-[#b200ff] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                             {totalItems}
                           </span>
                         </div>
