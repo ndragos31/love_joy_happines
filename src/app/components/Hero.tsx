@@ -55,29 +55,48 @@ export default function Hero() {
       <div className="absolute bottom-20 left-20 w-40 h-40 rounded-full bg-[#4ecdc4]/5 blur-3xl"></div>
       <div className="absolute top-40 left-1/4 w-24 h-24 rounded-full bg-[#ffdd67]/5 blur-xl"></div>
 
-      <div className="container-custom py-12 md:py-16 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center px-6 md:px-10">
-          <div className="flex flex-col space-y-4">
-            <div className="w-full max-w-[550px]">
+      <div className="container-custom py-8 md:py-16 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center px-4 md:px-10">
+          <div className="flex flex-col space-y-3 md:space-y-4">
+            <div className="w-full max-w-[400px] md:max-w-[550px] logo-container">
+              <style jsx global>{`
+                @media (min-width: 768px) {
+                  .logo-image {
+                    object-position: -60px 50% !important;
+                  }
+                }
+                @media (max-width: 767px) {
+                  .logo-image {
+                    object-position: -35px 50% !important;
+                  }
+                  .logo-container {
+                    margin-left: 0;
+                    transform: scale(1);
+                    transform-origin: center center;
+                  }
+                }
+              `}</style>
               <Image
                 src="/new_logo.jpeg"
                 alt="Love Joy Happiness Logo"
                 width={550}
                 height={183}
                 priority
-                className="w-full h-auto object-cover"
-                style={{ objectPosition: "-60px 50%" }}
+                className="w-full h-auto object-cover logo-image"
+                style={{
+                  objectPosition: "center center",
+                }}
               />
             </div>
 
-            <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300">
+            <p className="text-base md:text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
               Etichete, genți pentru uleiuri esențiale, flyere, stickere auto și
               produse personalizate care răspândesc dragoste și fericire
             </p>
 
-            <div className="flex flex-row">
+            <div className="flex flex-row pt-2">
               <Link href="/categories">
-                <button className="bg-[#ff6b6b] hover:bg-[#ff5252] text-white font-medium rounded-md px-8 py-3 text-lg transition-colors cursor-pointer">
+                <button className="bg-[#ff6b6b] hover:bg-[#ff5252] text-white font-medium rounded-md px-6 md:px-8 py-2 md:py-3 text-base md:text-lg transition-colors cursor-pointer">
                   Explorează Colecția
                 </button>
               </Link>
