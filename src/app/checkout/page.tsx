@@ -15,6 +15,11 @@ import {
 import { stripePromise } from "@/lib/stripe";
 import Image from "next/image";
 
+// Promo code validation - defined outside component as constant
+const validPromoCodes: Record<string, number> = {
+  JOY10: 0.1, // 10% discount
+};
+
 // Payment form component
 interface OrderData {
   orderNumber: string;
@@ -29,10 +34,13 @@ interface OrderData {
     name: string;
     quantity: number;
     price: number;
+    attributes?: Record<string, string>;
   }>;
   subtotal: number;
+  discount?: number;
   shipping: number;
   total: number;
+  promoCode?: string;
   paymentMethod: string;
 }
 
@@ -134,6 +142,9 @@ export default function CheckoutPage() {
   const [finalSubtotal, setFinalSubtotal] = useState<number>(0);
   const [finalShipping, setFinalShipping] = useState<number>(0);
   const [finalTotal, setFinalTotal] = useState<number>(0);
+  const [promoCode, setPromoCode] = useState<string>("");
+  const [appliedPromoCode, setAppliedPromoCode] = useState<string>("");
+  const [promoCodeError, setPromoCodeError] = useState<string>("");
 
   // Shipping cost calculation - fixed standard shipping
   const getShippingCost = () => {
@@ -142,7 +153,16 @@ export default function CheckoutPage() {
   };
 
   const shipping = getShippingCost();
-  const total = subtotal + shipping;
+  
+  const calculateDiscount = useCallback((code: string, subtotalAmount: number): number => {
+    if (code && validPromoCodes[code.toUpperCase()]) {
+      return subtotalAmount * validPromoCodes[code.toUpperCase()];
+    }
+    return 0;
+  }, []);
+
+  const discount = appliedPromoCode ? calculateDiscount(appliedPromoCode, subtotal) : 0;
+  const total = subtotal - discount + shipping;
 
   useEffect(() => {
     if (step === 2 && paymentMethod === "card") {
@@ -160,6 +180,34 @@ export default function CheckoutPage() {
         });
     }
   }, [step, total, paymentMethod]);
+
+  const handleApplyPromoCode = () => {
+    setPromoCodeError("");
+    const code = promoCode.trim().toUpperCase();
+    
+    if (!code) {
+      setPromoCodeError("Te rugăm să introduci un cod promoțional");
+      return;
+    }
+
+    // Validate the promo code
+    if (validPromoCodes[code]) {
+      // Code is valid - apply it
+      setAppliedPromoCode(code);
+      setPromoCode("");
+      setPromoCodeError("");
+    } else {
+      // Code is invalid
+      setPromoCodeError("Cod promoțional invalid. Te rugăm să verifici codul și să încerci din nou.");
+      setPromoCode("");
+    }
+  };
+
+  const handleRemovePromoCode = () => {
+    setAppliedPromoCode("");
+    setPromoCode("");
+    setPromoCodeError("");
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -214,10 +262,13 @@ export default function CheckoutPage() {
           name: item.product.name,
           quantity: item.quantity,
           price: Number(item.product.price),
+          attributes: item.selectedAttributes || undefined,
         })),
         subtotal,
+        discount: appliedPromoCode ? calculateDiscount(appliedPromoCode, subtotal) : 0,
         shipping,
         total,
+        promoCode: appliedPromoCode || undefined,
         paymentMethod: paymentMethod === "card" ? "Card" : "Ramburs",
       };
 
@@ -252,6 +303,8 @@ export default function CheckoutPage() {
     shipping,
     total,
     paymentMethod,
+    appliedPromoCode,
+    calculateDiscount,
   ]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -267,9 +320,10 @@ export default function CheckoutPage() {
       setOrderNumber(newOrderNumber);
       // Store current cart items and totals
       setOrderItems([...items]);
+      const finalDiscount = appliedPromoCode ? calculateDiscount(appliedPromoCode, subtotal) : 0;
       setFinalSubtotal(subtotal);
       setFinalShipping(shipping);
-      setFinalTotal(total);
+      setFinalTotal(subtotal - finalDiscount + shipping);
       // Then set step to 3
       setStep(3);
     }
@@ -802,12 +856,24 @@ export default function CheckoutPage() {
                         </Link>
                         <div className="flex-grow min-w-0">
                           <div className="flex items-start justify-between gap-2">
-                            <Link
-                              href={`/products/${item.id}`}
-                              className="text-sm font-medium truncate hover:text-primary transition-colors"
-                            >
-                              {item.product.name}
-                            </Link>
+                            <div className="min-w-0 flex-1">
+                              <Link
+                                href={`/products/${item.product.id}`}
+                                className="text-sm font-medium truncate hover:text-primary transition-colors block"
+                              >
+                                {item.product.name}
+                              </Link>
+                              {item.selectedAttributes && Object.keys(item.selectedAttributes).length > 0 && (
+                                <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                                  {Object.entries(item.selectedAttributes).map(([key, value], index) => (
+                                    <span key={`${item.id}-attr-${key}-${index}`}>
+                                      {index > 0 && ", "}
+                                      <strong>{key}:</strong> {value}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
                             <div className="flex items-center gap-2">
                               <span className="text-sm whitespace-nowrap">
                                 {(
@@ -847,6 +913,76 @@ export default function CheckoutPage() {
                     ))}
                   </div>
 
+                  {/* Promo Code Section */}
+                  {step < 3 && (
+                    <div className="border-t border-gray-200 dark:border-gray-700 pt-4 pb-4">
+                      {appliedPromoCode ? (
+                        <div className="flex items-center justify-between bg-green-50 dark:bg-green-900/20 p-3 rounded-lg">
+                          <div className="flex items-center">
+                            <svg
+                              className="w-5 h-5 text-green-600 dark:text-green-400 mr-2"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+                            <span className="text-sm font-medium text-green-700 dark:text-green-400">
+                              Cod aplicat: {appliedPromoCode}
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={handleRemovePromoCode}
+                            className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
+                          >
+                            Elimină
+                          </button>
+                        </div>
+                      ) : (
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Cod promoțional
+                          </label>
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={promoCode}
+                              onChange={(e) => {
+                                setPromoCode(e.target.value.toUpperCase());
+                                setPromoCodeError("");
+                              }}
+                              onKeyPress={(e) => {
+                                if (e.key === "Enter") {
+                                  e.preventDefault();
+                                  handleApplyPromoCode();
+                                }
+                              }}
+                              placeholder="Introdu codul promoțional"
+                              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800 text-gray-900 dark:text-white"
+                            />
+                            <button
+                              type="button"
+                              onClick={handleApplyPromoCode}
+                              disabled={!promoCode.trim()}
+                              className="px-4 py-2 bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-md transition-colors cursor-pointer"
+                            >
+                              Aplică
+                            </button>
+                          </div>
+                          {promoCodeError && (
+                            <p className="mt-1 text-sm text-red-500">{promoCodeError}</p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-4">
                     <div className="flex justify-between">
                       <span className="text-foreground/70">Subtotal</span>
@@ -857,6 +993,19 @@ export default function CheckoutPage() {
                         lei
                       </span>
                     </div>
+
+                    {(discount > 0 || (step === 3 && appliedPromoCode)) && (
+                      <div className="flex justify-between text-green-600 dark:text-green-400">
+                        <span className="text-foreground/70">
+                          Reducere {appliedPromoCode && `(${appliedPromoCode})`}
+                        </span>
+                        <span className="font-medium">
+                          -{step === 3 
+                            ? (appliedPromoCode ? calculateDiscount(appliedPromoCode, finalSubtotal) : 0).toFixed(2)
+                            : discount.toFixed(2)} lei
+                        </span>
+                      </div>
+                    )}
 
                     <div className="flex justify-between">
                       <span className="text-foreground/70">

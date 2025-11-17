@@ -19,10 +19,13 @@ interface OrderData {
     name: string;
     quantity: number;
     price: number;
+    attributes?: Record<string, string>;
   }>;
   subtotal: number;
+  discount?: number;
   shipping: number;
   total: number;
+  promoCode?: string;
   paymentMethod: string;
 }
 

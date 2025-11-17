@@ -36,10 +36,13 @@ interface OrderDetails {
     name: string;
     quantity: number;
     price: number;
+    attributes?: Record<string, string>;
   }>;
   subtotal: number;
+  discount?: number;
   shipping: number;
   total: number;
+  promoCode?: string;
   paymentMethod: string;
 }
 
@@ -71,11 +74,18 @@ export async function sendCustomerOrderConfirmation(order: OrderDetails) {
             .map(
               (item) => `
             <div style="margin: 10px 0;">
-              <p style="margin: 5px 0;">
+              <p style="margin: 5px 0; font-weight: 600;">
                 ${item.name} x ${item.quantity} - ${(
                 item.price * item.quantity
               ).toFixed(2)} lei
               </p>
+              ${item.attributes && Object.keys(item.attributes).length > 0
+                ? `<p style="margin: 5px 0; padding-left: 15px; color: #666; font-size: 14px;">
+                    ${Object.entries(item.attributes)
+                      .map(([key, value]) => `<strong>${key}:</strong> ${value}`)
+                      .join(", ")}
+                  </p>`
+                : ""}
             </div>
           `
             )
@@ -83,6 +93,9 @@ export async function sendCustomerOrderConfirmation(order: OrderDetails) {
           
           <div style="border-top: 1px solid #ddd; margin-top: 15px; padding-top: 15px;">
             <p><strong>Subtotal:</strong> ${order.subtotal.toFixed(2)} lei</p>
+            ${order.discount && order.discount > 0
+              ? `<p style="color: #10b981;"><strong>Reducere${order.promoCode ? ` (${order.promoCode})` : ""}:</strong> -${order.discount.toFixed(2)} lei</p>`
+              : ""}
             <p><strong>Transport:</strong> ${order.shipping.toFixed(2)} lei</p>
             <p style="font-size: 18px;"><strong>Total:</strong> ${order.total.toFixed(
               2
@@ -148,11 +161,18 @@ export async function sendCompanyOrderNotification(order: OrderDetails) {
             .map(
               (item) => `
             <div style="margin: 10px 0;">
-              <p style="margin: 5px 0;">
+              <p style="margin: 5px 0; font-weight: 600;">
                 ${item.name} x ${item.quantity} - ${(
                 item.price * item.quantity
               ).toFixed(2)} lei
               </p>
+              ${item.attributes && Object.keys(item.attributes).length > 0
+                ? `<p style="margin: 5px 0; padding-left: 15px; color: #666; font-size: 14px;">
+                    ${Object.entries(item.attributes)
+                      .map(([key, value]) => `<strong>${key}:</strong> ${value}`)
+                      .join(", ")}
+                  </p>`
+                : ""}
             </div>
           `
             )
@@ -160,6 +180,9 @@ export async function sendCompanyOrderNotification(order: OrderDetails) {
           
           <div style="border-top: 1px solid #ddd; margin-top: 15px; padding-top: 15px;">
             <p><strong>Subtotal:</strong> ${order.subtotal.toFixed(2)} lei</p>
+            ${order.discount && order.discount > 0
+              ? `<p style="color: #10b981;"><strong>Reducere${order.promoCode ? ` (${order.promoCode})` : ""}:</strong> -${order.discount.toFixed(2)} lei</p>`
+              : ""}
             <p><strong>Transport:</strong> ${order.shipping.toFixed(2)} lei</p>
             <p style="font-size: 18px;"><strong>Total:</strong> ${order.total.toFixed(
               2

@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Love Joy Happiness | Autocolante, Bannere și Altele",
+  title: "Love Joy Happiness | Etichete, Flyere și Accesorii Uleiuri Esențiale",
   description:
     "Cumpără din colecția noastră de autocolante frumoase, bannere și alte produse care aduc dragoste, bucurie și fericire în viața ta.",
   keywords:

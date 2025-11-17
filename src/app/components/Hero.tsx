@@ -19,9 +19,31 @@ export default function Hero() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data: Category[] = await response.json();
-        setCategories(
-          data.filter((category) => category.image && category.image.src)
+        
+        const categoriesWithImages = data.filter(
+          (category) => category.image && category.image.src
         );
+        
+        // Custom order: specific categories first, then the rest
+        const priorityOrder = [22, 25, 27, 23]; // Etichete, Genți, Suport, Autocolante
+        
+        const sortedCategories = categoriesWithImages.sort((a, b) => {
+          const aIndex = priorityOrder.indexOf(a.id);
+          const bIndex = priorityOrder.indexOf(b.id);
+          
+          // If both are in priority list, sort by priority order
+          if (aIndex !== -1 && bIndex !== -1) {
+            return aIndex - bIndex;
+          }
+          // If only a is in priority list, a comes first
+          if (aIndex !== -1) return -1;
+          // If only b is in priority list, b comes first
+          if (bIndex !== -1) return 1;
+          // If neither is in priority list, maintain original order (by menu_order)
+          return a.menu_order - b.menu_order;
+        });
+        
+        setCategories(sortedCategories);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -165,9 +187,9 @@ export default function Hero() {
             {/* Carousel indicators */}
             {categories.length > 1 && (
               <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2">
-                {categories.map((_, index) => (
+                {categories.map((category, index) => (
                   <button
-                    key={index}
+                    key={`indicator-${category.id}-${index}`}
                     onClick={() => setCurrentImageIndex(index)}
                     className={`w-2 h-2 rounded-full ${
                       index === currentImageIndex ? "bg-white" : "bg-white/50"

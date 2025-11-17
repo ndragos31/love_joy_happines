@@ -13,11 +13,12 @@ export interface CartItem {
   id: string;
   product: Product;
   quantity: number;
+  selectedAttributes?: Record<string, string>; // e.g., { "Culoare": "Negru", "Mărime": "M" }
 }
 
 interface CartContextType {
   items: CartItem[];
-  addItem: (product: Product, quantity: number) => void;
+  addItem: (product: Product, quantity: number, selectedAttributes?: Record<string, string>) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -59,22 +60,35 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [items, mounted]);
 
-  const addItem = (product: Product, quantity: number) => {
+  const addItem = (product: Product, quantity: number, selectedAttributes?: Record<string, string>) => {
     setItems((prevItems) => {
+      // Create a unique ID that includes attributes for variable products
+      const attributesKey = selectedAttributes 
+        ? Object.entries(selectedAttributes).sort().map(([key, value]) => `${key}:${value}`).join('|')
+        : '';
+      const itemId = attributesKey 
+        ? `${product.id}-${attributesKey}` 
+        : product.id.toString();
+
       const existingItem = prevItems.find(
-        (item) => item.id === product.id.toString()
+        (item) => item.id === itemId
       );
 
       if (existingItem) {
-        // Update quantity of existing item
+        // Update quantity of existing item with same attributes
         return prevItems.map((item) =>
-          item.id === product.id.toString()
+          item.id === itemId
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       } else {
-        // Add new item
-        return [...prevItems, { id: product.id.toString(), product, quantity }];
+        // Add new item with attributes
+        return [...prevItems, { 
+          id: itemId, 
+          product, 
+          quantity,
+          selectedAttributes: selectedAttributes || undefined
+        }];
       }
     });
   };
