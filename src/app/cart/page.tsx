@@ -88,12 +88,24 @@ export default function CartPage() {
 
                         <div className="flex-grow">
                           <div className="flex flex-col sm:flex-row sm:justify-between">
-                            <Link
-                              href={`/products/${item.id}`}
-                              className="font-semibold hover:text-primary transition-colors"
-                            >
-                              {item.product.name}
-                            </Link>
+                            <div>
+                              <Link
+                                href={`/products/${item.product.id}`}
+                                className="font-semibold hover:text-primary transition-colors"
+                              >
+                                {item.product.name}
+                              </Link>
+                              {item.selectedAttributes && Object.keys(item.selectedAttributes).length > 0 && (
+                                <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                  {Object.entries(item.selectedAttributes).map(([key, value], index) => (
+                                    <span key={`${item.id}-attr-${key}-${index}`}>
+                                      {index > 0 && ", "}
+                                      <strong>{key}:</strong> {value}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
                             <div className="mt-2 sm:mt-0 font-semibold text-primary">
                               {item.product.price} lei
                             </div>

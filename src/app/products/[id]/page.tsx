@@ -20,6 +20,7 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [addingToCart, setAddingToCart] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
 
   useEffect(() => {
     async function fetchProduct() {
@@ -33,6 +34,25 @@ export default function ProductPage() {
 
         const data = await response.json();
         setProduct(data);
+        
+        // Initialize selected attributes with default values if available
+        if (data.default_attributes && data.default_attributes.length > 0) {
+          const defaults: Record<string, string> = {};
+          data.default_attributes.forEach((attr: { name: string; option: string }) => {
+            defaults[attr.name] = attr.option;
+          });
+          setSelectedAttributes(defaults);
+        } else if (data.attributes && data.attributes.length > 0) {
+          // If no defaults, select first option for each attribute
+          const defaults: Record<string, string> = {};
+          data.attributes.forEach((attr: { name: string; options: string[] }) => {
+            if (attr.options && attr.options.length > 0) {
+              defaults[attr.name] = attr.options[0];
+            }
+          });
+          setSelectedAttributes(defaults);
+        }
+        
         setLoading(false);
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -49,10 +69,21 @@ export default function ProductPage() {
   const handleAddToCart = () => {
     if (!product) return;
 
+    // Check if all required attributes are selected
+    if (product.attributes && product.attributes.length > 0) {
+      const missingAttributes = product.attributes.filter(
+        (attr) => !selectedAttributes[attr.name] || selectedAttributes[attr.name] === ""
+      );
+      if (missingAttributes.length > 0) {
+        alert(`Te rugăm să selectezi: ${missingAttributes.map(attr => attr.name).join(", ")}`);
+        return;
+      }
+    }
+
     setAddingToCart(true);
 
-    // Use the cart context to add the item
-    addItem(product, quantity);
+    // Use the cart context to add the item with attributes
+    addItem(product, quantity, Object.keys(selectedAttributes).length > 0 ? selectedAttributes : undefined);
 
     setTimeout(() => {
       setAddingToCart(false);
@@ -228,6 +259,72 @@ export default function ProductPage() {
                     }}
                   />
                 </div>
+
+                {/* Attribute selection (Size, Color, etc.) */}
+                {product.attributes && product.attributes.length > 0 && (
+                  <div className="mb-6 space-y-4">
+                    {product.attributes.map((attribute) => {
+                      // Parse options - split any options that contain "|" or " | "
+                      const parsedOptions = attribute.options?.flatMap((option) => {
+                        // Split by " | " or "|" and trim whitespace
+                        const splitOptions = option
+                          .split(/\s*\|\s*/)
+                          .map((opt) => opt.trim())
+                          .filter((opt) => opt.length > 0);
+                        return splitOptions.length > 0 ? splitOptions : [option];
+                      }) || [];
+
+                      // Remove duplicates while preserving order
+                      const uniqueOptions = Array.from(new Set(parsedOptions));
+
+                      return (
+                        <div key={`product-attr-${product?.id || 'unknown'}-attr-${attribute.id}-${attribute.name}`}>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2.5">
+                            {attribute.name} <span className="text-[#ff6b6b]">*</span>
+                          </label>
+                          <div className="relative">
+                            <select
+                              value={selectedAttributes[attribute.name] || ""}
+                              onChange={(e) => {
+                                setSelectedAttributes((prev) => ({
+                                  ...prev,
+                                  [attribute.name]: e.target.value,
+                                }));
+                              }}
+                              className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 pr-10 text-gray-900 dark:text-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all cursor-pointer hover:border-gray-400 dark:hover:border-gray-500"
+                              required
+                            >
+                              <option value="" disabled>
+                                Selectează {attribute.name.toLowerCase()}
+                              </option>
+                              {uniqueOptions.map((option, index) => (
+                                <option key={`product-${product?.id || 'unknown'}-attr-${attribute.id}-opt-${index}-${option}`} value={option} className="py-2">
+                                  {option}
+                                </option>
+                              ))}
+                            </select>
+                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                              <svg
+                                className="w-5 h-5 text-gray-400 dark:text-gray-500"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M19 9l-7 7-7-7"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
 
                 {/* Quantity and Add to cart */}
                 {product.stock_status === "instock" && (

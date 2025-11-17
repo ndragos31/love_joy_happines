@@ -79,7 +79,27 @@ export default function Categories() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data: Category[] = await response.json();
-        setCategories(data);
+        
+        // Custom order: specific categories first, then the rest
+        const priorityOrder = [22, 24, 23, 25, 29, 26]; // Etichete, Flyere, Autocolante, Genți, Agende, Accesorii
+        
+        const sortedCategories = data.sort((a, b) => {
+          const aIndex = priorityOrder.indexOf(a.id);
+          const bIndex = priorityOrder.indexOf(b.id);
+          
+          // If both are in priority list, sort by priority order
+          if (aIndex !== -1 && bIndex !== -1) {
+            return aIndex - bIndex;
+          }
+          // If only a is in priority list, a comes first
+          if (aIndex !== -1) return -1;
+          // If only b is in priority list, b comes first
+          if (bIndex !== -1) return 1;
+          // If neither is in priority list, maintain original order (by menu_order)
+          return a.menu_order - b.menu_order;
+        });
+        
+        setCategories(sortedCategories);
         setLoading(false);
       } catch {
         setLoading(false);
