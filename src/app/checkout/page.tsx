@@ -24,6 +24,10 @@ const validPromoCodes: Record<string, number> = {
 interface OrderData {
   orderNumber: string;
   customerName: string;
+  customerType?: string;
+  companyName?: string;
+  cui?: string;
+  regCom?: string;
   email: string;
   phone: string;
   address: string;
@@ -122,6 +126,12 @@ export default function CheckoutPage() {
     "ramburs"
   );
   const [formData, setFormData] = useState({
+    // Customer type
+    customerType: "individual", // "individual" or "company"
+    // Company information
+    companyName: "",
+    cui: "",
+    regCom: "",
     // Shipping information
     firstName: "",
     lastName: "",
@@ -252,6 +262,10 @@ export default function CheckoutPage() {
       const orderDetails = {
         orderNumber,
         customerName: `${formData.firstName} ${formData.lastName}`,
+        customerType: formData.customerType,
+        companyName: formData.companyName,
+        cui: formData.cui,
+        regCom: formData.regCom,
         email: formData.email,
         phone: formData.phone,
         address: formData.address,
@@ -290,6 +304,10 @@ export default function CheckoutPage() {
     }
   }, [
     orderNumber,
+    formData.customerType,
+    formData.companyName,
+    formData.cui,
+    formData.regCom,
     formData.firstName,
     formData.lastName,
     formData.email,
@@ -430,6 +448,94 @@ export default function CheckoutPage() {
                     </h2>
                   </div>
                   <form onSubmit={handleSubmit} className="p-6">
+                    <div className="mb-8">
+                      <label className="block text-sm font-medium mb-3">
+                        Tip client
+                      </label>
+                      <div className="flex gap-4">
+                        <label className="flex items-center cursor-pointer">
+                          <input
+                            type="radio"
+                            name="customerType"
+                            value="individual"
+                            checked={formData.customerType === "individual"}
+                            onChange={handleChange}
+                            className="w-4 h-4 text-primary border-gray-300 focus:ring-primary"
+                          />
+                          <span className="ml-2">Persoană fizică</span>
+                        </label>
+                        <label className="flex items-center cursor-pointer">
+                          <input
+                            type="radio"
+                            name="customerType"
+                            value="company"
+                            checked={formData.customerType === "company"}
+                            onChange={handleChange}
+                            className="w-4 h-4 text-primary border-gray-300 focus:ring-primary"
+                          />
+                          <span className="ml-2">Persoană juridică</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    {formData.customerType === "company" && (
+                      <div className="space-y-6 mb-6 border-b border-gray-200 dark:border-gray-700 pb-6">
+                        <div>
+                          <label
+                            htmlFor="companyName"
+                            className="block text-sm font-medium mb-1"
+                          >
+                            Nume Companie <span className="text-[#ff6b6b]">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            id="companyName"
+                            name="companyName"
+                            value={formData.companyName}
+                            onChange={handleChange}
+                            required={formData.customerType === "company"}
+                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
+                          />
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <label
+                              htmlFor="cui"
+                              className="block text-sm font-medium mb-1"
+                            >
+                              CUI / CIF <span className="text-[#ff6b6b]">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              id="cui"
+                              name="cui"
+                              value={formData.cui}
+                              onChange={handleChange}
+                              required={formData.customerType === "company"}
+                              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
+                            />
+                          </div>
+                          <div>
+                            <label
+                              htmlFor="regCom"
+                              className="block text-sm font-medium mb-1"
+                            >
+                              Nr. Reg. Com. <span className="text-[#ff6b6b]">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              id="regCom"
+                              name="regCom"
+                              value={formData.regCom}
+                              onChange={handleChange}
+                              required={formData.customerType === "company"}
+                              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                       <div>
                         <label
@@ -711,6 +817,10 @@ export default function CheckoutPage() {
                               8
                             )}-${new Date().getFullYear()}`,
                             customerName: `${formData.firstName} ${formData.lastName}`,
+                            customerType: formData.customerType,
+                            companyName: formData.companyName,
+                            cui: formData.cui,
+                            regCom: formData.regCom,
                             email: formData.email,
                             phone: formData.phone,
                             address: formData.address,
