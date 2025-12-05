@@ -26,6 +26,10 @@ transporter.verify((error: Error | null) => {
 interface OrderDetails {
   orderNumber: string;
   customerName: string;
+  customerType?: string;
+  companyName?: string;
+  cui?: string;
+  regCom?: string;
   email: string;
   phone: string;
   address: string;
@@ -103,6 +107,15 @@ export async function sendCustomerOrderConfirmation(order: OrderDetails) {
           </div>
         </div>
         
+        ${order.customerType === 'company' ? `
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0;">
+          <h3>Date Facturare (Persoană Juridică):</h3>
+          <p><strong>Companie:</strong> ${order.companyName}</p>
+          <p><strong>CUI:</strong> ${order.cui}</p>
+          <p><strong>Nr. Reg. Com.:</strong> ${order.regCom}</p>
+        </div>
+        ` : ''}
+
         <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0;">
           <h3>Adresa de livrare:</h3>
           <p>${order.address}</p>
@@ -155,6 +168,15 @@ export async function sendCompanyOrderNotification(order: OrderDetails) {
           <p><strong>Telefon:</strong> ${order.phone}</p>
         </div>
         
+        ${order.customerType === 'company' ? `
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0;">
+          <h3>Date Facturare (Persoană Juridică):</h3>
+          <p><strong>Companie:</strong> ${order.companyName}</p>
+          <p><strong>CUI:</strong> ${order.cui}</p>
+          <p><strong>Nr. Reg. Com.:</strong> ${order.regCom}</p>
+        </div>
+        ` : ''}
+
         <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0;">
           <h3>Produse comandate:</h3>
           ${order.items

@@ -9,6 +9,10 @@ import Footer from "../../components/Footer";
 interface OrderData {
   orderNumber: string;
   customerName: string;
+  customerType?: string;
+  companyName?: string;
+  cui?: string;
+  regCom?: string;
   email: string;
   phone: string;
   address: string;

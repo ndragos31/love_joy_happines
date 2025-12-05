@@ -7,6 +7,10 @@ const processedOrders = new Map<string, number>();
 interface OrderDetails {
   orderNumber: string;
   customerName: string;
+  customerType?: string;
+  companyName?: string;
+  cui?: string;
+  regCom?: string;
   email: string;
   phone: string;
   address: string;
