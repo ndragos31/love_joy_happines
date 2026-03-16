@@ -5,6 +5,7 @@ import Image from "next/image";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useCart } from "@/lib/context/CartContext";
+import { getItemEffectivePrice } from "@/lib/utils/price";
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, clearCart, subtotal } = useCart();
@@ -107,7 +108,7 @@ export default function CartPage() {
                               )}
                             </div>
                             <div className="mt-2 sm:mt-0 font-semibold text-primary">
-                              {item.product.price} lei
+                              {getItemEffectivePrice(item).toFixed(2)} lei
                             </div>
                           </div>
 
