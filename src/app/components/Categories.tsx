@@ -81,7 +81,8 @@ export default function Categories() {
         const data: Category[] = await response.json();
         
         // Custom order: specific categories first, then the rest
-        const priorityOrder = [22, 24, 23, 25, 29, 26]; // Etichete, Flyere, Autocolante, Genți, Agende, Accesorii
+        // Custom order: 1.Etichete RO, 2.Etichete UK, 3.Flyere, 4.Genți, 5.Autocolante, 6.Agende, 7.Cărți, 8.Suport, 9.Accesorii, 10.Sticluțe
+        const priorityOrder = [22, 32, 24, 25, 23, 29, 31, 27, 26, 28];
         
         const sortedCategories = data.sort((a, b) => {
           const aIndex = priorityOrder.indexOf(a.id);
@@ -176,7 +177,7 @@ export default function Categories() {
                         {category.name}
                       </h3>
                       {category.count > 0 && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary whitespace-nowrap">
                           {category.count} produse
                         </span>
                       )}

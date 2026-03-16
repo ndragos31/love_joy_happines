@@ -8,6 +8,7 @@ import {
   ReactNode,
 } from "react";
 import { Product } from "@/lib/types/product";
+import { getItemEffectivePrice } from "@/lib/utils/price";
 
 export interface CartItem {
   id: string;
@@ -62,9 +63,13 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const addItem = (product: Product, quantity: number, selectedAttributes?: Record<string, string>) => {
     setItems((prevItems) => {
-      // Create a unique ID that includes attributes for variable products
+      // Create a unique ID that includes attributes for variable products (ignore Cantitate so items stack)
       const attributesKey = selectedAttributes 
-        ? Object.entries(selectedAttributes).sort().map(([key, value]) => `${key}:${value}`).join('|')
+        ? Object.entries(selectedAttributes)
+            .filter(([key]) => key.toLowerCase() !== 'cantitate')
+            .sort()
+            .map(([key, value]) => `${key}:${value}`)
+            .join('|')
         : '';
       const itemId = attributesKey 
         ? `${product.id}-${attributesKey}` 
@@ -114,7 +119,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
   const subtotal = items.reduce(
-    (sum, item) => sum + parseFloat(item.product.price) * item.quantity,
+    (sum, item) => sum + getItemEffectivePrice(item) * item.quantity,
     0
   );
 
