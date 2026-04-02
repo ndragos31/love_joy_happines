@@ -1,58 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Category } from "@/lib/types/category";
 
-export default function Hero() {
-  const [categories, setCategories] = useState<Category[]>([]);
+const HERO_PRIORITY_ORDER = [22, 25, 27, 23]; // Etichete, Genți, Suport, Autocolante
+
+export default function Hero({ initialCategories }: { initialCategories: Category[] }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
 
-  // Fetch product categories
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const response = await fetch("/api/categories");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data: Category[] = await response.json();
-        
-        const categoriesWithImages = data.filter(
-          (category) => category.image && category.image.src
-        );
-        
-        // Custom order: specific categories first, then the rest
-        const priorityOrder = [22, 25, 27, 23]; // Etichete, Genți, Suport, Autocolante
-        
-        const sortedCategories = categoriesWithImages.sort((a, b) => {
-          const aIndex = priorityOrder.indexOf(a.id);
-          const bIndex = priorityOrder.indexOf(b.id);
-          
-          // If both are in priority list, sort by priority order
-          if (aIndex !== -1 && bIndex !== -1) {
-            return aIndex - bIndex;
-          }
-          // If only a is in priority list, a comes first
-          if (aIndex !== -1) return -1;
-          // If only b is in priority list, b comes first
-          if (bIndex !== -1) return 1;
-          // If neither is in priority list, maintain original order (by menu_order)
-          return a.menu_order - b.menu_order;
-        });
-        
-        setCategories(sortedCategories);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-        setLoading(false);
-      }
-    }
-
-    fetchCategories();
-  }, []);
+  const categories = useMemo(() => {
+    const withImages = initialCategories.filter((c) => c.image && c.image.src);
+    return [...withImages].sort((a, b) => {
+      const aIndex = HERO_PRIORITY_ORDER.indexOf(a.id);
+      const bIndex = HERO_PRIORITY_ORDER.indexOf(b.id);
+      if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+      if (aIndex !== -1) return -1;
+      if (bIndex !== -1) return 1;
+      return a.menu_order - b.menu_order;
+    });
+  }, [initialCategories]);
 
   // Carousel rotation
   useEffect(() => {
@@ -201,11 +169,7 @@ export default function Hero() {
             )}
 
             {/* Images */}
-            {loading ? (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4ecdc4]"></div>
-              </div>
-            ) : categories.length > 0 ? (
+            {categories.length > 0 ? (
               categories.map((category, index) => (
                 <div
                   key={category.id}

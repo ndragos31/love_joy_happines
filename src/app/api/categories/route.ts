@@ -22,7 +22,9 @@ export async function GET(request: Request) {
     });
 
     const categories = await getProductCategories(params);
-    return NextResponse.json(categories);
+    const response = NextResponse.json(categories);
+    response.headers.set("Cache-Control", "s-maxage=3600, stale-while-revalidate=86400");
+    return response;
   } catch {
     return NextResponse.json(
       { error: "Failed to fetch product categories" },

@@ -8,7 +8,9 @@ const nextConfig: NextConfig = {
     WOOCOMMERCE_CONSUMER_SECRET: process.env.WOOCOMMERCE_CONSUMER_SECRET,
   },
   images: {
-    domains: ["backend.lovejoyhappiness.store"],
+    remotePatterns: [
+      { protocol: "https", hostname: "backend.lovejoyhappiness.store" },
+    ],
   },
 };
 

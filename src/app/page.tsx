@@ -1,17 +1,24 @@
-"use client";
-
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import Categories from "./components/Categories";
 import Footer from "./components/Footer";
+import { getProductCategories } from "@/lib/services/woocommerce/categories";
+import { Category } from "@/lib/types/category";
 
-export default function Home() {
+export default async function Home() {
+  let categories: Category[] = [];
+  try {
+    categories = await getProductCategories({ per_page: 100 });
+  } catch {
+    // gracefully render without categories
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow">
-        <Hero />
-        <Categories />
+        <Hero initialCategories={categories} />
+        <Categories categories={categories} />
 
         {/* Decorative Divider Above Testimonials */}
         <div className="py-10 bg-white dark:bg-gray-900">
