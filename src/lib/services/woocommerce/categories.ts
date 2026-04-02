@@ -1,5 +1,6 @@
 import { unstable_cache } from "next/cache";
 import wooCommerceClient from "./client";
+import { Category } from "@/lib/types/category";
 
 /**
  * Fetches all product categories from WooCommerce
@@ -7,9 +8,9 @@ import wooCommerceClient from "./client";
  * @returns {Promise<Array>} - A promise that resolves to an array of categories
  */
 export const getProductCategories = unstable_cache(
-  async (options: Record<string, string | number> = {}) => {
+  async (options: Record<string, string | number> = {}): Promise<Category[]> => {
     const response = await wooCommerceClient.get("products/categories", options);
-    return response.data;
+    return response.data as Category[];
   },
   ["product-categories"],
   { revalidate: 3600 }
