@@ -24,7 +24,7 @@ export default function CategoryPage() {
         setLoading(true);
 
         // First fetch all categories to find the one with matching slug
-        const categoriesResponse = await fetch("/api/categories");
+        const categoriesResponse = await fetch("/api/categories?per_page=100");
         if (!categoriesResponse.ok) {
           throw new Error(`HTTP error! status: ${categoriesResponse.status}`);
         }
