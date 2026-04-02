@@ -1,6 +1,3 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Category } from "@/lib/types/category";
@@ -67,48 +64,18 @@ const categoryColors = [
   "from-green-500/20 to-green-500/40",
 ];
 
-export default function Categories() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+// Custom order: 1.Etichete RO, 2.Etichete UK, 3.Flyere, 4.Tricouri, 5.Genți, 6.Autocolante, 7.Agende, 8.Cărți, 9.Suport, 10.Accesorii, 11.Sticluțe
+const PRIORITY_ORDER = [22, 32, 24, 30, 25, 23, 29, 31, 27, 26, 28];
 
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const response = await fetch("/api/categories");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data: Category[] = await response.json();
-        
-        // Custom order: specific categories first, then the rest
-        // Custom order: 1.Etichete RO, 2.Etichete UK, 3.Flyere, 4.Genți, 5.Autocolante, 6.Agende, 7.Cărți, 8.Suport, 9.Accesorii, 10.Sticluțe
-        const priorityOrder = [22, 32, 24, 25, 23, 29, 31, 27, 26, 28];
-        
-        const sortedCategories = data.sort((a, b) => {
-          const aIndex = priorityOrder.indexOf(a.id);
-          const bIndex = priorityOrder.indexOf(b.id);
-          
-          // If both are in priority list, sort by priority order
-          if (aIndex !== -1 && bIndex !== -1) {
-            return aIndex - bIndex;
-          }
-          // If only a is in priority list, a comes first
-          if (aIndex !== -1) return -1;
-          // If only b is in priority list, b comes first
-          if (bIndex !== -1) return 1;
-          // If neither is in priority list, maintain original order (by menu_order)
-          return a.menu_order - b.menu_order;
-        });
-        
-        setCategories(sortedCategories);
-        setLoading(false);
-      } catch {
-        setLoading(false);
-      }
-    }
-
-    fetchCategories();
-  }, []);
+export default function Categories({ categories: rawCategories }: { categories: Category[] }) {
+  const categories = [...rawCategories].sort((a, b) => {
+    const aIndex = PRIORITY_ORDER.indexOf(a.id);
+    const bIndex = PRIORITY_ORDER.indexOf(b.id);
+    if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+    if (aIndex !== -1) return -1;
+    if (bIndex !== -1) return 1;
+    return a.menu_order - b.menu_order;
+  });
 
   // Function to get icon based on category slug
   const getCategoryIcon = (slug: string) => {
@@ -135,12 +102,7 @@ export default function Categories() {
           </p>
         </div>
 
-        {loading ? (
-          <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {categories.map((category, index) => (
               <Link
                 href={`/categories/${category.slug}`}
@@ -156,6 +118,7 @@ export default function Categories() {
                         fill
                         className="object-cover bg-white dark:bg-gray-900"
                         sizes="(max-width: 768px) 100vw, 33vw"
+                        priority={index < 3}
                       />
                       <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors"></div>
                     </div>
@@ -208,7 +171,6 @@ export default function Categories() {
               </Link>
             ))}
           </div>
-        )}
       </div>
     </section>
   );

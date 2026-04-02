@@ -5,7 +5,8 @@ import Link from "next/link";
 import { v4 as uuidv4 } from "uuid";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { useCart } from "@/lib/context/CartContext";
+import { useCart, CartItem } from "@/lib/context/CartContext";
+import { getItemEffectivePrice } from "@/lib/utils/price";
 import { Elements } from "@stripe/react-stripe-js";
 import {
   PaymentElement,
@@ -15,9 +16,17 @@ import {
 import { stripePromise } from "@/lib/stripe";
 import Image from "next/image";
 
-// Promo code validation - defined outside component as constant
-const validPromoCodes: Record<string, number> = {
-  JOY10: 0.1, // 10% discount
+// Promo code config - category-restricted discounts
+const SALE15_SLUGS = ["etichete", "flyere"];
+
+const isEticheteFlyereItem = (item: CartItem) =>
+  item.product.categories.some((cat) =>
+    SALE15_SLUGS.some((slug) => cat.slug.includes(slug))
+  );
+
+const promoCodeConfig: Record<string, { discount: number; filter: (item: CartItem) => boolean }> = {
+  JOY10:  { discount: 0.1,  filter: (item) => !isEticheteFlyereItem(item) },
+  SALE15: { discount: 0.15, filter: (item) =>  isEticheteFlyereItem(item) },
 };
 
 // Payment form component
@@ -164,14 +173,16 @@ export default function CheckoutPage() {
 
   const shipping = getShippingCost();
   
-  const calculateDiscount = useCallback((code: string, subtotalAmount: number): number => {
-    if (code && validPromoCodes[code.toUpperCase()]) {
-      return subtotalAmount * validPromoCodes[code.toUpperCase()];
-    }
-    return 0;
+  const calculateDiscount = useCallback((code: string, cartItems: CartItem[]): number => {
+    const config = promoCodeConfig[code.toUpperCase()];
+    if (!config) return 0;
+    const eligibleSubtotal = cartItems
+      .filter(config.filter)
+      .reduce((sum, item) => sum + getItemEffectivePrice(item) * item.quantity, 0);
+    return eligibleSubtotal * config.discount;
   }, []);
 
-  const discount = appliedPromoCode ? calculateDiscount(appliedPromoCode, subtotal) : 0;
+  const discount = appliedPromoCode ? calculateDiscount(appliedPromoCode, items) : 0;
   const total = subtotal - discount + shipping;
 
   useEffect(() => {
@@ -201,13 +212,13 @@ export default function CheckoutPage() {
     }
 
     // Validate the promo code
-    if (validPromoCodes[code]) {
-      // Code is valid - apply it
+    const config = promoCodeConfig[code];
+    const hasEligibleItems = config ? items.some(config.filter) : false;
+    if (config && hasEligibleItems) {
       setAppliedPromoCode(code);
       setPromoCode("");
       setPromoCodeError("");
     } else {
-      // Code is invalid
       setPromoCodeError("Cod promoțional invalid. Te rugăm să verifici codul și să încerci din nou.");
       setPromoCode("");
     }
@@ -279,7 +290,7 @@ export default function CheckoutPage() {
           attributes: item.selectedAttributes || undefined,
         })),
         subtotal,
-        discount: appliedPromoCode ? calculateDiscount(appliedPromoCode, subtotal) : 0,
+        discount: appliedPromoCode ? calculateDiscount(appliedPromoCode, items) : 0,
         shipping,
         total,
         promoCode: appliedPromoCode || undefined,
@@ -338,7 +349,7 @@ export default function CheckoutPage() {
       setOrderNumber(newOrderNumber);
       // Store current cart items and totals
       setOrderItems([...items]);
-      const finalDiscount = appliedPromoCode ? calculateDiscount(appliedPromoCode, subtotal) : 0;
+      const finalDiscount = appliedPromoCode ? calculateDiscount(appliedPromoCode, items) : 0;
       setFinalSubtotal(subtotal);
       setFinalShipping(shipping);
       setFinalTotal(subtotal - finalDiscount + shipping);
@@ -1111,7 +1122,7 @@ export default function CheckoutPage() {
                         </span>
                         <span className="font-medium">
                           -{step === 3 
-                            ? (appliedPromoCode ? calculateDiscount(appliedPromoCode, finalSubtotal) : 0).toFixed(2)
+                            ? (appliedPromoCode ? calculateDiscount(appliedPromoCode, orderItems) : 0).toFixed(2)
                             : discount.toFixed(2)} lei
                         </span>
                       </div>
