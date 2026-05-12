@@ -17,16 +17,15 @@ import { stripePromise } from "@/lib/stripe";
 import Image from "next/image";
 
 // Promo code config - category-restricted discounts
-const SALE15_SLUGS = ["etichete", "flyere"];
+const JOY10_EXCLUDED_SLUGS = ["etichete", "flyere"];
 
-const isEticheteFlyereItem = (item: CartItem) =>
-  item.product.categories.some((cat) =>
-    SALE15_SLUGS.some((slug) => cat.slug.includes(slug))
+const isJoy10Eligible = (item: CartItem) =>
+  !item.product.categories.some((cat) =>
+    JOY10_EXCLUDED_SLUGS.some((slug) => cat.slug.includes(slug))
   );
 
 const promoCodeConfig: Record<string, { discount: number; filter: (item: CartItem) => boolean }> = {
-  JOY10:  { discount: 0.1,  filter: (item) => !isEticheteFlyereItem(item) },
-  SALE15: { discount: 0.15, filter: (item) =>  isEticheteFlyereItem(item) },
+  JOY10: { discount: 0.1, filter: isJoy10Eligible },
 };
 
 // Payment form component
