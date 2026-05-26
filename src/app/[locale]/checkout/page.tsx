@@ -335,6 +335,7 @@ export default function CheckoutPage() {
     total,
     paymentMethod,
     appliedPromoCode,
+    locale,
     calculateDiscount,
   ]);
 
