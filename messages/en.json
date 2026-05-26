@@ -438,7 +438,43 @@
     "promoRequired": "Please enter a promo code",
     "promoInvalid": "Invalid promo code. Please check the code and try again."
   },
-  "email": {},
+  "email": {
+    "orderConfirmation": {
+      "subject": "Order #{orderNumber} confirmed - Love Joy Happiness",
+      "heading": "Thank you for your order!",
+      "greeting": "Dear {customerName},",
+      "intro": "We have successfully received your order number <strong>#{orderNumber}</strong>.",
+      "detailsHeading": "Order details #{orderNumber}:",
+      "productsHeading": "Ordered products:",
+      "subtotalLabel": "Subtotal:",
+      "discountLabel": "Discount:",
+      "shippingLabel": "Shipping:",
+      "totalLabel": "Total:",
+      "companyDetailsHeading": "Billing Details (Company):",
+      "companyLabel": "Company:",
+      "cuiLabel": "VAT / Tax ID:",
+      "regComLabel": "Company Reg. No.:",
+      "shippingAddressHeading": "Shipping address:",
+      "phoneLabel": "Phone:",
+      "paymentMethodLabel": "Payment method:",
+      "statusUpdate": "We will keep you updated on your order status by email.",
+      "contactLine": "For any questions, you can reach us at",
+      "signatureKindly": "With love,",
+      "signatureTeam": "The Love Joy Happiness Team"
+    },
+    "contactReply": {
+      "subject": "Your message has been received - Love Joy Happiness",
+      "heading": "Thank you for your message!",
+      "greeting": "Dear {customerName},",
+      "body": "We have received your message and thank you for reaching out. Our team will review your request and get back to you as soon as possible.",
+      "yourMessageHeading": "Your message:",
+      "urgentHeading": "For urgent matters, you can reach us directly at:",
+      "phoneLabel": "Phone: +40 750 485 858",
+      "emailLabel": "Email: lovejoyhappinesscontact@yahoo.com",
+      "signatureKindly": "With love,",
+      "signatureTeam": "The Love Joy Happiness Team"
+    }
+  },
   "meta": {
     "site": {
       "title": "Love Joy Happiness | Labels, Flyers and Essential Oil Accessories",

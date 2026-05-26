@@ -438,7 +438,43 @@
     "promoRequired": "Te rugăm să introduci un cod promoțional",
     "promoInvalid": "Cod promoțional invalid. Te rugăm să verifici codul și să încerci din nou."
   },
-  "email": {},
+  "email": {
+    "orderConfirmation": {
+      "subject": "Comanda #{orderNumber} confirmată - Love Joy Happiness",
+      "heading": "Mulțumim pentru comanda ta!",
+      "greeting": "Dragă {customerName},",
+      "intro": "Am primit cu succes comanda ta cu numărul <strong>#{orderNumber}</strong>.",
+      "detailsHeading": "Detalii comandă #{orderNumber}:",
+      "productsHeading": "Produse comandate:",
+      "subtotalLabel": "Subtotal:",
+      "discountLabel": "Reducere:",
+      "shippingLabel": "Transport:",
+      "totalLabel": "Total:",
+      "companyDetailsHeading": "Date Facturare (Persoană Juridică):",
+      "companyLabel": "Companie:",
+      "cuiLabel": "CUI:",
+      "regComLabel": "Nr. Reg. Com.:",
+      "shippingAddressHeading": "Adresa de livrare:",
+      "phoneLabel": "Telefon:",
+      "paymentMethodLabel": "Metoda de plată:",
+      "statusUpdate": "Te vom ține la curent cu statusul comenzii tale prin email.",
+      "contactLine": "Pentru orice întrebări, ne poți contacta la",
+      "signatureKindly": "Cu drag,",
+      "signatureTeam": "Echipa Love Joy Happiness"
+    },
+    "contactReply": {
+      "subject": "Mesajul tău a fost primit - Love Joy Happiness",
+      "heading": "Mulțumim pentru mesajul tău!",
+      "greeting": "Dragă {customerName},",
+      "body": "Am primit mesajul tău și îți mulțumim că ne-ai contactat. Echipa noastră va analiza cererea ta și te va contacta în cel mai scurt timp posibil.",
+      "yourMessageHeading": "Mesajul tău:",
+      "urgentHeading": "Pentru urgențe, ne poți contacta direct la:",
+      "phoneLabel": "Telefon: +40 750 485 858",
+      "emailLabel": "Email: lovejoyhappinesscontact@yahoo.com",
+      "signatureKindly": "Cu drag,",
+      "signatureTeam": "Echipa Love Joy Happiness"
+    }
+  },
   "meta": {
     "site": {
       "title": "Love Joy Happiness | Etichete, Flyere și Accesorii Uleiuri Esențiale",
