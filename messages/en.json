@@ -1,0 +1,494 @@
+{
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "about": "About Us",
+    "contact": "Contact",
+    "cart": "Cart",
+    "myCart": "My Cart",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu"
+  },
+  "home": {
+    "hero": {
+      "tagline": "Labels, essential oil bags, flyers, car stickers, and personalized products that spread love and happiness",
+      "exploreCollection": "Explore the Collection",
+      "fallbackAlt": "Colorful stickers and banners",
+      "previousImage": "Previous image",
+      "nextImage": "Next image",
+      "goToSlide": "Go to slide {number}"
+    },
+    "categories": {
+      "heading": "Shop by Category",
+      "subheading": "Browse our collection of products designed to bring joy to your life",
+      "productCount": "{count} products",
+      "fallbackDescription": "Discover our collection of {name}",
+      "viewAll": "View All"
+    },
+    "testimonials": {
+      "heading": "What Our Customers Say",
+      "subheading": "Don't just take our word for it — hear from our happy customers who have experienced the joy of our products.",
+      "items": [
+        {
+          "author": "Ana Popescu",
+          "initials": "AP",
+          "quote": "The custom stickers for my laptop are fantastic! The colors are vibrant and the quality is way above expectations. Even after months of use, they haven't deteriorated at all. I recommend them to all my friends!"
+        },
+        {
+          "author": "Mihai Ionescu",
+          "initials": "MI",
+          "quote": "I ordered custom labels for our company event and the result was impeccable. The elegant design and fine details impressed everyone. Delivery was fast and customer service excellent. We'll definitely be back!"
+        },
+        {
+          "author": "Elena Cojocaru",
+          "initials": "EC",
+          "quote": "The birthday banner for my daughter's party was wonderful! Everyone took photos with it. The print quality was exceptional and the material very durable. I greatly appreciate the attention to detail and the promptness of delivery."
+        }
+      ]
+    }
+  },
+  "categories": {
+    "errorHeading": "Error",
+    "returnToHome": "Return to home",
+    "productCount": "{count} products",
+    "emptyHeading": "No products in this category",
+    "emptyMessage": "Please check back later or explore other categories",
+    "emptyCta": "Back to home"
+  },
+  "products": {
+    "listingHeading": "All Products",
+    "listingSubheading": "Browse our unique collection of products designed to bring joy to your life",
+    "loading": "Loading products...",
+    "loadingMore": "Loading more products...",
+    "loadMoreButton": "Load more products",
+    "allProductsSeen": "You've seen all available products ({count} products)",
+    "noProducts": "No products found",
+    "noProductsSubtext": "Please check back later",
+    "backToHome": "Back to home",
+    "error": {
+      "heading": "Error loading products",
+      "retry": "Try again"
+    },
+    "card": {
+      "addToCartAriaLabel": "Add to Cart",
+      "addToCartTooltip": "Add to cart",
+      "viewProductAriaLabel": "View Product",
+      "viewProductTooltip": "View"
+    },
+    "detail": {
+      "loading": "Loading product...",
+      "notFound": "Product Not Found",
+      "notFoundMessage": "Sorry, the product you're looking for doesn't exist.",
+      "backToProducts": "Back to Products",
+      "breadcrumbHome": "Home",
+      "breadcrumbProducts": "Products",
+      "inStock": "In stock",
+      "outOfStock": "Out of stock",
+      "selectAttribute": "Select {name}",
+      "selectRequired": "Please select: {attributes}",
+      "quantity": "Quantity:",
+      "adding": "Adding...",
+      "added": "Added to cart",
+      "addToCart": "Add to cart",
+      "description": "Description",
+      "shippingTab": "Shipping",
+      "shippingHeading": "Shipping information",
+      "shippingItem1": "Delivery in 24-48 business hours",
+      "shippingItem2": "Free shipping on orders over 200 Lei",
+      "shippingItem3": "Cash on delivery or online payment"
+    },
+    "gallery": {
+      "noImage": "No image",
+      "thumbnailAlt": "Product image {number}"
+    }
+  },
+  "cart": {
+    "title": "Your cart",
+    "empty": {
+      "heading": "Your cart is empty",
+      "description": "Looks like you haven't added any products yet.",
+      "cta": "Continue shopping"
+    },
+    "products": "Products ({count})",
+    "continueShopping": "Continue shopping",
+    "clearCart": "Clear cart",
+    "summary": {
+      "heading": "Order summary",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "shippingFree": "Free",
+      "total": "Total",
+      "checkout": "Place order",
+      "vatNote": "* Prices include VAT. Free shipping on orders over 200 lei."
+    }
+  },
+  "checkout": {
+    "heading": "Checkout",
+    "steps": {
+      "delivery": "Delivery",
+      "payment": "Payment",
+      "confirmation": "Confirmation"
+    },
+    "deliveryInfo": "Delivery information",
+    "customerType": "Customer type",
+    "individual": "Individual",
+    "company": "Company",
+    "backToCart": "Back to cart",
+    "continueToPayment": "Continue to payment",
+    "paymentMethod": "Payment method",
+    "cardPayment": "Credit / Debit card",
+    "cardPaymentDesc": "Pay securely with your card",
+    "cashOnDelivery": "Cash on delivery",
+    "cashOnDeliveryDesc": "Pay when you receive the package",
+    "backToDelivery": "Back to delivery",
+    "placeOrder": "Place order",
+    "processing": "Processing...",
+    "pay": "Pay",
+    "orderConfirmation": "Order confirmation",
+    "thankYou": "Thank you for your order!",
+    "orderPlaced": "Your order has been placed successfully and is being processed. You will receive a confirmation email shortly.",
+    "orderNumber": "Order number:",
+    "orderTotal": "Total:",
+    "continueShopping": "Continue shopping",
+    "orderSummary": "Order summary",
+    "noImage": "No image",
+    "removeItem": "Remove item",
+    "quantity": "Quantity:",
+    "promoApplied": "Code applied:",
+    "removePromo": "Remove",
+    "promoCode": "Promo code",
+    "promoPlaceholder": "Enter promo code",
+    "applyPromo": "Apply",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "shipping": "Shipping",
+    "shippingFree": "(Free)",
+    "shippingFreeValue": "Free",
+    "total": "Total",
+    "success": {
+      "heading": "Payment processed successfully!",
+      "message": "Thank you for your order. You will receive a confirmation email shortly.",
+      "continueShopping": "Continue shopping"
+    }
+  },
+  "forms": {
+    "companyName": "Company Name",
+    "cui": "VAT / Tax ID",
+    "regCom": "Company Reg. No.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "city": "City",
+    "county": "County",
+    "postalCode": "Postal code"
+  },
+  "footer": {
+    "tagline": "We bring color and joy to your life with labels, essential oil bags, flyers, car stickers, and personalized products that spread love and happiness.",
+    "headings": {
+      "quickLinks": "Quick Links",
+      "customerService": "Customer Service"
+    },
+    "links": {
+      "home": "Home",
+      "allProducts": "All Products",
+      "stickers": "Stickers",
+      "labels": "Labels",
+      "flyers": "Flyers",
+      "about": "About Us",
+      "contact": "Contact Us",
+      "privacy": "Privacy Policy",
+      "terms": "Terms and Conditions"
+    },
+    "copyright": "© {year} Love Joy Happiness. All rights reserved."
+  },
+  "legal": {
+    "about": {
+      "heading": "About Us",
+      "story": {
+        "heading": "Our Story",
+        "p1": "Love Joy Happiness was born in 2025 from a desire to bring color and personality to people's lives through unique, personalized creations. It all started with a printer and a simple idea: to turn our customers' visions into reality.",
+        "p2": "From eye-catching flyers to creative stickers and elegant essential oil labels, we have grown steadily to offer complete personalization solutions. Every project is a new opportunity to bring joy and give life to our customers' ideas.",
+        "p3": "Today, we are proud of our modern workshop equipped with state-of-the-art machinery, enabling us to deliver high-quality products. Whether it's flyers for special events, custom stickers, or labels for essential oil brands, we put passion and attention to detail into every project.",
+        "imageAlt": "Our products — labels, essential oils, and custom items"
+      },
+      "mission": {
+        "heading": "Our Mission",
+        "text": "To bring love, joy, and happiness into people's homes through creative, quality products."
+      },
+      "values": {
+        "heading": "Our Values",
+        "text": "Quality, creativity, sustainability, and customer satisfaction are at the heart of everything we do."
+      },
+      "vision": {
+        "heading": "Our Vision",
+        "text": "To become the go-to source for decorative products that inspire and bring joy to everyday life."
+      },
+      "whyUs": {
+        "heading": "Why choose",
+        "quality": {
+          "heading": "Premium Quality",
+          "text": "We use the finest materials and modern technologies to create products that stand the test of time."
+        },
+        "delivery": {
+          "heading": "Fast Delivery",
+          "text": "We process and ship orders as quickly as possible so you can enjoy your products without delay."
+        },
+        "satisfaction": {
+          "heading": "Guaranteed Satisfaction",
+          "text": "We are committed to our customers' satisfaction and offer full support for any question or issue."
+        },
+        "prices": {
+          "heading": "Competitive Prices",
+          "text": "We offer the best value for money on our products, with frequent discounts and special promotions."
+        }
+      }
+    },
+    "contact": {
+      "heading": "Contact Us",
+      "form": {
+        "heading": "Send Us a Message",
+        "intro": "Have a question, suggestion, or want to place a custom order? Fill in the form below and we'll get back to you as soon as possible.",
+        "nameLabelText": "Full name",
+        "namePlaceholder": "Your full name",
+        "emailLabelText": "Email",
+        "emailPlaceholder": "email@example.com",
+        "messageLabelText": "Message",
+        "messagePlaceholder": "Write your message here...",
+        "submitting": "Sending...",
+        "submit": "Send message",
+        "successMessage": "Your message has been sent successfully! We'll get back to you shortly.",
+        "errorMessage": "An error occurred while sending your message. Please try again."
+      },
+      "info": {
+        "heading": "Contact Information",
+        "phoneHeading": "Phone",
+        "emailHeading": "Email",
+        "quote1": "We create moments of happiness and joy for every customer",
+        "quote2": "Every order is made with love and attention to detail"
+      },
+      "social": {
+        "heading": "Follow Us"
+      }
+    },
+    "privacy": {
+      "heading": "Privacy Policy",
+      "s1": {
+        "heading": "1. Introduction",
+        "text": "Love Joy Happiness is committed to protecting the privacy of our website visitors. This policy explains how we collect, use, and protect your personal information when you use our website and services."
+      },
+      "s2": {
+        "heading": "2. Information we collect",
+        "intro": "We collect the following types of information:",
+        "items": [
+          "Contact information: name, email address, phone number",
+          "Delivery information: delivery address, delivery preferences",
+          "Order information: purchase history, product preferences",
+          "Technical information: IP address, browser type (automatically collected by the server)",
+          "Payment information: securely processed by Stripe (we do not store card details)"
+        ]
+      },
+      "s3": {
+        "heading": "3. How we use your information",
+        "intro": "We use the collected information to:",
+        "items": [
+          "Process and deliver your orders",
+          "Communicate with you about orders and services",
+          "Improve your experience on our website",
+          "Send updates about new products (only with your consent)",
+          "Comply with legal and tax obligations"
+        ]
+      },
+      "s4": {
+        "heading": "4. Sharing your information",
+        "text": "We do not sell, rent, or share your personal information with third parties, except in the following situations: delivery services for shipping orders, payment processors for secure transactions, or when required by law."
+      },
+      "s5": {
+        "heading": "5. Data security",
+        "text": "We implement technical and organizational security measures to protect your information against unauthorized access, alteration, disclosure, or destruction. All transactions are processed through Stripe with SSL encryption."
+      },
+      "s6": {
+        "heading": "6. Local data storage",
+        "text": "Our website does not use cookies. Instead, we use localStorage to temporarily store your shopping cart items on your device. This information stays only on your computer and is not sent to our servers until you place an order."
+      },
+      "s7": {
+        "heading": "7. Your rights",
+        "intro": "Under GDPR, you have the following rights:",
+        "items": [
+          "The right to access your personal information",
+          "The right to rectification of incorrect data",
+          "The right to erasure of your data (\"the right to be forgotten\")",
+          "The right to restriction of processing",
+          "The right to data portability",
+          "The right to object to processing"
+        ]
+      },
+      "s8": {
+        "heading": "8. Data retention",
+        "text": "We retain your personal information only as long as necessary to fulfill the purposes for which it was collected, including to comply with legal obligations, resolve disputes, and enforce our agreements."
+      },
+      "s9": {
+        "heading": "9. Changes to this policy",
+        "text": "We reserve the right to update this privacy policy at any time. Changes will be published on this page with the date of update. Continued use of the website after changes constitutes acceptance of the new policy."
+      },
+      "s10": {
+        "heading": "10. Contact",
+        "text": "For questions about this privacy policy or how we handle your data, you can reach us via:",
+        "emailItem": "Email: lovejoyhappinesscontact@yahoo.com",
+        "contactLinkLabel": "contact",
+        "contactLinkPrefix": "Via our"
+      },
+      "lastUpdated": "Last updated:"
+    },
+    "terms": {
+      "heading": "Terms and Conditions",
+      "s1": {
+        "heading": "1. Acceptance of terms",
+        "text": "By accessing and using the Love Joy Happiness website, you agree to comply with and be bound by these terms and conditions of use. If you do not agree with any of these terms, please do not use our website."
+      },
+      "s2": {
+        "heading": "2. About our services",
+        "intro": "Love Joy Happiness offers online sales of:",
+        "items": [
+          "Custom and standard stickers",
+          "Advertising and decorative banners",
+          "Labels for various uses",
+          "Flyers and promotional materials",
+          "Other printing and personalization products"
+        ]
+      },
+      "s3": {
+        "heading": "3. User accounts",
+        "text": "To place orders, you may need to create an account. You are responsible for maintaining the confidentiality of your account and password, and for restricting access to your computer."
+      },
+      "s4": {
+        "heading": "4. Orders and payments",
+        "s4_1": {
+          "heading": "4.1 Placing orders",
+          "text": "All orders are subject to product availability. We reserve the right to refuse or cancel any order for reasonable cause."
+        },
+        "s4_2": {
+          "heading": "4.2 Prices",
+          "text": "Prices displayed on the website include VAT and are in Romanian lei (RON). We reserve the right to change prices without prior notice."
+        },
+        "s4_3": {
+          "heading": "4.3 Payments",
+          "text": "We accept bank card payments, processed securely through Stripe. Payment must be made in full before the order is processed."
+        }
+      },
+      "s5": {
+        "heading": "5. Shipping and delivery",
+        "s5_1": {
+          "heading": "5.1 Delivery times",
+          "text": "Estimated delivery times are provided at the time of order and may vary depending on product complexity and delivery destination."
+        },
+        "s5_2": {
+          "heading": "5.2 Shipping costs",
+          "text": "Shipping costs are calculated based on the size, weight, and destination of the order and will be displayed before checkout is finalized."
+        },
+        "s5_3": {
+          "heading": "5.3 Delivery responsibility",
+          "text": "The risk of loss and title for purchased items pass to the buyer at the time of delivery to the courier company."
+        }
+      },
+      "s6": {
+        "heading": "6. Returns and refunds",
+        "s6_1": {
+          "heading": "6.1 Custom products",
+          "text": "Custom products may only be returned in the case of manufacturing defects or errors on our part."
+        },
+        "s6_2": {
+          "heading": "6.2 Standard products",
+          "text": "Standard products may be returned within 14 days of delivery, in original and unused condition."
+        },
+        "s6_3": {
+          "heading": "6.3 Return process",
+          "text": "To initiate a return, contact us by email or via the contact page. Return shipping costs are borne by the customer, except where the product is defective."
+        }
+      },
+      "s7": {
+        "heading": "7. Intellectual property",
+        "text": "All website content, including text, graphics, logos, images, and software, is the property of Love Joy Happiness and is protected by copyright law. For custom products, the customer guarantees that they hold the rights to the design provided."
+      },
+      "s8": {
+        "heading": "8. Limitation of liability",
+        "text": "Love Joy Happiness will not be liable for indirect, incidental, or consequential damages resulting from the use of our products. Our total liability will not exceed the value of the purchased product."
+      },
+      "s9": {
+        "heading": "9. Changes to terms",
+        "text": "We reserve the right to modify these terms and conditions at any time. Changes will take effect immediately upon publication on the website. Continued use of the website constitutes acceptance of the changes."
+      },
+      "s10": {
+        "heading": "10. Governing law",
+        "text": "These terms and conditions are governed by the laws of Romania. Any disputes will be resolved by the competent courts of Romania."
+      },
+      "s11": {
+        "heading": "11. Contact",
+        "text": "For questions about these terms and conditions, you can reach us via:",
+        "emailItem": "Email: lovejoyhappinesscontact@yahoo.com",
+        "contactLinkLabel": "contact",
+        "contactLinkPrefix": "Via our"
+      },
+      "lastUpdated": "Last updated:"
+    }
+  },
+  "errors": {
+    "paymentFailed": "An error occurred while processing the payment.",
+    "promoRequired": "Please enter a promo code",
+    "promoInvalid": "Invalid promo code. Please check the code and try again."
+  },
+  "email": {
+    "orderConfirmation": {
+      "subject": "Order #{orderNumber} confirmed - Love Joy Happiness",
+      "heading": "Thank you for your order!",
+      "greeting": "Dear {customerName},",
+      "intro": "We have successfully received your order number <strong>#{orderNumber}</strong>.",
+      "detailsHeading": "Order details #{orderNumber}:",
+      "productsHeading": "Ordered products:",
+      "subtotalLabel": "Subtotal:",
+      "discountLabel": "Discount:",
+      "shippingLabel": "Shipping:",
+      "totalLabel": "Total:",
+      "companyDetailsHeading": "Billing Details (Company):",
+      "companyLabel": "Company:",
+      "cuiLabel": "VAT / Tax ID:",
+      "regComLabel": "Company Reg. No.:",
+      "shippingAddressHeading": "Shipping address:",
+      "phoneLabel": "Phone:",
+      "paymentMethodLabel": "Payment method:",
+      "statusUpdate": "We will keep you updated on your order status by email.",
+      "contactLine": "For any questions, you can reach us at",
+      "signatureKindly": "With love,",
+      "signatureTeam": "The Love Joy Happiness Team"
+    },
+    "contactReply": {
+      "subject": "Your message has been received - Love Joy Happiness",
+      "heading": "Thank you for your message!",
+      "greeting": "Dear {customerName},",
+      "body": "We have received your message and thank you for reaching out. Our team will review your request and get back to you as soon as possible.",
+      "yourMessageHeading": "Your message:",
+      "urgentHeading": "For urgent matters, you can reach us directly at:",
+      "phoneLabel": "Phone: +40 750 485 858",
+      "emailLabel": "Email: lovejoyhappinesscontact@yahoo.com",
+      "signatureKindly": "With love,",
+      "signatureTeam": "The Love Joy Happiness Team"
+    }
+  },
+  "meta": {
+    "site": {
+      "title": "Love Joy Happiness | Labels, Flyers and Essential Oil Accessories",
+      "description": "Shop our collection of beautiful stickers, banners, and other products that bring love, joy, and happiness to your life.",
+      "keywords": "stickers, banners, products, love, joy, happiness, e-commerce"
+    },
+    "home": { "title": "Love Joy Happiness | Home", "description": "Discover our collection of personalized products that bring love, joy, and happiness to your life." },
+    "products": { "title": "Products | Love Joy Happiness", "description": "Browse all our personalized products: stickers, labels, flyers, bags, essential oil accessories, and more." },
+    "about": { "title": "About Us | Love Joy Happiness", "description": "Learn the Love Joy Happiness story — our mission to bring color and happiness to your life through personalized products." },
+    "contact": { "title": "Contact | Love Joy Happiness", "description": "Get in touch with the Love Joy Happiness team for questions, custom orders, or collaborations." },
+    "cart": { "title": "Your Cart | Love Joy Happiness", "description": "View the items in your shopping cart and complete your order." },
+    "checkout": { "title": "Checkout | Love Joy Happiness", "description": "Securely complete your order at Love Joy Happiness." },
+    "checkoutSuccess": { "title": "Order Placed | Love Joy Happiness", "description": "Thank you for your order at Love Joy Happiness." },
+    "privacy": { "title": "Privacy Policy | Love Joy Happiness", "description": "Love Joy Happiness privacy policy — how we collect, use, and protect your data." },
+    "terms": { "title": "Terms and Conditions | Love Joy Happiness", "description": "Terms and conditions of use for the Love Joy Happiness online store." }
+  }
+}

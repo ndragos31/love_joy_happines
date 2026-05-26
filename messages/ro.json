@@ -1,0 +1,494 @@
+{
+  "nav": {
+    "home": "Acasă",
+    "products": "Produse",
+    "about": "Despre Noi",
+    "contact": "Contact",
+    "cart": "Coș",
+    "myCart": "Coșul meu",
+    "menuOpen": "Deschide meniul",
+    "menuClose": "Închide meniul"
+  },
+  "home": {
+    "hero": {
+      "tagline": "Etichete, genți pentru uleiuri esențiale, flyere, stickere auto și produse personalizate care răspândesc dragoste și fericire",
+      "exploreCollection": "Explorează Colecția",
+      "fallbackAlt": "Autocolante și bannere colorate",
+      "previousImage": "Imaginea anterioară",
+      "nextImage": "Imaginea următoare",
+      "goToSlide": "Mergi la slide-ul {number}"
+    },
+    "categories": {
+      "heading": "Cumpără după Categorie",
+      "subheading": "Răsfoiește colecția noastră de produse concepute pentru a aduce bucurie în viața ta",
+      "productCount": "{count} produse",
+      "fallbackDescription": "Descoperă colecția noastră de {name}",
+      "viewAll": "Vezi Toate"
+    },
+    "testimonials": {
+      "heading": "Ce Spun Clienții Noștri",
+      "subheading": "Nu ne crede doar pe cuvânt - ascultă de la clienții noștri fericiți care au experimentat bucuria produselor noastre.",
+      "items": [
+        {
+          "author": "Ana Popescu",
+          "initials": "AP",
+          "quote": "Autocolantele personalizate pentru laptopul meu sunt fantastice! Culorile sunt vibrante, iar calitatea este mult peste așteptări. Chiar după luni de utilizare, nu s-au deteriorat deloc. Le recomand tuturor prietenilor mei!"
+        },
+        {
+          "author": "Mihai Ionescu",
+          "initials": "MI",
+          "quote": "Am comandat etichete personalizate pentru evenimentul firmei noastre și rezultatul a fost impecabil. Designul elegant și detaliile fine au impresionat pe toată lumea. Livrarea a fost rapidă și serviciul clienți excelent. Vom reveni cu siguranță!"
+        },
+        {
+          "author": "Elena Cojocaru",
+          "initials": "EC",
+          "quote": "Bannerul aniversar pentru petrecerea fiicei mele a fost minunat! Toată lumea a făcut poze cu el. Calitatea printului a fost excepțională, iar materialul foarte rezistent. Apreciez foarte mult atenția la detalii și promptitudinea cu care a fost livrat."
+        }
+      ]
+    }
+  },
+  "categories": {
+    "errorHeading": "Eroare",
+    "returnToHome": "Înapoi la pagina principală",
+    "productCount": "{count} produse",
+    "emptyHeading": "Nu există produse în această categorie",
+    "emptyMessage": "Vă rugăm să verificați mai târziu sau explorați alte categorii",
+    "emptyCta": "Înapoi la pagina principală"
+  },
+  "products": {
+    "listingHeading": "Toate Produsele",
+    "listingSubheading": "Răsfoiește colecția noastră de produse unice concepute pentru a aduce bucurie în viața ta",
+    "loading": "Se încarcă produsele...",
+    "loadingMore": "Se încarcă mai multe produse...",
+    "loadMoreButton": "Încarcă mai multe produse",
+    "allProductsSeen": "Ai văzut toate produsele disponibile ({count} produse)",
+    "noProducts": "Nu s-au găsit produse",
+    "noProductsSubtext": "Vă rugăm să verificați mai târziu",
+    "backToHome": "Înapoi la pagina principală",
+    "error": {
+      "heading": "Eroare la încărcarea produselor",
+      "retry": "Încearcă din nou"
+    },
+    "card": {
+      "addToCartAriaLabel": "Adaugă în Coș",
+      "addToCartTooltip": "Adaugă în coș",
+      "viewProductAriaLabel": "Vezi Produsul",
+      "viewProductTooltip": "Vizualizează"
+    },
+    "detail": {
+      "loading": "Se încarcă produsul...",
+      "notFound": "Produs Negăsit",
+      "notFoundMessage": "Ne pare rău, produsul pe care îl cauți nu există.",
+      "backToProducts": "Înapoi la Produse",
+      "breadcrumbHome": "Acasă",
+      "breadcrumbProducts": "Produse",
+      "inStock": "În stoc",
+      "outOfStock": "Stoc epuizat",
+      "selectAttribute": "Selectează {name}",
+      "selectRequired": "Te rugăm să selectezi: {attributes}",
+      "quantity": "Cantitate:",
+      "adding": "Adăugare...",
+      "added": "Adăugat în coș",
+      "addToCart": "Adaugă în coș",
+      "description": "Descriere",
+      "shippingTab": "Livrare",
+      "shippingHeading": "Informații de livrare",
+      "shippingItem1": "Livrare în 24-48 de ore lucrătoare",
+      "shippingItem2": "Transport gratuit pentru comenzi peste 200 Lei",
+      "shippingItem3": "Plata ramburs sau online"
+    },
+    "gallery": {
+      "noImage": "Fără imagine",
+      "thumbnailAlt": "Imaginea produsului {number}"
+    }
+  },
+  "cart": {
+    "title": "Coșul tău",
+    "empty": {
+      "heading": "Coșul tău este gol",
+      "description": "Se pare că nu ai adăugat încă niciun produs în coș.",
+      "cta": "Continuă cumpărăturile"
+    },
+    "products": "Produse ({count})",
+    "continueShopping": "Continuă cumpărăturile",
+    "clearCart": "Golește coșul",
+    "summary": {
+      "heading": "Rezumat comandă",
+      "subtotal": "Subtotal",
+      "shipping": "Transport",
+      "shippingFree": "Gratuit",
+      "total": "Total",
+      "checkout": "Finalizează comanda",
+      "vatNote": "* Preturile includ TVA. Transportul este gratuit pentru comenzi peste 200 lei."
+    }
+  },
+  "checkout": {
+    "heading": "Finalizare Comandă",
+    "steps": {
+      "delivery": "Livrare",
+      "payment": "Plată",
+      "confirmation": "Confirmare"
+    },
+    "deliveryInfo": "Informații de livrare",
+    "customerType": "Tip client",
+    "individual": "Persoană fizică",
+    "company": "Persoană juridică",
+    "backToCart": "Înapoi la coș",
+    "continueToPayment": "Continuă la plată",
+    "paymentMethod": "Metodă de plată",
+    "cardPayment": "Card bancar",
+    "cardPaymentDesc": "Plătește în siguranță cu cardul tău",
+    "cashOnDelivery": "Plată la livrare (Ramburs)",
+    "cashOnDeliveryDesc": "Plătește la primirea coletului",
+    "backToDelivery": "Înapoi la livrare",
+    "placeOrder": "Finalizează comanda",
+    "processing": "Se procesează...",
+    "pay": "Plătește",
+    "orderConfirmation": "Confirmare comandă",
+    "thankYou": "Mulțumim pentru comandă!",
+    "orderPlaced": "Comanda ta a fost plasată cu succes și este în curs de procesare. Vei primi un email de confirmare în curând.",
+    "orderNumber": "Număr comandă:",
+    "orderTotal": "Total:",
+    "continueShopping": "Continuă cumpărăturile",
+    "orderSummary": "Sumar comandă",
+    "noImage": "Fără imagine",
+    "removeItem": "Elimină produsul",
+    "quantity": "Cantitate:",
+    "promoApplied": "Cod aplicat:",
+    "removePromo": "Elimină",
+    "promoCode": "Cod promoțional",
+    "promoPlaceholder": "Introdu codul promoțional",
+    "applyPromo": "Aplică",
+    "subtotal": "Subtotal",
+    "discount": "Reducere",
+    "shipping": "Transport",
+    "shippingFree": "(Gratuit)",
+    "shippingFreeValue": "Gratuit",
+    "total": "Total",
+    "success": {
+      "heading": "Plată procesată cu succes!",
+      "message": "Vă mulțumim pentru comandă. Veți primi un email de confirmare în curând.",
+      "continueShopping": "Continuă cumpărăturile"
+    }
+  },
+  "forms": {
+    "companyName": "Nume Companie",
+    "cui": "CUI / CIF",
+    "regCom": "Nr. Reg. Com.",
+    "firstName": "Prenume",
+    "lastName": "Nume",
+    "email": "Email",
+    "phone": "Telefon",
+    "address": "Adresă",
+    "city": "Oraș",
+    "county": "Județ",
+    "postalCode": "Cod Poștal"
+  },
+  "footer": {
+    "tagline": "Aducem culoare și bucurie în viața ta cu etichetele, gențile pentru uleiuri esențiale, flyerele, stickerele auto și produsele personalizate care răspândesc dragoste și fericire.",
+    "headings": {
+      "quickLinks": "Link-uri Rapide",
+      "customerService": "Servicii Clienți"
+    },
+    "links": {
+      "home": "Acasă",
+      "allProducts": "Toate Produsele",
+      "stickers": "Autocolante",
+      "labels": "Etichete",
+      "flyers": "Flyere",
+      "about": "Despre Noi",
+      "contact": "Contactează-ne",
+      "privacy": "Politica de Confidențialitate",
+      "terms": "Termeni și Condiții"
+    },
+    "copyright": "© {year} Love Joy Happiness. Toate drepturile rezervate."
+  },
+  "legal": {
+    "about": {
+      "heading": "Despre Noi",
+      "story": {
+        "heading": "Povestea Noastră",
+        "p1": "Love Joy Happiness a luat naștere în 2025 din dorința de a aduce culoare și personalitate în viața oamenilor prin creații unice și personalizate. Totul a început cu o imprimantă și o idee simplă: să transformăm viziunea clienților în realitate.",
+        "p2": "De la flyere care captează atenția, la autocolante creative și etichete elegante pentru uleiuri esențiale, am crescut constant pentru a oferi soluții complete de personalizare. Fiecare proiect este o nouă oportunitate de a aduce bucurie și de a da viață ideilor clienților noștri.",
+        "p3": "În prezent, ne mândrim cu un atelier modern dotat cu echipamente de ultimă generație, care ne permite să oferim produse de înaltă calitate. Fie că este vorba despre flyere pentru evenimente speciale, autocolante personalizate sau etichete pentru branduri de uleiuri esențiale, punem pasiune și atenție la detalii în fiecare proiect.",
+        "imageAlt": "Produsele noastre - etichete, uleiuri esențiale și personalizări"
+      },
+      "mission": {
+        "heading": "Misiunea Noastră",
+        "text": "Să aducem dragoste, bucurie și fericire în casele oamenilor prin produse creative și de calitate."
+      },
+      "values": {
+        "heading": "Valorile Noastre",
+        "text": "Calitate, creativitate, sustenabilitate și satisfacția clienților sunt în centrul a tot ceea ce facem."
+      },
+      "vision": {
+        "heading": "Viziunea Noastră",
+        "text": "Să devenim sursa preferată pentru produse decorative care inspiră și aduc bucurie în viața de zi cu zi."
+      },
+      "whyUs": {
+        "heading": "De ce să alegi",
+        "quality": {
+          "heading": "Calitate Premium",
+          "text": "Folosim materiale de cea mai bună calitate și tehnologii moderne pentru a crea produse care rezistă în timp."
+        },
+        "delivery": {
+          "heading": "Livrare Rapidă",
+          "text": "Procesăm și expediem comenzile în cel mai scurt timp posibil pentru ca tu să te bucuri rapid de produsele tale."
+        },
+        "satisfaction": {
+          "heading": "Satisfacție Garantată",
+          "text": "Suntem dedicați satisfacției clienților noștri și oferim suport complet pentru orice nelămurire sau problemă."
+        },
+        "prices": {
+          "heading": "Prețuri Competitive",
+          "text": "Oferim cel mai bun raport calitate-preț pentru produsele noastre, cu reduceri frecvente și promoții speciale."
+        }
+      }
+    },
+    "contact": {
+      "heading": "Contactează-ne",
+      "form": {
+        "heading": "Trimite-ne un mesaj",
+        "intro": "Ai întrebări, sugestii sau dorești să plasezi o comandă personalizată? Completează formularul de mai jos și te vom contacta cât mai curând.",
+        "nameLabelText": "Nume complet",
+        "namePlaceholder": "Numele tău complet",
+        "emailLabelText": "Email",
+        "emailPlaceholder": "email@exemplu.com",
+        "messageLabelText": "Mesaj",
+        "messagePlaceholder": "Scrie-ne mesajul tău aici...",
+        "submitting": "Se trimite...",
+        "submit": "Trimite mesajul",
+        "successMessage": "Mesajul tău a fost trimis cu succes! Te vom contacta în curând.",
+        "errorMessage": "A apărut o eroare la trimiterea mesajului. Te rugăm să încerci din nou."
+      },
+      "info": {
+        "heading": "Informații de contact",
+        "phoneHeading": "Telefon",
+        "emailHeading": "Email",
+        "quote1": "Creăm momente de fericire și bucurie pentru fiecare client",
+        "quote2": "Fiecare comandă este realizată cu dragoste și atenție la detalii"
+      },
+      "social": {
+        "heading": "Urmărește-ne"
+      }
+    },
+    "privacy": {
+      "heading": "Politica de Confidențialitate",
+      "s1": {
+        "heading": "1. Introducere",
+        "text": "Love Joy Happiness se angajează să protejeze confidențialitatea vizitatorilor site-ului nostru. Această politică explică cum colectăm, utilizăm și protejăm informațiile dumneavoastră personale când folosiți site-ul nostru și serviciile noastre."
+      },
+      "s2": {
+        "heading": "2. Informații pe care le colectăm",
+        "intro": "Colectăm următoarele tipuri de informații:",
+        "items": [
+          "Informații de contact: nume, adresa de email, numărul de telefon",
+          "Informații de livrare: adresa de livrare, preferințele de livrare",
+          "Informații despre comenzi: istoricul achizițiilor, preferințele de produse",
+          "Informații tehnice: adresa IP, tipul de browser (colectate automat de server)",
+          "Informații de plată: procesate securizat prin Stripe (nu stocăm datele cardurilor)"
+        ]
+      },
+      "s3": {
+        "heading": "3. Cum folosim informațiile",
+        "intro": "Folosim informațiile colectate pentru:",
+        "items": [
+          "Procesarea și livrarea comenzilor dumneavoastră",
+          "Comunicarea cu dumneavoastră despre comenzi și servicii",
+          "Îmbunătățirea experienței pe site-ul nostru",
+          "Trimiterea de actualizări despre produse noi (doar cu acordul dumneavoastră)",
+          "Respectarea obligațiilor legale și fiscale"
+        ]
+      },
+      "s4": {
+        "heading": "4. Partajarea informațiilor",
+        "text": "Nu vindem, închiriem sau împărtășim informațiile dumneavoastră personale cu terțe părți, cu excepția următoarelor situații: servicii de livrare pentru expedierea comenzilor, procesatori de plăți pentru tranzacții securizate, sau când este cerut de lege."
+      },
+      "s5": {
+        "heading": "5. Securitatea datelor",
+        "text": "Implementăm măsuri de securitate tehnice și organizatorice pentru a proteja informațiile dumneavoastră împotriva accesului neautorizat, alterării, divulgării sau distrugerii. Toate tranzacțiile sunt procesate prin Stripe cu criptare SSL."
+      },
+      "s6": {
+        "heading": "6. Stocarea datelor locale",
+        "text": "Site-ul nostru nu folosește cookie-uri. În schimb, folosim localStorage pentru a stoca temporar produsele din coșul de cumpărături pe dispozitivul dumneavoastră. Aceste informații rămân doar pe calculatorul dumneavoastră și nu sunt trimise către serverele noastre decât când plasați o comandă."
+      },
+      "s7": {
+        "heading": "7. Drepturile dumneavoastră",
+        "intro": "Conform GDPR, aveți următoarele drepturi:",
+        "items": [
+          "Dreptul de acces la informațiile dumneavoastră personale",
+          "Dreptul de rectificare a datelor incorecte",
+          "Dreptul de ștergere a datelor (\"dreptul de a fi uitat\")",
+          "Dreptul de restricționare a prelucrării",
+          "Dreptul la portabilitatea datelor",
+          "Dreptul de opoziție la preluare"
+        ]
+      },
+      "s8": {
+        "heading": "8. Reținerea datelor",
+        "text": "Păstrăm informațiile dumneavoastră personale doar atât timp cât este necesar pentru îndeplinirea scopurilor pentru care au fost colectate, inclusiv pentru respectarea obligațiilor legale, rezolvarea disputelor și aplicarea acordurilor noastre."
+      },
+      "s9": {
+        "heading": "9. Modificări ale politicii",
+        "text": "Ne rezervăm dreptul de a actualiza această politică de confidențialitate în orice moment. Modificările vor fi publicate pe această pagină cu data actualizării. Utilizarea continuă a site-ului după modificări constituie acceptarea noii politici."
+      },
+      "s10": {
+        "heading": "10. Contact",
+        "text": "Pentru întrebări despre această politică de confidențialitate sau despre modul în care gestionăm datele dumneavoastră, ne puteți contacta prin:",
+        "emailItem": "Email: lovejoyhappinesscontact@yahoo.com",
+        "contactLinkLabel": "contact",
+        "contactLinkPrefix": "Prin pagina de"
+      },
+      "lastUpdated": "Ultima actualizare:"
+    },
+    "terms": {
+      "heading": "Termeni și Condiții",
+      "s1": {
+        "heading": "1. Acceptarea termenilor",
+        "text": "Prin accesarea și utilizarea site-ului Love Joy Happiness, acceptați să respectați și să fiți obligați de acești termeni și condiții de utilizare. Dacă nu sunteți de acord cu oricare dintre acești termeni, vă rugăm să nu utilizați site-ul nostru."
+      },
+      "s2": {
+        "heading": "2. Despre serviciile noastre",
+        "intro": "Love Joy Happiness oferă servicii de vânzare online de:",
+        "items": [
+          "Autocolante personalizate și standard",
+          "Bannere publicitare și decorative",
+          "Etichete pentru diverse utilizări",
+          "Flyere și materiale promoționale",
+          "Alte produse de imprimare și personalizare"
+        ]
+      },
+      "s3": {
+        "heading": "3. Conturi de utilizator",
+        "text": "Pentru a plasa comenzi, este posibil să fie necesar să creați un cont. Sunteți responsabili pentru menținerea confidențialității contului și parolei dumneavoastră și pentru restricționarea accesului la computerul dumneavoastră."
+      },
+      "s4": {
+        "heading": "4. Comenzi și plăți",
+        "s4_1": {
+          "heading": "4.1 Plasarea comenzilor",
+          "text": "Toate comenzile sunt supuse disponibilității produselor. Ne rezervăm dreptul de a refuza sau anula orice comandă din motive rezonabile."
+        },
+        "s4_2": {
+          "heading": "4.2 Prețuri",
+          "text": "Prețurile afișate pe site includ TVA și sunt în lei românești (RON). Ne rezervăm dreptul de a modifica prețurile fără notificare prealabilă."
+        },
+        "s4_3": {
+          "heading": "4.3 Plăți",
+          "text": "Acceptăm plăți prin card bancar, procesate securizat prin Stripe. Plata trebuie efectuată în totalitate înainte de procesarea comenzii."
+        }
+      },
+      "s5": {
+        "heading": "5. Livrare și expediere",
+        "s5_1": {
+          "heading": "5.1 Termene de livrare",
+          "text": "Termenele de livrare estimate sunt furnizate la momentul comenzii și pot varia în funcție de complexitatea produsului și destinația de livrare."
+        },
+        "s5_2": {
+          "heading": "5.2 Costuri de livrare",
+          "text": "Costurile de livrare sunt calculate în funcție de dimensiunea, greutatea și destinația comenzii și vor fi afișate înainte de finalizarea comenzii."
+        },
+        "s5_3": {
+          "heading": "5.3 Responsabilitatea pentru livrare",
+          "text": "Riscul de pierdere și titlul pentru articolele achiziționate trec la cumpărător la momentul livrării către compania de curierat."
+        }
+      },
+      "s6": {
+        "heading": "6. Returnări și rambursări",
+        "s6_1": {
+          "heading": "6.1 Produse personalizate",
+          "text": "Produsele personalizate nu pot fi returnate decât în cazul unor defecte de fabricație sau erori din partea noastră."
+        },
+        "s6_2": {
+          "heading": "6.2 Produse standard",
+          "text": "Produsele standard pot fi returnate în termen de 14 zile de la livrare, în stare originală și nefolosite."
+        },
+        "s6_3": {
+          "heading": "6.3 Procesul de returnare",
+          "text": "Pentru a iniția o returnare, contactați-ne prin email sau pagina de contact. Costurile de returnare sunt suportate de către client, cu excepția cazurilor în care produsul este defect."
+        }
+      },
+      "s7": {
+        "heading": "7. Proprietate intelectuală",
+        "text": "Toate conținuturile site-ului, inclusiv texte, grafice, logo-uri, imagini și software-ul, sunt proprietatea Love Joy Happiness și sunt protejate de legile drepturilor de autor. Pentru produse personalizate, clientul garantează că deține drepturile asupra designului furnizat."
+      },
+      "s8": {
+        "heading": "8. Limitarea răspunderii",
+        "text": "Love Joy Happiness nu va fi răspunzătoare pentru daune indirecte, incidentale sau consecutive rezultate din utilizarea produselor noastre. Răspunderea noastră totală nu va depăși valoarea produsului achiziționat."
+      },
+      "s9": {
+        "heading": "9. Modificări ale termenilor",
+        "text": "Ne rezervăm dreptul de a modifica acești termeni și condiții în orice moment. Modificările vor intra în vigoare imediat după publicarea pe site. Utilizarea continuă a site-ului constituie acceptarea modificărilor."
+      },
+      "s10": {
+        "heading": "10. Legea aplicabilă",
+        "text": "Acești termeni și condiții sunt guvernați de legile României. Orice dispute vor fi rezolvate de instanțele competente din România."
+      },
+      "s11": {
+        "heading": "11. Contact",
+        "text": "Pentru întrebări despre acești termeni și condiții, ne puteți contacta prin:",
+        "emailItem": "Email: lovejoyhappinesscontact@yahoo.com",
+        "contactLinkLabel": "contact",
+        "contactLinkPrefix": "Prin pagina de"
+      },
+      "lastUpdated": "Ultima actualizare:"
+    }
+  },
+  "errors": {
+    "paymentFailed": "A apărut o eroare la procesarea plății.",
+    "promoRequired": "Te rugăm să introduci un cod promoțional",
+    "promoInvalid": "Cod promoțional invalid. Te rugăm să verifici codul și să încerci din nou."
+  },
+  "email": {
+    "orderConfirmation": {
+      "subject": "Comanda #{orderNumber} confirmată - Love Joy Happiness",
+      "heading": "Mulțumim pentru comanda ta!",
+      "greeting": "Dragă {customerName},",
+      "intro": "Am primit cu succes comanda ta cu numărul <strong>#{orderNumber}</strong>.",
+      "detailsHeading": "Detalii comandă #{orderNumber}:",
+      "productsHeading": "Produse comandate:",
+      "subtotalLabel": "Subtotal:",
+      "discountLabel": "Reducere:",
+      "shippingLabel": "Transport:",
+      "totalLabel": "Total:",
+      "companyDetailsHeading": "Date Facturare (Persoană Juridică):",
+      "companyLabel": "Companie:",
+      "cuiLabel": "CUI:",
+      "regComLabel": "Nr. Reg. Com.:",
+      "shippingAddressHeading": "Adresa de livrare:",
+      "phoneLabel": "Telefon:",
+      "paymentMethodLabel": "Metoda de plată:",
+      "statusUpdate": "Te vom ține la curent cu statusul comenzii tale prin email.",
+      "contactLine": "Pentru orice întrebări, ne poți contacta la",
+      "signatureKindly": "Cu drag,",
+      "signatureTeam": "Echipa Love Joy Happiness"
+    },
+    "contactReply": {
+      "subject": "Mesajul tău a fost primit - Love Joy Happiness",
+      "heading": "Mulțumim pentru mesajul tău!",
+      "greeting": "Dragă {customerName},",
+      "body": "Am primit mesajul tău și îți mulțumim că ne-ai contactat. Echipa noastră va analiza cererea ta și te va contacta în cel mai scurt timp posibil.",
+      "yourMessageHeading": "Mesajul tău:",
+      "urgentHeading": "Pentru urgențe, ne poți contacta direct la:",
+      "phoneLabel": "Telefon: +40 750 485 858",
+      "emailLabel": "Email: lovejoyhappinesscontact@yahoo.com",
+      "signatureKindly": "Cu drag,",
+      "signatureTeam": "Echipa Love Joy Happiness"
+    }
+  },
+  "meta": {
+    "site": {
+      "title": "Love Joy Happiness | Etichete, Flyere și Accesorii Uleiuri Esențiale",
+      "description": "Cumpără din colecția noastră de autocolante frumoase, bannere și alte produse care aduc dragoste, bucurie și fericire în viața ta.",
+      "keywords": "autocolante, bannere, produse, dragoste, bucurie, fericire, e-commerce"
+    },
+    "home": { "title": "Love Joy Happiness | Acasă", "description": "Descoperă colecția noastră de produse personalizate care aduc dragoste, bucurie și fericire în viața ta." },
+    "products": { "title": "Produse | Love Joy Happiness", "description": "Răsfoiește toate produsele noastre personalizate: autocolante, etichete, flyere, genți, accesorii pentru uleiuri esențiale și multe altele." },
+    "about": { "title": "Despre Noi | Love Joy Happiness", "description": "Află povestea Love Joy Happiness — misiunea noastră de a aduce culoare și fericire în viața ta prin produse personalizate." },
+    "contact": { "title": "Contact | Love Joy Happiness", "description": "Contactează echipa Love Joy Happiness pentru întrebări, comenzi personalizate sau colaborări." },
+    "cart": { "title": "Coșul tău | Love Joy Happiness", "description": "Vezi produsele din coșul tău de cumpărături și finalizează comanda." },
+    "checkout": { "title": "Finalizare comandă | Love Joy Happiness", "description": "Finalizează comanda ta în siguranță la Love Joy Happiness." },
+    "checkoutSuccess": { "title": "Comandă plasată | Love Joy Happiness", "description": "Mulțumim pentru comanda ta la Love Joy Happiness." },
+    "privacy": { "title": "Politica de Confidențialitate | Love Joy Happiness", "description": "Politica de confidențialitate Love Joy Happiness — cum colectăm, folosim și protejăm datele tale." },
+    "terms": { "title": "Termeni și Condiții | Love Joy Happiness", "description": "Termenii și condițiile de utilizare a magazinului online Love Joy Happiness." }
+  }
+}
