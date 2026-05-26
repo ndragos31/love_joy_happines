@@ -47,6 +47,14 @@
       ]
     }
   },
+  "categories": {
+    "errorHeading": "Error",
+    "returnToHome": "Return to home",
+    "productCount": "{count} products",
+    "emptyHeading": "No products in this category",
+    "emptyMessage": "Please check back later or explore other categories",
+    "emptyCta": "Back to home"
+  },
   "products": {
     "listingHeading": "All Products",
     "listingSubheading": "Browse our unique collection of products designed to bring joy to your life",

@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { Category } from "@/lib/types/category";
 import { Product } from "@/lib/types/product";
 import Navbar from "@/app/[locale]/components/Navbar";
@@ -12,6 +13,7 @@ import ProductCard from "@/app/[locale]/components/ProductCard";
 export default function CategoryPage() {
   const params = useParams();
   const categorySlug = params.slug as string;
+  const t = useTranslations("categories");
 
   const [category, setCategory] = useState<Category | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
@@ -77,14 +79,14 @@ export default function CategoryPage() {
           ) : error ? (
             <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-lg text-center">
               <h2 className="text-xl font-semibold text-red-600 dark:text-red-400 mb-2">
-                Error
+                {t("errorHeading")}
               </h2>
               <p className="text-red-500 dark:text-red-300">{error}</p>
               <Link
                 href="/"
                 className="mt-4 inline-block text-primary hover:underline"
               >
-                Return to Home
+                {t("returnToHome")}
               </Link>
             </div>
           ) : (
@@ -96,7 +98,7 @@ export default function CategoryPage() {
                     {category?.name}
                   </h1>
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mt-2 md:mt-0">
-                    {products.length} produse
+                    {t("productCount", { count: products.length })}
                   </span>
                 </div>
                 {category?.description && (
@@ -115,17 +117,16 @@ export default function CategoryPage() {
               ) : (
                 <div className="text-center py-20 bg-gray-100 dark:bg-gray-800/50 rounded-lg">
                   <h3 className="text-xl font-medium text-gray-600 dark:text-gray-300">
-                    Nu există produse în această categorie
+                    {t("emptyHeading")}
                   </h3>
                   <p className="text-gray-500 dark:text-gray-400 mt-2">
-                    Vă rugăm să verificați mai târziu sau explorați alte
-                    categorii
+                    {t("emptyMessage")}
                   </p>
                   <Link
                     href="/"
                     className="mt-6 inline-block bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md"
                   >
-                    Înapoi la pagina principală
+                    {t("emptyCta")}
                   </Link>
                 </div>
               )}

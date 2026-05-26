@@ -47,6 +47,14 @@
       ]
     }
   },
+  "categories": {
+    "errorHeading": "Eroare",
+    "returnToHome": "Înapoi la pagina principală",
+    "productCount": "{count} produse",
+    "emptyHeading": "Nu există produse în această categorie",
+    "emptyMessage": "Vă rugăm să verificați mai târziu sau explorați alte categorii",
+    "emptyCta": "Înapoi la pagina principală"
+  },
   "products": {
     "listingHeading": "Toate Produsele",
     "listingSubheading": "Răsfoiește colecția noastră de produse unice concepute pentru a aduce bucurie în viața ta",
