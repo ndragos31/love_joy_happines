@@ -102,7 +102,26 @@
       "thumbnailAlt": "Imaginea produsului {number}"
     }
   },
-  "cart": {},
+  "cart": {
+    "title": "Coșul tău",
+    "empty": {
+      "heading": "Coșul tău este gol",
+      "description": "Se pare că nu ai adăugat încă niciun produs în coș.",
+      "cta": "Continuă cumpărăturile"
+    },
+    "products": "Produse ({count})",
+    "continueShopping": "Continuă cumpărăturile",
+    "clearCart": "Golește coșul",
+    "summary": {
+      "heading": "Rezumat comandă",
+      "subtotal": "Subtotal",
+      "shipping": "Transport",
+      "shippingFree": "Gratuit",
+      "total": "Total",
+      "checkout": "Finalizează comanda",
+      "vatNote": "* Preturile includ TVA. Transportul este gratuit pentru comenzi peste 200 lei."
+    }
+  },
   "checkout": {},
   "forms": {},
   "footer": {

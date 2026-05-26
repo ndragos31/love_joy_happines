@@ -1,14 +1,16 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useCart } from "@/lib/context/CartContext";
 import { getItemEffectivePrice } from "@/lib/utils/price";
+import { useTranslations } from "next-intl";
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, clearCart, subtotal } = useCart();
+  const t = useTranslations("cart");
 
   // Shipping cost calculation
   const shipping = subtotal > 200 ? 0 : 25; // Free shipping over 200 Lei
@@ -19,7 +21,7 @@ export default function CartPage() {
       <Navbar />
       <main className="flex-grow pt-8 md:pt-24 pb-16">
         <div className="container-custom py-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-8">Coșul tău</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-8">{t("title")}</h1>
 
           {items.length === 0 ? (
             <div className="text-center py-12">
@@ -39,16 +41,16 @@ export default function CartPage() {
                   />
                 </svg>
                 <h2 className="text-xl font-semibold mb-2">
-                  Coșul tău este gol
+                  {t("empty.heading")}
                 </h2>
                 <p className="text-foreground/70 mb-6">
-                  Se pare că nu ai adăugat încă niciun produs în coș.
+                  {t("empty.description")}
                 </p>
                 <Link
                   href="/products"
                   className="inline-block bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-md transition-colors"
                 >
-                  Continuă cumpărăturile
+                  {t("empty.cta")}
                 </Link>
               </div>
             </div>
@@ -59,7 +61,7 @@ export default function CartPage() {
                 <div className="bg-gray-light dark:bg-gray-800 rounded-lg overflow-hidden">
                   <div className="p-6 border-b border-gray-200 dark:border-gray-700">
                     <h2 className="text-xl font-semibold">
-                      Produse ({items.length})
+                      {t("products", { count: items.length })}
                     </h2>
                   </div>
 
@@ -205,7 +207,7 @@ export default function CartPage() {
                           d="M10 19l-7-7m0 0l7-7m-7 7h18"
                         />
                       </svg>
-                      Continuă cumpărăturile
+                      {t("continueShopping")}
                     </Link>
 
                     <button
@@ -226,7 +228,7 @@ export default function CartPage() {
                           d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                         />
                       </svg>
-                      Golește coșul
+                      {t("clearCart")}
                     </button>
                   </div>
                 </div>
@@ -236,36 +238,36 @@ export default function CartPage() {
               <div className="lg:col-span-1">
                 <div className="bg-gray-light dark:bg-gray-800 rounded-lg overflow-hidden">
                   <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <h2 className="text-xl font-semibold">Rezumat comandă</h2>
+                    <h2 className="text-xl font-semibold">{t("summary.heading")}</h2>
                   </div>
 
                   <div className="p-6">
                     <div className="space-y-4">
                       <div className="flex justify-between">
-                        <span className="text-foreground/70">Subtotal</span>
+                        <span className="text-foreground/70">{t("summary.subtotal")}</span>
                         <span className="font-medium">
                           {subtotal.toFixed(2)} lei
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-foreground/70">
-                          Transport{" "}
+                          {t("summary.shipping")}{" "}
                           {shipping === 0 && (
                             <span className="text-green-600 dark:text-green-500 text-xs ml-1">
-                              (Gratuit)
+                              ({t("summary.shippingFree")})
                             </span>
                           )}
                         </span>
                         <span className="font-medium">
                           {shipping > 0
                             ? `${shipping.toFixed(2)} lei`
-                            : "Gratuit"}
+                            : t("summary.shippingFree")}
                         </span>
                       </div>
 
                       <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
                         <div className="flex justify-between">
-                          <span className="font-semibold">Total</span>
+                          <span className="font-semibold">{t("summary.total")}</span>
                           <span className="font-bold text-xl text-primary">
                             {total.toFixed(2)} lei
                           </span>
@@ -277,13 +279,12 @@ export default function CartPage() {
                       href="/checkout"
                       className="block w-full mt-8 bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-md transition-colors text-center cursor-pointer"
                     >
-                      Finalizează comanda
+                      {t("summary.checkout")}
                     </Link>
 
                     <div className="mt-6 text-sm text-foreground/60">
                       <p>
-                        * Preturile includ TVA. Transportul este gratuit pentru
-                        comenzi peste 200 lei.
+                        {t("summary.vatNote")}
                       </p>
                     </div>
                   </div>

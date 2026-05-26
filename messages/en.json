@@ -102,7 +102,26 @@
       "thumbnailAlt": "Product image {number}"
     }
   },
-  "cart": {},
+  "cart": {
+    "title": "Your cart",
+    "empty": {
+      "heading": "Your cart is empty",
+      "description": "Looks like you haven't added any products yet.",
+      "cta": "Continue shopping"
+    },
+    "products": "Products ({count})",
+    "continueShopping": "Continue shopping",
+    "clearCart": "Clear cart",
+    "summary": {
+      "heading": "Order summary",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "shippingFree": "Free",
+      "total": "Total",
+      "checkout": "Place order",
+      "vatNote": "* Prices include VAT. Free shipping on orders over 200 lei."
+    }
+  },
   "checkout": {},
   "forms": {},
   "footer": {
