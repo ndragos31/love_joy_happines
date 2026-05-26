@@ -47,7 +47,53 @@
       ]
     }
   },
-  "products": {},
+  "products": {
+    "listingHeading": "Toate Produsele",
+    "listingSubheading": "Răsfoiește colecția noastră de produse unice concepute pentru a aduce bucurie în viața ta",
+    "loading": "Se încarcă produsele...",
+    "loadingMore": "Se încarcă mai multe produse...",
+    "loadMoreButton": "Încarcă mai multe produse",
+    "allProductsSeen": "Ai văzut toate produsele disponibile ({count} produse)",
+    "noProducts": "Nu s-au găsit produse",
+    "noProductsSubtext": "Vă rugăm să verificați mai târziu",
+    "backToHome": "Înapoi la pagina principală",
+    "error": {
+      "heading": "Eroare la încărcarea produselor",
+      "retry": "Încearcă din nou"
+    },
+    "card": {
+      "addToCartAriaLabel": "Adaugă în Coș",
+      "addToCartTooltip": "Adaugă în coș",
+      "viewProductAriaLabel": "Vezi Produsul",
+      "viewProductTooltip": "Vizualizează"
+    },
+    "detail": {
+      "loading": "Se încarcă produsul...",
+      "notFound": "Produs Negăsit",
+      "notFoundMessage": "Ne pare rău, produsul pe care îl cauți nu există.",
+      "backToProducts": "Înapoi la Produse",
+      "breadcrumbHome": "Acasă",
+      "breadcrumbProducts": "Produse",
+      "inStock": "În stoc",
+      "outOfStock": "Stoc epuizat",
+      "selectAttribute": "Selectează {name}",
+      "selectRequired": "Te rugăm să selectezi: {attributes}",
+      "quantity": "Cantitate:",
+      "adding": "Adăugare...",
+      "added": "Adăugat în coș",
+      "addToCart": "Adaugă în coș",
+      "description": "Descriere",
+      "shippingTab": "Livrare",
+      "shippingHeading": "Informații de livrare",
+      "shippingItem1": "Livrare în 24-48 de ore lucrătoare",
+      "shippingItem2": "Transport gratuit pentru comenzi peste 200 Lei",
+      "shippingItem3": "Plata ramburs sau online"
+    },
+    "gallery": {
+      "noImage": "Fără imagine",
+      "thumbnailAlt": "Imaginea produsului {number}"
+    }
+  },
   "cart": {},
   "checkout": {},
   "forms": {},

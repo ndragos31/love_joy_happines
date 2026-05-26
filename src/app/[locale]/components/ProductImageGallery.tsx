@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { ProductImage } from "@/lib/types/product";
 
 interface ProductImageGalleryProps {
@@ -13,6 +14,7 @@ export default function ProductImageGallery({
   images,
   productName,
 }: ProductImageGalleryProps) {
+  const t = useTranslations("products");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
@@ -40,7 +42,7 @@ export default function ProductImageGallery({
   if (!images || images.length === 0) {
     return (
       <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
-        <span className="text-gray-400">Fără imagine</span>
+        <span className="text-gray-400">{t("gallery.noImage")}</span>
       </div>
     );
   }
@@ -94,7 +96,7 @@ export default function ProductImageGallery({
             >
               <Image
                 src={image.src}
-                alt={image.alt || `Product image ${index + 1}`}
+                alt={image.alt || t("gallery.thumbnailAlt", { number: index + 1 })}
                 fill
                 className="object-contain p-1"
                 sizes="80px"

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { useParams } from "next/navigation";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -10,6 +11,7 @@ import { useCart } from "@/lib/context/CartContext";
 import ProductImageGallery from "@/app/[locale]/components/ProductImageGallery";
 
 export default function ProductPage() {
+  const t = useTranslations("products");
   const params = useParams();
   const productId = params.id as string;
   const { addItem } = useCart();
@@ -34,8 +36,7 @@ export default function ProductPage() {
 
         const data = await response.json();
         setProduct(data);
-        
-        // Initialize selected attributes with default values if available
+
         if (data.default_attributes && data.default_attributes.length > 0) {
           const defaults: Record<string, string> = {};
           data.default_attributes.forEach((attr: { name: string; option: string }) => {
@@ -43,7 +44,6 @@ export default function ProductPage() {
           });
           setSelectedAttributes(defaults);
         } else if (data.attributes && data.attributes.length > 0) {
-          // If no defaults, select first option for each attribute
           const defaults: Record<string, string> = {};
           data.attributes.forEach((attr: { name: string; options: string[] }) => {
             if (attr.options && attr.options.length > 0) {
@@ -52,7 +52,7 @@ export default function ProductPage() {
           });
           setSelectedAttributes(defaults);
         }
-        
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -69,27 +69,24 @@ export default function ProductPage() {
   const handleAddToCart = () => {
     if (!product) return;
 
-    // Check if all required attributes are selected
     if (product.attributes && product.attributes.length > 0) {
       const missingAttributes = product.attributes.filter(
         (attr) => !selectedAttributes[attr.name] || selectedAttributes[attr.name] === ""
       );
       if (missingAttributes.length > 0) {
-        alert(`Te rugăm să selectezi: ${missingAttributes.map(attr => attr.name).join(", ")}`);
+        alert(t("detail.selectRequired", { attributes: missingAttributes.map(attr => attr.name).join(", ") }));
         return;
       }
     }
 
     setAddingToCart(true);
 
-    // Use the cart context to add the item with attributes
     addItem(product, quantity, Object.keys(selectedAttributes).length > 0 ? selectedAttributes : undefined);
 
     setTimeout(() => {
       setAddingToCart(false);
       setAddedToCart(true);
 
-      // Reset the "added" message after 3 seconds
       setTimeout(() => {
         setAddedToCart(false);
       }, 3000);
@@ -138,7 +135,7 @@ export default function ProductPage() {
         <main className="flex-grow flex items-center justify-center bg-gray-50 dark:bg-gray-900">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <h1 className="text-2xl font-bold">Se încarcă produsul...</h1>
+            <h1 className="text-2xl font-bold">{t("detail.loading")}</h1>
           </div>
         </main>
         <Footer />
@@ -152,15 +149,15 @@ export default function ProductPage() {
         <Navbar />
         <main className="flex-grow flex items-center justify-center bg-gray-50 dark:bg-gray-900">
           <div className="text-center max-w-md p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg">
-            <h1 className="text-3xl font-bold mb-4">Produs Negăsit</h1>
+            <h1 className="text-3xl font-bold mb-4">{t("detail.notFound")}</h1>
             <p className="mb-8 text-gray-600 dark:text-gray-300">
-              Ne pare rău, produsul pe care îl cauți nu există.
+              {t("detail.notFoundMessage")}
             </p>
             <Link
               href="/products"
               className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-md inline-block"
             >
-              Înapoi la Produse
+              {t("detail.backToProducts")}
             </Link>
           </div>
         </main>
@@ -177,14 +174,14 @@ export default function ProductPage() {
           {/* Breadcrumbs */}
           <div className="mb-8 text-sm text-foreground/70">
             <Link href="/" className="hover:text-primary cursor-pointer">
-              Acasă
+              {t("detail.breadcrumbHome")}
             </Link>{" "}
             /{" "}
             <Link
               href="/products"
               className="hover:text-primary cursor-pointer"
             >
-              Produse
+              {t("detail.breadcrumbProducts")}
             </Link>{" "}
             {product.categories && product.categories.length > 0 && (
               <>
@@ -200,10 +197,10 @@ export default function ProductPage() {
             / <span className="text-foreground">{product.name}</span>
           </div>
 
-          {/* Product section - improved layout */}
+          {/* Product section */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-0">
-              {/* Product images - 5 columns on large screens */}
+              {/* Product images */}
               <div className="lg:col-span-5 p-6 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700">
                 {product.images && (
                   <ProductImageGallery
@@ -213,7 +210,7 @@ export default function ProductPage() {
                 )}
               </div>
 
-              {/* Product info - 4 columns on large screens */}
+              {/* Product info */}
               <div className="lg:col-span-4 p-6 flex flex-col border-b lg:border-b-0 lg:border-r border-gray-200 dark:border-gray-700">
                 <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
                   {product.name}
@@ -241,11 +238,11 @@ export default function ProductPage() {
                 <div className="mb-6">
                   {product.stock_status === "instock" ? (
                     <span className="px-3 py-1 text-sm font-medium text-green-700 bg-green-100 dark:bg-green-900/30 dark:text-green-500 rounded-full">
-                      În stoc
+                      {t("detail.inStock")}
                     </span>
                   ) : (
                     <span className="px-3 py-1 text-sm font-medium text-red-700 bg-red-100 dark:bg-red-900/30 dark:text-red-500 rounded-full">
-                      Stoc epuizat
+                      {t("detail.outOfStock")}
                     </span>
                   )}
                 </div>
@@ -260,13 +257,11 @@ export default function ProductPage() {
                   />
                 </div>
 
-                {/* Attribute selection (Size, Color, etc.) */}
+                {/* Attribute selection */}
                 {product.attributes && product.attributes.length > 0 && (
                   <div className="mb-6 space-y-4">
                     {product.attributes.map((attribute) => {
-                      // Parse options - split any options that contain "|" or " | "
                       const parsedOptions = attribute.options?.flatMap((option) => {
-                        // Split by " | " or "|" and trim whitespace
                         const splitOptions = option
                           .split(/\s*\|\s*/)
                           .map((opt) => opt.trim())
@@ -274,7 +269,6 @@ export default function ProductPage() {
                         return splitOptions.length > 0 ? splitOptions : [option];
                       }) || [];
 
-                      // Remove duplicates while preserving order
                       const uniqueOptions = Array.from(new Set(parsedOptions));
 
                       return (
@@ -295,7 +289,7 @@ export default function ProductPage() {
                               required
                             >
                               <option value="" disabled>
-                                Selectează {attribute.name.toLowerCase()}
+                                {t("detail.selectAttribute", { name: attribute.name.toLowerCase() })}
                               </option>
                               {uniqueOptions.map((option, index) => (
                                 <option key={`product-${product?.id || 'unknown'}-attr-${attribute.id}-opt-${index}-${option}`} value={option} className="py-2">
@@ -334,7 +328,7 @@ export default function ProductPage() {
                         htmlFor="quantity"
                         className="mr-4 font-medium text-gray-700 dark:text-gray-300"
                       >
-                        Cantitate:
+                        {t("detail.quantity")}
                       </label>
                       <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-md">
                         <button
@@ -397,7 +391,7 @@ export default function ProductPage() {
                               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                             ></path>
                           </svg>
-                          Adăugare...
+                          {t("detail.adding")}
                         </span>
                       ) : addedToCart ? (
                         <span className="flex items-center justify-center">
@@ -415,21 +409,21 @@ export default function ProductPage() {
                               d="M5 13l4 4L19 7"
                             ></path>
                           </svg>
-                          Adăugat în coș
+                          {t("detail.added")}
                         </span>
                       ) : (
-                        "Adaugă în coș"
+                        t("detail.addToCart")
                       )}
                     </button>
                   </div>
                 )}
               </div>
 
-              {/* Product description - 3 columns on large screens */}
+              {/* Product description */}
               <div className="lg:col-span-3 p-6">
                 <div className="mb-4">
                   <div className="text-lg font-medium text-primary pb-2 border-b border-gray-200 dark:border-gray-700">
-                    Descriere
+                    {t("detail.description")}
                   </div>
                 </div>
                 <div
@@ -445,14 +439,14 @@ export default function ProductPage() {
             <div className="border-b border-gray-200 dark:border-gray-700">
               <div className="flex">
                 <button className="px-6 py-3 text-sm font-medium cursor-pointer text-primary border-b-2 border-primary">
-                  Livrare
+                  {t("detail.shippingTab")}
                 </button>
               </div>
             </div>
             <div className="p-6">
               <div>
                 <h3 className="text-lg font-medium mb-4">
-                  Informații de livrare
+                  {t("detail.shippingHeading")}
                 </h3>
                 <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                   <li className="flex items-start">
@@ -469,7 +463,7 @@ export default function ProductPage() {
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
-                    Livrare în 24-48 de ore lucrătoare
+                    {t("detail.shippingItem1")}
                   </li>
                   <li className="flex items-start">
                     <svg
@@ -485,7 +479,7 @@ export default function ProductPage() {
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
-                    Transport gratuit pentru comenzi peste 200 Lei
+                    {t("detail.shippingItem2")}
                   </li>
                   <li className="flex items-start">
                     <svg
@@ -501,7 +495,7 @@ export default function ProductPage() {
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
-                    Plata ramburs sau online
+                    {t("detail.shippingItem3")}
                   </li>
                 </ul>
               </div>

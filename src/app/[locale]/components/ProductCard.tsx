@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { useCart } from "@/lib/context/CartContext";
 import { Product } from "@/lib/types/product";
 
@@ -11,6 +12,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const t = useTranslations("products");
   const [isHovered, setIsHovered] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const { addItem } = useCart();
@@ -20,10 +22,8 @@ export default function ProductCard({ product }: ProductCardProps) {
     e.stopPropagation();
     setIsAdding(true);
 
-    // Add product to cart
     addItem(product, 1);
 
-    // Reset adding state after animation
     setTimeout(() => {
       setIsAdding(false);
     }, 1000);
@@ -82,7 +82,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 className={`${
                   isAdding ? "bg-green-500" : "bg-secondary hover:opacity-90"
                 } text-white p-2 rounded-full transition-all cursor-pointer`}
-                aria-label="Adaugă în Coș"
+                aria-label={t("card.addToCartAriaLabel")}
                 onClick={handleAddToCart}
                 disabled={isAdding}
               >
@@ -125,7 +125,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 )}
               </button>
               <div className="absolute bottom-full mb-2 -left-5 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none z-10">
-                Adaugă în coș
+                {t("card.addToCartTooltip")}
               </div>
             </div>
 
@@ -133,7 +133,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               <Link href={`/products/${product.id}`}>
                 <button
                   className="bg-gray-light dark:bg-gray-700 text-foreground p-2 rounded-full hover:bg-gray-medium dark:hover:bg-gray-600 transition-colors cursor-pointer"
-                  aria-label="Vezi Produsul"
+                  aria-label={t("card.viewProductAriaLabel")}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -158,7 +158,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 </button>
               </Link>
               <div className="absolute -top-8 -left-10 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none z-10">
-                Vizualizează
+                {t("card.viewProductTooltip")}
               </div>
             </div>
           </div>

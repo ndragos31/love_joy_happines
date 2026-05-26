@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { Product } from "@/lib/types/product";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -14,6 +15,7 @@ interface PaginatedResponse {
 }
 
 export default function ProductsPage() {
+  const t = useTranslations("products");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -50,17 +52,15 @@ export default function ProductsPage() {
           setProducts(data.products);
         } else {
           setProducts((prev) => {
-            // Create a Set of existing product IDs to prevent duplicates
             const existingIds = new Set(prev.map((p) => p.id));
             const newProducts = data.products.filter(
               (p) => !existingIds.has(p.id)
             );
 
-            // Only update state if there are new products to add
             if (newProducts.length > 0) {
               return [...prev, ...newProducts];
             } else {
-              return prev; // Return the same array to prevent unnecessary re-renders
+              return prev;
             }
           });
         }
@@ -112,21 +112,19 @@ export default function ProductsPage() {
     fetchProducts,
   ]);
 
-  // Scroll event handler with debounce
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
 
     const handleScroll = () => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
-        // Trigger load more when user is 500px from bottom
         if (
           window.innerHeight + document.documentElement.scrollTop + 500 >=
           document.documentElement.scrollHeight
         ) {
           loadMoreProducts();
         }
-      }, 100); // 100ms debounce
+      }, 100);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -136,13 +134,12 @@ export default function ProductsPage() {
     };
   }, [loadMoreProducts]);
 
-  // Initial load
   useEffect(() => {
     if (!initialLoadRef.current) {
       initialLoadRef.current = true;
       fetchProducts(1, true);
     }
-  }, [fetchProducts]); // Include fetchProducts in dependency array
+  }, [fetchProducts]);
 
   const retryFetch = () => {
     setError("");
@@ -156,23 +153,22 @@ export default function ProductsPage() {
         <div className="container-custom">
           <div className="mb-10">
             <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Toate Produsele
+              {t("listingHeading")}
             </h1>
             <p className="text-foreground/70 max-w-3xl">
-              Răsfoiește colecția noastră de produse unice concepute pentru a
-              aduce bucurie în viața ta
+              {t("listingSubheading")}
             </p>
           </div>
 
           {loading ? (
             <div className="flex flex-col justify-center items-center py-20">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-              <p className="text-foreground/70">Se încarcă produsele...</p>
+              <p className="text-foreground/70">{t("loading")}</p>
             </div>
           ) : error ? (
             <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-lg text-center">
               <h2 className="text-xl font-semibold text-red-600 dark:text-red-400 mb-2">
-                Eroare la încărcarea produselor
+                {t("error.heading")}
               </h2>
               <p className="text-red-500 dark:text-red-300 mb-4">{error}</p>
               <div className="flex justify-center gap-4">
@@ -180,13 +176,13 @@ export default function ProductsPage() {
                   onClick={retryFetch}
                   className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md transition-colors"
                 >
-                  Încearcă din nou
+                  {t("error.retry")}
                 </button>
                 <Link
                   href="/"
                   className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors"
                 >
-                  Înapoi la pagina principală
+                  {t("backToHome")}
                 </Link>
               </div>
             </div>
@@ -201,34 +197,30 @@ export default function ProductsPage() {
                 ))}
               </div>
 
-              {/* Loading more indicator */}
               {loadingMore && (
                 <div className="flex justify-center items-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                   <span className="ml-2 text-foreground/70">
-                    Se încarcă mai multe produse...
+                    {t("loadingMore")}
                   </span>
                 </div>
               )}
 
-              {/* Load more button (fallback for users who prefer clicking) */}
               {!loadingMore && hasMore && (
                 <div className="flex justify-center mt-8">
                   <button
                     onClick={loadMoreProducts}
                     className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-md font-medium transition-colors"
                   >
-                    Încarcă mai multe produse
+                    {t("loadMoreButton")}
                   </button>
                 </div>
               )}
 
-              {/* End of products message */}
               {!hasMore && products.length > 0 && (
                 <div className="text-center py-8">
                   <p className="text-foreground/70">
-                    Ai văzut toate produsele disponibile ({products.length}{" "}
-                    produse)
+                    {t("allProductsSeen", { count: products.length })}
                   </p>
                 </div>
               )}
@@ -236,16 +228,16 @@ export default function ProductsPage() {
           ) : (
             <div className="text-center py-20 bg-gray-100 dark:bg-gray-800/50 rounded-lg">
               <h3 className="text-xl font-medium text-gray-600 dark:text-gray-300">
-                Nu s-au găsit produse
+                {t("noProducts")}
               </h3>
               <p className="text-gray-500 dark:text-gray-400 mt-2">
-                Vă rugăm să verificați mai târziu
+                {t("noProductsSubtext")}
               </p>
               <Link
                 href="/"
                 className="mt-6 inline-block bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md"
               >
-                Înapoi la pagina principală
+                {t("backToHome")}
               </Link>
             </div>
           )}

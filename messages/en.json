@@ -47,7 +47,53 @@
       ]
     }
   },
-  "products": {},
+  "products": {
+    "listingHeading": "All Products",
+    "listingSubheading": "Browse our unique collection of products designed to bring joy to your life",
+    "loading": "Loading products...",
+    "loadingMore": "Loading more products...",
+    "loadMoreButton": "Load more products",
+    "allProductsSeen": "You've seen all available products ({count} products)",
+    "noProducts": "No products found",
+    "noProductsSubtext": "Please check back later",
+    "backToHome": "Back to home",
+    "error": {
+      "heading": "Error loading products",
+      "retry": "Try again"
+    },
+    "card": {
+      "addToCartAriaLabel": "Add to Cart",
+      "addToCartTooltip": "Add to cart",
+      "viewProductAriaLabel": "View Product",
+      "viewProductTooltip": "View"
+    },
+    "detail": {
+      "loading": "Loading product...",
+      "notFound": "Product Not Found",
+      "notFoundMessage": "Sorry, the product you're looking for doesn't exist.",
+      "backToProducts": "Back to Products",
+      "breadcrumbHome": "Home",
+      "breadcrumbProducts": "Products",
+      "inStock": "In stock",
+      "outOfStock": "Out of stock",
+      "selectAttribute": "Select {name}",
+      "selectRequired": "Please select: {attributes}",
+      "quantity": "Quantity:",
+      "adding": "Adding...",
+      "added": "Added to cart",
+      "addToCart": "Add to cart",
+      "description": "Description",
+      "shippingTab": "Shipping",
+      "shippingHeading": "Shipping information",
+      "shippingItem1": "Delivery in 24-48 business hours",
+      "shippingItem2": "Free shipping on orders over 200 Lei",
+      "shippingItem3": "Cash on delivery or online payment"
+    },
+    "gallery": {
+      "noImage": "No image",
+      "thumbnailAlt": "Product image {number}"
+    }
+  },
   "cart": {},
   "checkout": {},
   "forms": {},
