@@ -1,9 +1,15 @@
 "use client";
 
+import { useTranslations, useLocale } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function TermsPage() {
+  const t = useTranslations("legal.terms");
+  const locale = useLocale();
+  const s2Items = t.raw("s2.items") as string[];
+
   return (
     <>
       <Navbar />
@@ -11,84 +17,69 @@ export default function TermsPage() {
         <div className="container-custom pt-24 pb-16">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl font-bold text-center mb-8 text-primary">
-              Termeni și Condiții
+              {t("heading")}
             </h1>
 
             <div className="prose prose-lg max-w-none space-y-8">
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  1. Acceptarea termenilor
+                  {t("s1.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed">
-                  Prin accesarea și utilizarea site-ului Love Joy Happiness,
-                  acceptați să respectați și să fiți obligați de acești termeni
-                  și condiții de utilizare. Dacă nu sunteți de acord cu oricare
-                  dintre acești termeni, vă rugăm să nu utilizați site-ul
-                  nostru.
+                  {t("s1.text")}
                 </p>
               </div>
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  2. Despre serviciile noastre
+                  {t("s2.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed mb-4">
-                  Love Joy Happiness oferă servicii de vânzare online de:
+                  {t("s2.intro")}
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-foreground">
-                  <li>Autocolante personalizate și standard</li>
-                  <li>Bannere publicitare și decorative</li>
-                  <li>Etichete pentru diverse utilizări</li>
-                  <li>Flyere și materiale promoționale</li>
-                  <li>Alte produse de imprimare și personalizare</li>
+                  {s2Items.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
                 </ul>
               </div>
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  3. Conturi de utilizator
+                  {t("s3.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed">
-                  Pentru a plasa comenzi, este posibil să fie necesar să creați
-                  un cont. Sunteți responsabili pentru menținerea
-                  confidențialității contului și parolei dumneavoastră și pentru
-                  restricționarea accesului la computerul dumneavoastră.
+                  {t("s3.text")}
                 </p>
               </div>
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  4. Comenzi și plăți
+                  {t("s4.heading")}
                 </h2>
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-lg font-medium mb-2 text-primary">
-                      4.1 Plasarea comenzilor
+                      {t("s4.s4_1.heading")}
                     </h3>
                     <p className="text-foreground leading-relaxed">
-                      Toate comenzile sunt supuse disponibilității produselor.
-                      Ne rezervăm dreptul de a refuza sau anula orice comandă
-                      din motive rezonabile.
+                      {t("s4.s4_1.text")}
                     </p>
                   </div>
                   <div>
                     <h3 className="text-lg font-medium mb-2 text-primary">
-                      4.2 Prețuri
+                      {t("s4.s4_2.heading")}
                     </h3>
                     <p className="text-foreground leading-relaxed">
-                      Prețurile afișate pe site includ TVA și sunt în lei
-                      românești (RON). Ne rezervăm dreptul de a modifica
-                      prețurile fără notificare prealabilă.
+                      {t("s4.s4_2.text")}
                     </p>
                   </div>
                   <div>
                     <h3 className="text-lg font-medium mb-2 text-primary">
-                      4.3 Plăți
+                      {t("s4.s4_3.heading")}
                     </h3>
                     <p className="text-foreground leading-relaxed">
-                      Acceptăm plăți prin card bancar, procesate securizat prin
-                      Stripe. Plata trebuie efectuată în totalitate înainte de
-                      procesarea comenzii.
+                      {t("s4.s4_3.text")}
                     </p>
                   </div>
                 </div>
@@ -96,37 +87,31 @@ export default function TermsPage() {
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  5. Livrare și expediere
+                  {t("s5.heading")}
                 </h2>
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-lg font-medium mb-2 text-primary">
-                      5.1 Termene de livrare
+                      {t("s5.s5_1.heading")}
                     </h3>
                     <p className="text-foreground leading-relaxed">
-                      Termenele de livrare estimate sunt furnizate la momentul
-                      comenzii și pot varia în funcție de complexitatea
-                      produsului și destinația de livrare.
+                      {t("s5.s5_1.text")}
                     </p>
                   </div>
                   <div>
                     <h3 className="text-lg font-medium mb-2 text-primary">
-                      5.2 Costuri de livrare
+                      {t("s5.s5_2.heading")}
                     </h3>
                     <p className="text-foreground leading-relaxed">
-                      Costurile de livrare sunt calculate în funcție de
-                      dimensiunea, greutatea și destinația comenzii și vor fi
-                      afișate înainte de finalizarea comenzii.
+                      {t("s5.s5_2.text")}
                     </p>
                   </div>
                   <div>
                     <h3 className="text-lg font-medium mb-2 text-primary">
-                      5.3 Responsabilitatea pentru livrare
+                      {t("s5.s5_3.heading")}
                     </h3>
                     <p className="text-foreground leading-relaxed">
-                      Riscul de pierdere și titlul pentru articolele
-                      achiziționate trec la cumpărător la momentul livrării
-                      către compania de curierat.
+                      {t("s5.s5_3.text")}
                     </p>
                   </div>
                 </div>
@@ -134,36 +119,31 @@ export default function TermsPage() {
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  6. Returnări și rambursări
+                  {t("s6.heading")}
                 </h2>
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-lg font-medium mb-2 text-primary">
-                      6.1 Produse personalizate
+                      {t("s6.s6_1.heading")}
                     </h3>
                     <p className="text-foreground leading-relaxed">
-                      Produsele personalizate nu pot fi returnate decât în cazul
-                      unor defecte de fabricație sau erori din partea noastră.
+                      {t("s6.s6_1.text")}
                     </p>
                   </div>
                   <div>
                     <h3 className="text-lg font-medium mb-2 text-primary">
-                      6.2 Produse standard
+                      {t("s6.s6_2.heading")}
                     </h3>
                     <p className="text-foreground leading-relaxed">
-                      Produsele standard pot fi returnate în termen de 14 zile
-                      de la livrare, în stare originală și nefolosite.
+                      {t("s6.s6_2.text")}
                     </p>
                   </div>
                   <div>
                     <h3 className="text-lg font-medium mb-2 text-primary">
-                      6.3 Procesul de returnare
+                      {t("s6.s6_3.heading")}
                     </h3>
                     <p className="text-foreground leading-relaxed">
-                      Pentru a iniția o returnare, contactați-ne prin email sau
-                      pagina de contact. Costurile de returnare sunt suportate
-                      de către client, cu excepția cazurilor în care produsul
-                      este defect.
+                      {t("s6.s6_3.text")}
                     </p>
                   </div>
                 </div>
@@ -171,74 +151,61 @@ export default function TermsPage() {
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  7. Proprietate intelectuală
+                  {t("s7.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed">
-                  Toate conținuturile site-ului, inclusiv texte, grafice,
-                  logo-uri, imagini și software-ul, sunt proprietatea Love Joy
-                  Happiness și sunt protejate de legile drepturilor de autor.
-                  Pentru produse personalizate, clientul garantează că deține
-                  drepturile asupra designului furnizat.
+                  {t("s7.text")}
                 </p>
               </div>
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  8. Limitarea răspunderii
+                  {t("s8.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed">
-                  Love Joy Happiness nu va fi răspunzătoare pentru daune
-                  indirecte, incidentale sau consecutive rezultate din
-                  utilizarea produselor noastre. Răspunderea noastră totală nu
-                  va depăși valoarea produsului achiziționat.
+                  {t("s8.text")}
                 </p>
               </div>
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  9. Modificări ale termenilor
+                  {t("s9.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed">
-                  Ne rezervăm dreptul de a modifica acești termeni și condiții
-                  în orice moment. Modificările vor intra în vigoare imediat
-                  după publicarea pe site. Utilizarea continuă a site-ului
-                  constituie acceptarea modificărilor.
+                  {t("s9.text")}
                 </p>
               </div>
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  10. Legea aplicabilă
+                  {t("s10.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed">
-                  Acești termeni și condiții sunt guvernați de legile României.
-                  Orice dispute vor fi rezolvate de instanțele competente din
-                  România.
+                  {t("s10.text")}
                 </p>
               </div>
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  11. Contact
+                  {t("s11.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed">
-                  Pentru întrebări despre acești termeni și condiții, ne puteți
-                  contacta prin:
+                  {t("s11.text")}
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-foreground mt-4">
-                  <li>Email: lovejoyhappinesscontact@yahoo.com</li>
+                  <li>{t("s11.emailItem")}</li>
                   <li>
-                    Prin pagina de{" "}
-                    <a href="/contact" className="text-primary hover:underline">
-                      contact
-                    </a>
+                    {t("s11.contactLinkPrefix")}{" "}
+                    <Link href="/contact" className="text-primary hover:underline">
+                      {t("s11.contactLinkLabel")}
+                    </Link>
                   </li>
                 </ul>
               </div>
 
               <div className="text-center mt-8 p-4 bg-primary/5 rounded-lg">
                 <p className="text-sm text-foreground">
-                  Ultima actualizare: {new Date().toLocaleDateString("ro-RO")}
+                  {t("lastUpdated")} {new Date().toLocaleDateString(locale === "en" ? "en-GB" : "ro-RO")}
                 </p>
               </div>
             </div>

@@ -1,9 +1,17 @@
 "use client";
 
+import { useTranslations, useLocale } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function PrivacyPage() {
+  const t = useTranslations("legal.privacy");
+  const locale = useLocale();
+  const s2Items = t.raw("s2.items") as string[];
+  const s3Items = t.raw("s3.items") as string[];
+  const s7Items = t.raw("s7.items") as string[];
+
   return (
     <>
       <Navbar />
@@ -11,184 +19,127 @@ export default function PrivacyPage() {
         <div className="container-custom pt-24 pb-16">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl font-bold text-center mb-8 text-primary">
-              Politica de Confidențialitate
+              {t("heading")}
             </h1>
 
             <div className="prose prose-lg max-w-none space-y-8">
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  1. Introducere
+                  {t("s1.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed">
-                  Love Joy Happiness se angajează să protejeze
-                  confidențialitatea vizitatorilor site-ului nostru. Această
-                  politică explică cum colectăm, utilizăm și protejăm
-                  informațiile dumneavoastră personale când folosiți site-ul
-                  nostru și serviciile noastre.
+                  {t("s1.text")}
                 </p>
               </div>
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  2. Informații pe care le colectăm
+                  {t("s2.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed mb-4">
-                  Colectăm următoarele tipuri de informații:
+                  {t("s2.intro")}
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-foreground">
-                  <li>
-                    Informații de contact: nume, adresa de email, numărul de
-                    telefon
-                  </li>
-                  <li>
-                    Informații de livrare: adresa de livrare, preferințele de
-                    livrare
-                  </li>
-                  <li>
-                    Informații despre comenzi: istoricul achizițiilor,
-                    preferințele de produse
-                  </li>
-                  <li>
-                    Informații tehnice: adresa IP, tipul de browser (colectate
-                    automat de server)
-                  </li>
-                  <li>
-                    Informații de plată: procesate securizat prin Stripe (nu
-                    stocăm datele cardurilor)
-                  </li>
+                  {s2Items.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
                 </ul>
               </div>
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  3. Cum folosim informațiile
+                  {t("s3.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed mb-4">
-                  Folosim informațiile colectate pentru:
+                  {t("s3.intro")}
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-foreground">
-                  <li>Procesarea și livrarea comenzilor dumneavoastră</li>
-                  <li>
-                    Comunicarea cu dumneavoastră despre comenzi și servicii
-                  </li>
-                  <li>Îmbunătățirea experienței pe site-ul nostru</li>
-                  <li>
-                    Trimiterea de actualizări despre produse noi (doar cu
-                    acordul dumneavoastră)
-                  </li>
-                  <li>Respectarea obligațiilor legale și fiscale</li>
+                  {s3Items.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
                 </ul>
               </div>
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  4. Partajarea informațiilor
+                  {t("s4.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed">
-                  Nu vindem, închiriem sau împărtășim informațiile dumneavoastră
-                  personale cu terțe părți, cu excepția următoarelor situații:
-                  servicii de livrare pentru expedierea comenzilor, procesatori
-                  de plăți pentru tranzacții securizate, sau când este cerut de
-                  lege.
+                  {t("s4.text")}
                 </p>
               </div>
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  5. Securitatea datelor
+                  {t("s5.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed">
-                  Implementăm măsuri de securitate tehnice și organizatorice
-                  pentru a proteja informațiile dumneavoastră împotriva
-                  accesului neautorizat, alterării, divulgării sau distrugerii.
-                  Toate tranzacțiile sunt procesate prin Stripe cu criptare SSL.
+                  {t("s5.text")}
                 </p>
               </div>
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  6. Stocarea datelor locale
+                  {t("s6.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed">
-                  Site-ul nostru nu folosește cookie-uri. În schimb, folosim
-                  localStorage pentru a stoca temporar produsele din coșul de
-                  cumpărături pe dispozitivul dumneavoastră. Aceste informații
-                  rămân doar pe calculatorul dumneavoastră și nu sunt trimise
-                  către serverele noastre decât când plasați o comandă.
+                  {t("s6.text")}
                 </p>
               </div>
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  7. Drepturile dumneavoastră
+                  {t("s7.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed mb-4">
-                  Conform GDPR, aveți următoarele drepturi:
+                  {t("s7.intro")}
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-foreground">
-                  <li>
-                    Dreptul de acces la informațiile dumneavoastră personale
-                  </li>
-                  <li>Dreptul de rectificare a datelor incorecte</li>
-                  <li>
-                    Dreptul de ștergere a datelor (&ldquo;dreptul de a fi
-                    uitat&rdquo;)
-                  </li>
-                  <li>Dreptul de restricționare a prelucrării</li>
-                  <li>Dreptul la portabilitatea datelor</li>
-                  <li>Dreptul de opoziție la prelucrare</li>
+                  {s7Items.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
                 </ul>
               </div>
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  8. Reținerea datelor
+                  {t("s8.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed">
-                  Păstrăm informațiile dumneavoastră personale doar atât timp
-                  cât este necesar pentru îndeplinirea scopurilor pentru care au
-                  fost colectate, inclusiv pentru respectarea obligațiilor
-                  legale, rezolvarea disputelor și aplicarea acordurilor
-                  noastre.
+                  {t("s8.text")}
                 </p>
               </div>
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  9. Modificări ale politicii
+                  {t("s9.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed">
-                  Ne rezervăm dreptul de a actualiza această politică de
-                  confidențialitate în orice moment. Modificările vor fi
-                  publicate pe această pagină cu data actualizării. Utilizarea
-                  continuă a site-ului după modificări constituie acceptarea
-                  noii politici.
+                  {t("s9.text")}
                 </p>
               </div>
 
               <div className="bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  10. Contact
+                  {t("s10.heading")}
                 </h2>
                 <p className="text-foreground leading-relaxed">
-                  Pentru întrebări despre această politică de confidențialitate
-                  sau despre modul în care gestionăm datele dumneavoastră, ne
-                  puteți contacta prin:
+                  {t("s10.text")}
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-foreground mt-4">
-                  <li>Email: lovejoyhappinesscontact@yahoo.com</li>
+                  <li>{t("s10.emailItem")}</li>
                   <li>
-                    Prin pagina de{" "}
-                    <a href="/contact" className="text-primary hover:underline">
-                      contact
-                    </a>
+                    {t("s10.contactLinkPrefix")}{" "}
+                    <Link href="/contact" className="text-primary hover:underline">
+                      {t("s10.contactLinkLabel")}
+                    </Link>
                   </li>
                 </ul>
               </div>
 
               <div className="text-center mt-8 p-4 bg-primary/5 rounded-lg">
                 <p className="text-sm text-foreground">
-                  Ultima actualizare: {new Date().toLocaleDateString("ro-RO")}
+                  {t("lastUpdated")} {new Date().toLocaleDateString(locale === "en" ? "en-GB" : "ro-RO")}
                 </p>
               </div>
             </div>

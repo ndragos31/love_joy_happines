@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Image from "next/image";
 
 export default function ContactPage() {
+  const t = useTranslations("legal.contact");
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -72,18 +75,16 @@ export default function ContactPage() {
         <section className="py-8">
           <div className="container-custom">
             <h1 className="text-3xl md:text-4xl font-bold mb-8">
-              Contactează-ne
+              {t("heading")}
             </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
               <div>
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  Trimite-ne un mesaj
+                  {t("form.heading")}
                 </h2>
                 <p className="text-foreground/80 mb-6">
-                  Ai întrebări, sugestii sau dorești să plasezi o comandă
-                  personalizată? Completează formularul de mai jos și te vom
-                  contacta cât mai curând.
+                  {t("form.intro")}
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -92,7 +93,7 @@ export default function ContactPage() {
                       htmlFor="name"
                       className="block text-sm font-medium mb-1"
                     >
-                      Nume complet
+                      {t("form.nameLabelText")}
                     </label>
                     <input
                       type="text"
@@ -102,7 +103,7 @@ export default function ContactPage() {
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800"
-                      placeholder="Numele tău complet"
+                      placeholder={t("form.namePlaceholder")}
                     />
                   </div>
 
@@ -111,7 +112,7 @@ export default function ContactPage() {
                       htmlFor="email"
                       className="block text-sm font-medium mb-1"
                     >
-                      Email
+                      {t("form.emailLabelText")}
                     </label>
                     <input
                       type="email"
@@ -121,7 +122,7 @@ export default function ContactPage() {
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800"
-                      placeholder="email@exemplu.com"
+                      placeholder={t("form.emailPlaceholder")}
                     />
                   </div>
 
@@ -130,7 +131,7 @@ export default function ContactPage() {
                       htmlFor="message"
                       className="block text-sm font-medium mb-1"
                     >
-                      Mesaj
+                      {t("form.messageLabelText")}
                     </label>
                     <textarea
                       id="message"
@@ -140,7 +141,7 @@ export default function ContactPage() {
                       required
                       rows={5}
                       className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800"
-                      placeholder="Scrie-ne mesajul tău aici..."
+                      placeholder={t("form.messagePlaceholder")}
                     ></textarea>
                   </div>
 
@@ -153,20 +154,18 @@ export default function ContactPage() {
                         : "bg-primary hover:bg-primary/90"
                     }`}
                   >
-                    {isSubmitting ? "Se trimite..." : "Trimite mesajul"}
+                    {isSubmitting ? t("form.submitting") : t("form.submit")}
                   </button>
 
                   {submitSuccess && (
                     <div className="p-4 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-100 rounded-md mt-4">
-                      Mesajul tău a fost trimis cu succes! Te vom contacta în
-                      curând.
+                      {t("form.successMessage")}
                     </div>
                   )}
 
                   {submitError && (
                     <div className="p-4 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-100 rounded-md mt-4">
-                      A apărut o eroare la trimiterea mesajului. Te rugăm să
-                      încerci din nou.
+                      {t("form.errorMessage")}
                     </div>
                   )}
                 </form>
@@ -174,7 +173,7 @@ export default function ContactPage() {
 
               <div>
                 <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  Informații de contact
+                  {t("info.heading")}
                 </h2>
 
                 <div className="bg-gray-light dark:bg-gray-800 rounded-lg p-6 mb-6">
@@ -196,7 +195,7 @@ export default function ContactPage() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-semibold mb-1">Telefon</h3>
+                      <h3 className="font-semibold mb-1">{t("info.phoneHeading")}</h3>
                       <p className="text-foreground/80">+40 750 485 858</p>
                     </div>
                   </div>
@@ -219,7 +218,7 @@ export default function ContactPage() {
                       </svg>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-semibold mb-1">Email</h3>
+                      <h3 className="font-semibold mb-1">{t("info.emailHeading")}</h3>
                       <p className="text-foreground/80 break-all sm:break-normal text-sm sm:text-base">
                         lovejoyhappinesscontact@yahoo.com
                       </p>
@@ -237,12 +236,10 @@ export default function ContactPage() {
                   />
                   <div className="w-full bg-primary/5 rounded-lg p-6">
                     <p className="text-center text-foreground/80 italic mb-2">
-                      &ldquo;Creăm momente de fericire și bucurie pentru fiecare
-                      client&rdquo;
+                      &ldquo;{t("info.quote1")}&rdquo;
                     </p>
                     <p className="text-center text-foreground/80 italic">
-                      &ldquo;Fiecare comandă este realizată cu dragoste și
-                      atenție la detalii&rdquo;
+                      &ldquo;{t("info.quote2")}&rdquo;
                     </p>
                   </div>
                 </div>
@@ -251,7 +248,7 @@ export default function ContactPage() {
 
             <div className="bg-gray-light dark:bg-gray-800 rounded-lg p-6">
               <h2 className="text-2xl font-semibold mb-4 text-center">
-                Urmărește-ne
+                {t("social.heading")}
               </h2>
               <div className="flex justify-center space-x-6">
                 <a
