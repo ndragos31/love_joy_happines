@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { navItems, userNavItems } from "@/lib/constants/navigation";
 import { useCart } from "@/lib/context/CartContext";
+import LanguageToggle from "./LanguageToggle";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,6 +36,7 @@ export default function Navbar() {
 
           {/* Cart and Account */}
           <div className="hidden md:flex items-center space-x-4">
+            <LanguageToggle />
             {userNavItems.map((item) => (
               <Link
                 key={item.href}
@@ -113,6 +115,7 @@ export default function Navbar() {
                 </Link>
               ))}
               <div className="flex space-x-4 pt-2">
+                <LanguageToggle />
                 {userNavItems.map((item) => (
                   <Link
                     key={item.href}
