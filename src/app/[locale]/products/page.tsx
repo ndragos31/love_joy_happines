@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Product } from "@/lib/types/product";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import ProductCard from "@/app/components/ProductCard";
+import ProductCard from "@/app/[locale]/components/ProductCard";
 
 interface PaginatedResponse {
   products: Product[];

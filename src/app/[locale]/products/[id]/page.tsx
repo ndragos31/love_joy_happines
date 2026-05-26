@@ -7,7 +7,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { Product } from "@/lib/types/product";
 import { useCart } from "@/lib/context/CartContext";
-import ProductImageGallery from "@/app/components/ProductImageGallery";
+import ProductImageGallery from "@/app/[locale]/components/ProductImageGallery";
 
 export default function ProductPage() {
   const params = useParams();

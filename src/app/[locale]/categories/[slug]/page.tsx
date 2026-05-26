@@ -5,9 +5,9 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Category } from "@/lib/types/category";
 import { Product } from "@/lib/types/product";
-import Navbar from "@/app/components/Navbar";
-import Footer from "@/app/components/Footer";
-import ProductCard from "@/app/components/ProductCard";
+import Navbar from "@/app/[locale]/components/Navbar";
+import Footer from "@/app/[locale]/components/Footer";
+import ProductCard from "@/app/[locale]/components/ProductCard";
 
 export default function CategoryPage() {
   const params = useParams();
