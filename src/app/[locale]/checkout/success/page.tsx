@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useCart } from "@/lib/context/CartContext";
 import Navbar from "../../components/Navbar";
@@ -36,6 +36,7 @@ interface OrderData {
 
 export default function SuccessPage() {
   const t = useTranslations("checkout");
+  const locale = useLocale();
   const { clearCart } = useCart();
   const [emailsSent, setEmailsSent] = useState(false);
   const [cartCleared, setCartCleared] = useState(false);
@@ -56,7 +57,7 @@ export default function SuccessPage() {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(orderData),
+            body: JSON.stringify({ ...orderData, locale }),
           });
 
           if (response.ok) {
@@ -93,7 +94,7 @@ export default function SuccessPage() {
     if (!emailsSent) {
       sendOrderEmails();
     }
-  }, [emailsSent, cartCleared, clearCart]);
+  }, [emailsSent, cartCleared, clearCart, locale]);
 
   return (
     <div className="min-h-screen flex flex-col">

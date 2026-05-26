@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { v4 as uuidv4 } from "uuid";
 import Navbar from "../components/Navbar";
@@ -129,6 +129,7 @@ export default function CheckoutPage() {
   const t = useTranslations("checkout");
   const tForms = useTranslations("forms");
   const tErrors = useTranslations("errors");
+  const locale = useLocale();
   const [step, setStep] = useState(1);
   const { items, subtotal, clearCart, removeItem } = useCart();
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -303,7 +304,7 @@ export default function CheckoutPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(orderDetails),
+        body: JSON.stringify({ ...orderDetails, locale }),
       });
 
       if (!response.ok) {

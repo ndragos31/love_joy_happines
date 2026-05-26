@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { sendCustomerOrderConfirmation, sendCompanyOrderNotification } from "@/lib/emailService";
+import { hasLocale } from "next-intl";
+import { routing } from "@/i18n/routing";
 
 // Simple in-memory cache to prevent duplicate email sends
 const processedOrders = new Map<string, number>();
@@ -61,7 +63,9 @@ const markOrderAsProcessed = (orderNumber: string): void => {
 
 export async function POST(req: Request) {
   try {
-    const order: OrderDetails = await req.json();
+    const body: OrderDetails & { locale?: string } = await req.json();
+    const { locale: rawLocale, ...order } = body;
+    const locale = hasLocale(routing.locales, rawLocale) ? rawLocale : routing.defaultLocale;
 
     // Check if this order was recently processed
     if (isOrderRecentlyProcessed(order.orderNumber)) {
@@ -76,9 +80,9 @@ export async function POST(req: Request) {
     markOrderAsProcessed(order.orderNumber);
 
     // Send customer confirmation email first
-    const customerEmail = await sendCustomerOrderConfirmation(order);
+    const customerEmail = await sendCustomerOrderConfirmation(order, locale);
 
-    // Send company notification email
+    // Send company notification email (always Romanian)
     const companyEmail = await sendCompanyOrderNotification(order);
 
     return NextResponse.json({

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { sendContactFormEmails } from "@/lib/emailService";
+import { hasLocale } from "next-intl";
+import { routing } from "@/i18n/routing";
 
 interface ContactFormData {
   name: string;
@@ -9,10 +11,11 @@ interface ContactFormData {
 
 export async function POST(req: Request) {
   try {
-    const { name, email, message }: ContactFormData = await req.json();
+    const { name, email, message, locale: rawLocale }: ContactFormData & { locale?: string } = await req.json();
+    const locale = hasLocale(routing.locales, rawLocale) ? rawLocale : routing.defaultLocale;
 
     // Send both emails using the new email service
-    const result = await sendContactFormEmails({ name, email, message });
+    const result = await sendContactFormEmails({ name, email, message }, locale);
 
     return NextResponse.json({
       success: true,
