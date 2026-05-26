@@ -815,6 +815,7 @@ export default function CheckoutPage() {
                         stripe={stripePromise}
                         options={{
                           clientSecret,
+                          locale: locale === "en" ? "en" : "ro",
                           appearance: {
                             theme: "stripe",
                             variables: {
