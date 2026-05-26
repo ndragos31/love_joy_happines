@@ -1,5 +1,14 @@
 {
-  "nav": {},
+  "nav": {
+    "home": "Acasă",
+    "products": "Produse",
+    "about": "Despre Noi",
+    "contact": "Contact",
+    "cart": "Coș",
+    "myCart": "Coșul meu",
+    "menuOpen": "Deschide meniul",
+    "menuClose": "Închide meniul"
+  },
   "home": {},
   "products": {},
   "cart": {},

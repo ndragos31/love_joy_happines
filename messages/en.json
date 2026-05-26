@@ -1,5 +1,14 @@
 {
-  "nav": {},
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "about": "About Us",
+    "contact": "Contact",
+    "cart": "Cart",
+    "myCart": "My Cart",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu"
+  },
   "home": {},
   "products": {},
   "cart": {},

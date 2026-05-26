@@ -1,32 +1,12 @@
 import { NavItem } from "../types/navigation";
 
 export const navItems: NavItem[] = [
-  {
-    title: "Acasă",
-    href: "/",
-    description: "Pagina principală",
-  },
-  {
-    title: "Produse",
-    href: "/products",
-    description: "Toate produsele noastre",
-  },
-  {
-    title: "Despre Noi",
-    href: "/about",
-    description: "Despre Love Joy Happiness",
-  },
-  {
-    title: "Contact",
-    href: "/contact",
-    description: "Contactează-ne",
-  },
+  { titleKey: "home", href: "/" },
+  { titleKey: "products", href: "/products" },
+  { titleKey: "about", href: "/about" },
+  { titleKey: "contact", href: "/contact" },
 ];
 
 export const userNavItems: NavItem[] = [
-  {
-    title: "Coș",
-    href: "/cart",
-    description: "Vezi coșul tău de cumpărături",
-  },
+  { titleKey: "cart", href: "/cart" },
 ];
