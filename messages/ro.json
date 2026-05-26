@@ -9,7 +9,44 @@
     "menuOpen": "Deschide meniul",
     "menuClose": "Închide meniul"
   },
-  "home": {},
+  "home": {
+    "hero": {
+      "tagline": "Etichete, genți pentru uleiuri esențiale, flyere, stickere auto și produse personalizate care răspândesc dragoste și fericire",
+      "exploreCollection": "Explorează Colecția",
+      "fallbackAlt": "Autocolante și bannere colorate",
+      "previousImage": "Imaginea anterioară",
+      "nextImage": "Imaginea următoare",
+      "goToSlide": "Mergi la slide-ul {number}"
+    },
+    "categories": {
+      "heading": "Cumpără după Categorie",
+      "subheading": "Răsfoiește colecția noastră de produse concepute pentru a aduce bucurie în viața ta",
+      "productCount": "{count} produse",
+      "fallbackDescription": "Descoperă colecția noastră de {name}",
+      "viewAll": "Vezi Toate"
+    },
+    "testimonials": {
+      "heading": "Ce Spun Clienții Noștri",
+      "subheading": "Nu ne crede doar pe cuvânt - ascultă de la clienții noștri fericiți care au experimentat bucuria produselor noastre.",
+      "items": [
+        {
+          "author": "Ana Popescu",
+          "initials": "AP",
+          "quote": "Autocolantele personalizate pentru laptopul meu sunt fantastice! Culorile sunt vibrante, iar calitatea este mult peste așteptări. Chiar după luni de utilizare, nu s-au deteriorat deloc. Le recomand tuturor prietenilor mei!"
+        },
+        {
+          "author": "Mihai Ionescu",
+          "initials": "MI",
+          "quote": "Am comandat etichete personalizate pentru evenimentul firmei noastre și rezultatul a fost impecabil. Designul elegant și detaliile fine au impresionat pe toată lumea. Livrarea a fost rapidă și serviciul clienți excelent. Vom reveni cu siguranță!"
+        },
+        {
+          "author": "Elena Cojocaru",
+          "initials": "EC",
+          "quote": "Bannerul aniversar pentru petrecerea fiicei mele a fost minunat! Toată lumea a făcut poze cu el. Calitatea printului a fost excepțională, iar materialul foarte rezistent. Apreciez foarte mult atenția la detalii și promptitudinea cu care a fost livrat."
+        }
+      ]
+    }
+  },
   "products": {},
   "cart": {},
   "checkout": {},

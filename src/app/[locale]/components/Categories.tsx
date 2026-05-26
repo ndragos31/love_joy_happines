@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { Category } from "@/lib/types/category";
 
@@ -68,6 +69,7 @@ const categoryColors = [
 const PRIORITY_ORDER = [22, 32, 24, 30, 25, 23, 29, 31, 27, 26, 28];
 
 export default function Categories({ categories: rawCategories }: { categories: Category[] }) {
+  const t = useTranslations("home.categories");
   const categories = [...rawCategories].sort((a, b) => {
     const aIndex = PRIORITY_ORDER.indexOf(a.id);
     const bIndex = PRIORITY_ORDER.indexOf(b.id);
@@ -94,11 +96,10 @@ export default function Categories({ categories: rawCategories }: { categories: 
       <div className="container-custom">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Cumpără după Categorie
+            {t("heading")}
           </h2>
           <p className="text-foreground/70 max-w-2xl mx-auto">
-            Răsfoiește colecția noastră de produse concepute pentru a aduce
-            bucurie în viața ta
+            {t("subheading")}
           </p>
         </div>
 
@@ -141,16 +142,16 @@ export default function Categories({ categories: rawCategories }: { categories: 
                       </h3>
                       {category.count > 0 && (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary whitespace-nowrap">
-                          {category.count} produse
+                          {t("productCount", { count: category.count })}
                         </span>
                       )}
                     </div>
                     <p className="text-foreground/70 mb-4 flex-grow">
                       {category.description ||
-                        `Descoperă colecția noastră de ${category.name.toLowerCase()}`}
+                        t("fallbackDescription", { name: category.name.toLowerCase() })}
                     </p>
                     <div className="flex items-center text-primary font-medium">
-                      <span>Vezi Toate</span>
+                      <span>{t("viewAll")}</span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1"

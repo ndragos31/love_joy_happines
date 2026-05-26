@@ -9,7 +9,44 @@
     "menuOpen": "Open menu",
     "menuClose": "Close menu"
   },
-  "home": {},
+  "home": {
+    "hero": {
+      "tagline": "Labels, essential oil bags, flyers, car stickers, and personalized products that spread love and happiness",
+      "exploreCollection": "Explore the Collection",
+      "fallbackAlt": "Colorful stickers and banners",
+      "previousImage": "Previous image",
+      "nextImage": "Next image",
+      "goToSlide": "Go to slide {number}"
+    },
+    "categories": {
+      "heading": "Shop by Category",
+      "subheading": "Browse our collection of products designed to bring joy to your life",
+      "productCount": "{count} products",
+      "fallbackDescription": "Discover our collection of {name}",
+      "viewAll": "View All"
+    },
+    "testimonials": {
+      "heading": "What Our Customers Say",
+      "subheading": "Don't just take our word for it — hear from our happy customers who have experienced the joy of our products.",
+      "items": [
+        {
+          "author": "Ana Popescu",
+          "initials": "AP",
+          "quote": "The custom stickers for my laptop are fantastic! The colors are vibrant and the quality is way above expectations. Even after months of use, they haven't deteriorated at all. I recommend them to all my friends!"
+        },
+        {
+          "author": "Mihai Ionescu",
+          "initials": "MI",
+          "quote": "I ordered custom labels for our company event and the result was impeccable. The elegant design and fine details impressed everyone. Delivery was fast and customer service excellent. We'll definitely be back!"
+        },
+        {
+          "author": "Elena Cojocaru",
+          "initials": "EC",
+          "quote": "The birthday banner for my daughter's party was wonderful! Everyone took photos with it. The print quality was exceptional and the material very durable. I greatly appreciate the attention to detail and the promptness of delivery."
+        }
+      ]
+    }
+  },
   "products": {},
   "cart": {},
   "checkout": {},

@@ -1,13 +1,15 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { Category } from "@/lib/types/category";
 
 const HERO_PRIORITY_ORDER = [22, 25, 27, 23]; // Etichete, Genți, Suport, Autocolante
 
 export default function Hero({ initialCategories }: { initialCategories: Category[] }) {
+  const t = useTranslations("home.hero");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const categories = useMemo(() => {
@@ -80,14 +82,13 @@ export default function Hero({ initialCategories }: { initialCategories: Categor
             </div>
 
             <p className="text-base md:text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
-              Etichete, genți pentru uleiuri esențiale, flyere, stickere auto și
-              produse personalizate care răspândesc dragoste și fericire
+              {t("tagline")}
             </p>
 
             <div className="flex flex-row pt-2">
               <Link href="/categories">
                 <button className="bg-[#ff6b6b] hover:bg-[#ff5252] text-white font-medium rounded-md px-6 md:px-8 py-2 md:py-3 text-base md:text-lg transition-colors cursor-pointer">
-                  Explorează Colecția
+                  {t("exploreCollection")}
                 </button>
               </Link>
             </div>
@@ -106,7 +107,7 @@ export default function Hero({ initialCategories }: { initialCategories: Categor
                     )
                   }
                   className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/30 hover:bg-white/50 rounded-full p-2"
-                  aria-label="Previous image"
+                  aria-label={t("previousImage")}
                 >
                   <svg
                     width="24"
@@ -131,7 +132,7 @@ export default function Hero({ initialCategories }: { initialCategories: Categor
                     )
                   }
                   className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/30 hover:bg-white/50 rounded-full p-2"
-                  aria-label="Next image"
+                  aria-label={t("nextImage")}
                 >
                   <svg
                     width="24"
@@ -162,7 +163,7 @@ export default function Hero({ initialCategories }: { initialCategories: Categor
                     className={`w-2 h-2 rounded-full ${
                       index === currentImageIndex ? "bg-white" : "bg-white/50"
                     }`}
-                    aria-label={`Go to slide ${index + 1}`}
+                    aria-label={t("goToSlide", { number: index + 1 })}
                   />
                 ))}
               </div>
@@ -190,7 +191,7 @@ export default function Hero({ initialCategories }: { initialCategories: Categor
             ) : (
               <Image
                 src={fallbackImage}
-                alt="Autocolante și bannere colorate"
+                alt={t("fallbackAlt")}
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
