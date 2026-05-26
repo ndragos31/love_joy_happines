@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { navItems, userNavItems } from "@/lib/constants/navigation";
 import { useCart } from "@/lib/context/CartContext";
@@ -9,6 +10,7 @@ import LanguageToggle from "./LanguageToggle";
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { totalItems } = useCart();
+  const t = useTranslations("nav");
 
   return (
     <nav className="fixed top-0 left-0 right-0 w-full z-50 bg-white dark:bg-gray-900 shadow-sm">
@@ -29,7 +31,7 @@ export default function Navbar() {
                 href={item.href}
                 className="text-foreground hover:text-primary transition-colors duration-200"
               >
-                {item.title}
+                {t(item.titleKey)}
               </Link>
             ))}
           </div>
@@ -43,9 +45,9 @@ export default function Navbar() {
                 href={item.href}
                 className="text-foreground hover:text-primary transition-colors duration-200 relative flex items-center gap-2"
               >
-                {item.title === "Coș" ? (
+                {item.titleKey === "cart" ? (
                   <>
-                    <span className="hidden sm:inline">Coșul meu</span>
+                    <span className="hidden sm:inline">{t("myCart")}</span>
                     <div className="relative">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +69,7 @@ export default function Navbar() {
                     </div>
                   </>
                 ) : (
-                  item.title
+                  t(item.titleKey)
                 )}
               </Link>
             ))}
@@ -77,6 +79,7 @@ export default function Navbar() {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen ? t("menuClose") : t("menuOpen")}
               className="text-gray-500 hover:text-primary focus:outline-none transition-colors duration-200"
             >
               <svg
@@ -111,7 +114,7 @@ export default function Navbar() {
                   href={item.href}
                   className="text-foreground hover:text-primary transition-colors duration-200"
                 >
-                  {item.title}
+                  {t(item.titleKey)}
                 </Link>
               ))}
               <div className="flex space-x-4 pt-2">
@@ -122,9 +125,9 @@ export default function Navbar() {
                     href={item.href}
                     className="text-foreground hover:text-primary transition-colors duration-200 relative flex items-center gap-2"
                   >
-                    {item.title === "Coș" ? (
+                    {item.titleKey === "cart" ? (
                       <>
-                        <span>Coșul meu</span>
+                        <span>{t("myCart")}</span>
                         <div className="relative">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -146,7 +149,7 @@ export default function Navbar() {
                         </div>
                       </>
                     ) : (
-                      item.title
+                      t(item.titleKey)
                     )}
                   </Link>
                 ))}
