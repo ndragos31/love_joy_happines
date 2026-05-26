@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { useCart } from "@/lib/context/CartContext";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -34,6 +35,7 @@ interface OrderData {
 }
 
 export default function SuccessPage() {
+  const t = useTranslations("checkout");
   const { clearCart } = useCart();
   const [emailsSent, setEmailsSent] = useState(false);
   const [cartCleared, setCartCleared] = useState(false);
@@ -117,17 +119,16 @@ export default function SuccessPage() {
                 </svg>
               </div>
               <h1 className="text-3xl font-bold mb-4">
-                Plată procesată cu succes!
+                {t("success.heading")}
               </h1>
               <p className="text-foreground/70 mb-8">
-                Vă mulțumim pentru comandă. Veți primi un email de confirmare în
-                curând.
+                {t("success.message")}
               </p>
               <Link
                 href="/products"
                 className="inline-block bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
               >
-                Continuă cumpărăturile
+                {t("success.continueShopping")}
               </Link>
             </div>
           </div>

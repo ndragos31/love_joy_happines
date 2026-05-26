@@ -122,8 +122,68 @@
       "vatNote": "* Prices include VAT. Free shipping on orders over 200 lei."
     }
   },
-  "checkout": {},
-  "forms": {},
+  "checkout": {
+    "heading": "Checkout",
+    "steps": {
+      "delivery": "Delivery",
+      "payment": "Payment",
+      "confirmation": "Confirmation"
+    },
+    "deliveryInfo": "Delivery information",
+    "customerType": "Customer type",
+    "individual": "Individual",
+    "company": "Company",
+    "backToCart": "Back to cart",
+    "continueToPayment": "Continue to payment",
+    "paymentMethod": "Payment method",
+    "cardPayment": "Credit / Debit card",
+    "cardPaymentDesc": "Pay securely with your card",
+    "cashOnDelivery": "Cash on delivery",
+    "cashOnDeliveryDesc": "Pay when you receive the package",
+    "backToDelivery": "Back to delivery",
+    "placeOrder": "Place order",
+    "processing": "Processing...",
+    "pay": "Pay",
+    "orderConfirmation": "Order confirmation",
+    "thankYou": "Thank you for your order!",
+    "orderPlaced": "Your order has been placed successfully and is being processed. You will receive a confirmation email shortly.",
+    "orderNumber": "Order number:",
+    "orderTotal": "Total:",
+    "continueShopping": "Continue shopping",
+    "orderSummary": "Order summary",
+    "noImage": "No image",
+    "removeItem": "Remove item",
+    "quantity": "Quantity:",
+    "promoApplied": "Code applied:",
+    "removePromo": "Remove",
+    "promoCode": "Promo code",
+    "promoPlaceholder": "Enter promo code",
+    "applyPromo": "Apply",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "shipping": "Shipping",
+    "shippingFree": "(Free)",
+    "shippingFreeValue": "Free",
+    "total": "Total",
+    "success": {
+      "heading": "Payment processed successfully!",
+      "message": "Thank you for your order. You will receive a confirmation email shortly.",
+      "continueShopping": "Continue shopping"
+    }
+  },
+  "forms": {
+    "companyName": "Company Name",
+    "cui": "VAT / Tax ID",
+    "regCom": "Company Reg. No.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "city": "City",
+    "county": "County",
+    "postalCode": "Postal code"
+  },
   "footer": {
     "tagline": "We bring color and joy to your life with labels, essential oil bags, flyers, car stickers, and personalized products that spread love and happiness.",
     "headings": {
@@ -144,7 +204,11 @@
     "copyright": "© {year} Love Joy Happiness. All rights reserved."
   },
   "legal": {},
-  "errors": {},
+  "errors": {
+    "paymentFailed": "An error occurred while processing the payment.",
+    "promoRequired": "Please enter a promo code",
+    "promoInvalid": "Invalid promo code. Please check the code and try again."
+  },
   "email": {},
   "meta": {}
 }

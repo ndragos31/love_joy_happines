@@ -122,8 +122,68 @@
       "vatNote": "* Preturile includ TVA. Transportul este gratuit pentru comenzi peste 200 lei."
     }
   },
-  "checkout": {},
-  "forms": {},
+  "checkout": {
+    "heading": "Finalizare Comandă",
+    "steps": {
+      "delivery": "Livrare",
+      "payment": "Plată",
+      "confirmation": "Confirmare"
+    },
+    "deliveryInfo": "Informații de livrare",
+    "customerType": "Tip client",
+    "individual": "Persoană fizică",
+    "company": "Persoană juridică",
+    "backToCart": "Înapoi la coș",
+    "continueToPayment": "Continuă la plată",
+    "paymentMethod": "Metodă de plată",
+    "cardPayment": "Card bancar",
+    "cardPaymentDesc": "Plătește în siguranță cu cardul tău",
+    "cashOnDelivery": "Plată la livrare (Ramburs)",
+    "cashOnDeliveryDesc": "Plătește la primirea coletului",
+    "backToDelivery": "Înapoi la livrare",
+    "placeOrder": "Finalizează comanda",
+    "processing": "Se procesează...",
+    "pay": "Plătește",
+    "orderConfirmation": "Confirmare comandă",
+    "thankYou": "Mulțumim pentru comandă!",
+    "orderPlaced": "Comanda ta a fost plasată cu succes și este în curs de procesare. Vei primi un email de confirmare în curând.",
+    "orderNumber": "Număr comandă:",
+    "orderTotal": "Total:",
+    "continueShopping": "Continuă cumpărăturile",
+    "orderSummary": "Sumar comandă",
+    "noImage": "Fără imagine",
+    "removeItem": "Elimină produsul",
+    "quantity": "Cantitate:",
+    "promoApplied": "Cod aplicat:",
+    "removePromo": "Elimină",
+    "promoCode": "Cod promoțional",
+    "promoPlaceholder": "Introdu codul promoțional",
+    "applyPromo": "Aplică",
+    "subtotal": "Subtotal",
+    "discount": "Reducere",
+    "shipping": "Transport",
+    "shippingFree": "(Gratuit)",
+    "shippingFreeValue": "Gratuit",
+    "total": "Total",
+    "success": {
+      "heading": "Plată procesată cu succes!",
+      "message": "Vă mulțumim pentru comandă. Veți primi un email de confirmare în curând.",
+      "continueShopping": "Continuă cumpărăturile"
+    }
+  },
+  "forms": {
+    "companyName": "Nume Companie",
+    "cui": "CUI / CIF",
+    "regCom": "Nr. Reg. Com.",
+    "firstName": "Prenume",
+    "lastName": "Nume",
+    "email": "Email",
+    "phone": "Telefon",
+    "address": "Adresă",
+    "city": "Oraș",
+    "county": "Județ",
+    "postalCode": "Cod Poștal"
+  },
   "footer": {
     "tagline": "Aducem culoare și bucurie în viața ta cu etichetele, gențile pentru uleiuri esențiale, flyerele, stickerele auto și produsele personalizate care răspândesc dragoste și fericire.",
     "headings": {
@@ -144,7 +204,11 @@
     "copyright": "© {year} Love Joy Happiness. Toate drepturile rezervate."
   },
   "legal": {},
-  "errors": {},
+  "errors": {
+    "paymentFailed": "A apărut o eroare la procesarea plății.",
+    "promoRequired": "Te rugăm să introduci un cod promoțional",
+    "promoInvalid": "Cod promoțional invalid. Te rugăm să verifici codul și să încerci din nou."
+  },
   "email": {},
   "meta": {}
 }

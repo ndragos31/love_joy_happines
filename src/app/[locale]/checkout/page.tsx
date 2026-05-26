@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { v4 as uuidv4 } from "uuid";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -67,6 +68,8 @@ function CheckoutForm({
   const elements = useElements();
   const [error, setError] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
+  const t = useTranslations("checkout");
+  const tErrors = useTranslations("errors");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,9 +88,7 @@ function CheckoutForm({
 
     const { error: submitError } = await elements.submit();
     if (submitError) {
-      setError(
-        submitError.message || "A apărut o eroare la procesarea plății."
-      );
+      setError(submitError.message || tErrors("paymentFailed"));
       setProcessing(false);
       return;
     }
@@ -100,9 +101,7 @@ function CheckoutForm({
     });
 
     if (confirmError) {
-      setError(
-        confirmError.message || "A apărut o eroare la procesarea plății."
-      );
+      setError(confirmError.message || tErrors("paymentFailed"));
       setProcessing(false);
       return;
     }
@@ -120,13 +119,16 @@ function CheckoutForm({
         disabled={!stripe || processing}
         className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
-        {processing ? "Se procesează..." : "Plătește"}
+        {processing ? t("processing") : t("pay")}
       </button>
     </form>
   );
 }
 
 export default function CheckoutPage() {
+  const t = useTranslations("checkout");
+  const tForms = useTranslations("forms");
+  const tErrors = useTranslations("errors");
   const [step, setStep] = useState(1);
   const { items, subtotal, clearCart, removeItem } = useCart();
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -206,7 +208,7 @@ export default function CheckoutPage() {
     const code = promoCode.trim().toUpperCase();
     
     if (!code) {
-      setPromoCodeError("Te rugăm să introduci un cod promoțional");
+      setPromoCodeError(tErrors("promoRequired"));
       return;
     }
 
@@ -218,7 +220,7 @@ export default function CheckoutPage() {
       setPromoCode("");
       setPromoCodeError("");
     } else {
-      setPromoCodeError("Cod promoțional invalid. Te rugăm să verifici codul și să încerci din nou.");
+      setPromoCodeError(tErrors("promoInvalid"));
       setPromoCode("");
     }
   };
@@ -384,7 +386,7 @@ export default function CheckoutPage() {
       <main className="flex-grow pt-24 pb-16">
         <div className="container-custom py-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-8 cursor-pointer">
-            Finalizare Comandă
+            {t("heading")}
           </h1>
 
           {/* Checkout Steps */}
@@ -406,7 +408,7 @@ export default function CheckoutPage() {
                 >
                   1
                 </div>
-                <span className="text-sm mt-1 block">Livrare</span>
+                <span className="text-sm mt-1 block">{t("steps.delivery")}</span>
               </div>
               <div
                 className={`text-center ${
@@ -424,7 +426,7 @@ export default function CheckoutPage() {
                 >
                   2
                 </div>
-                <span className="text-sm mt-1 block">Plată</span>
+                <span className="text-sm mt-1 block">{t("steps.payment")}</span>
               </div>
               <div
                 className={`text-center ${
@@ -442,7 +444,7 @@ export default function CheckoutPage() {
                 >
                   3
                 </div>
-                <span className="text-sm mt-1 block">Confirmare</span>
+                <span className="text-sm mt-1 block">{t("steps.confirmation")}</span>
               </div>
             </div>
           </div>
@@ -454,13 +456,13 @@ export default function CheckoutPage() {
                 <div className="bg-gray-light dark:bg-gray-800 rounded-lg overflow-hidden">
                   <div className="p-6 border-b border-gray-200 dark:border-gray-700">
                     <h2 className="text-xl font-semibold">
-                      Informații de livrare
+                      {t("deliveryInfo")}
                     </h2>
                   </div>
                   <form onSubmit={handleSubmit} className="p-6">
                     <div className="mb-8">
                       <label className="block text-sm font-medium mb-3">
-                        Tip client
+                        {t("customerType")}
                       </label>
                       <div className="flex gap-4">
                         <label className="flex items-center cursor-pointer">
@@ -472,7 +474,7 @@ export default function CheckoutPage() {
                             onChange={handleChange}
                             className="w-4 h-4 text-primary border-gray-300 focus:ring-primary"
                           />
-                          <span className="ml-2">Persoană fizică</span>
+                          <span className="ml-2">{t("individual")}</span>
                         </label>
                         <label className="flex items-center cursor-pointer">
                           <input
@@ -483,7 +485,7 @@ export default function CheckoutPage() {
                             onChange={handleChange}
                             className="w-4 h-4 text-primary border-gray-300 focus:ring-primary"
                           />
-                          <span className="ml-2">Persoană juridică</span>
+                          <span className="ml-2">{t("company")}</span>
                         </label>
                       </div>
                     </div>
@@ -495,7 +497,7 @@ export default function CheckoutPage() {
                             htmlFor="companyName"
                             className="block text-sm font-medium mb-1"
                           >
-                            Nume Companie <span className="text-[#ff6b6b]">*</span>
+                            {tForms("companyName")} <span className="text-[#ff6b6b]">*</span>
                           </label>
                           <input
                             type="text"
@@ -513,7 +515,7 @@ export default function CheckoutPage() {
                               htmlFor="cui"
                               className="block text-sm font-medium mb-1"
                             >
-                              CUI / CIF <span className="text-[#ff6b6b]">*</span>
+                              {tForms("cui")} <span className="text-[#ff6b6b]">*</span>
                             </label>
                             <input
                               type="text"
@@ -530,7 +532,7 @@ export default function CheckoutPage() {
                               htmlFor="regCom"
                               className="block text-sm font-medium mb-1"
                             >
-                              Nr. Reg. Com. <span className="text-[#ff6b6b]">*</span>
+                              {tForms("regCom")} <span className="text-[#ff6b6b]">*</span>
                             </label>
                             <input
                               type="text"
@@ -552,7 +554,7 @@ export default function CheckoutPage() {
                           htmlFor="firstName"
                           className="block text-sm font-medium mb-1"
                         >
-                          Prenume <span className="text-[#ff6b6b]">*</span>
+                          {tForms("firstName")} <span className="text-[#ff6b6b]">*</span>
                         </label>
                         <input
                           type="text"
@@ -569,7 +571,7 @@ export default function CheckoutPage() {
                           htmlFor="lastName"
                           className="block text-sm font-medium mb-1"
                         >
-                          Nume <span className="text-[#ff6b6b]">*</span>
+                          {tForms("lastName")} <span className="text-[#ff6b6b]">*</span>
                         </label>
                         <input
                           type="text"
@@ -589,7 +591,7 @@ export default function CheckoutPage() {
                           htmlFor="email"
                           className="block text-sm font-medium mb-1"
                         >
-                          Email <span className="text-[#ff6b6b]">*</span>
+                          {tForms("email")} <span className="text-[#ff6b6b]">*</span>
                         </label>
                         <input
                           type="email"
@@ -609,7 +611,7 @@ export default function CheckoutPage() {
                           htmlFor="phone"
                           className="block text-sm font-medium mb-1"
                         >
-                          Telefon <span className="text-[#ff6b6b]">*</span>
+                          {tForms("phone")} <span className="text-[#ff6b6b]">*</span>
                         </label>
                         <input
                           type="tel"
@@ -628,7 +630,7 @@ export default function CheckoutPage() {
                         htmlFor="address"
                         className="block text-sm font-medium mb-1"
                       >
-                        Adresă <span className="text-[#ff6b6b]">*</span>
+                        {tForms("address")} <span className="text-[#ff6b6b]">*</span>
                       </label>
                       <input
                         type="text"
@@ -647,7 +649,7 @@ export default function CheckoutPage() {
                           htmlFor="city"
                           className="block text-sm font-medium mb-1"
                         >
-                          Oraș <span className="text-[#ff6b6b]">*</span>
+                          {tForms("city")} <span className="text-[#ff6b6b]">*</span>
                         </label>
                         <input
                           type="text"
@@ -664,7 +666,7 @@ export default function CheckoutPage() {
                           htmlFor="county"
                           className="block text-sm font-medium mb-1"
                         >
-                          Județ <span className="text-[#ff6b6b]">*</span>
+                          {tForms("county")} <span className="text-[#ff6b6b]">*</span>
                         </label>
                         <input
                           type="text"
@@ -681,7 +683,7 @@ export default function CheckoutPage() {
                           htmlFor="postalCode"
                           className="block text-sm font-medium mb-1"
                         >
-                          Cod Poștal <span className="text-[#ff6b6b]">*</span>
+                          {tForms("postalCode")} <span className="text-[#ff6b6b]">*</span>
                         </label>
                         <input
                           type="text"
@@ -714,13 +716,13 @@ export default function CheckoutPage() {
                             d="M10 19l-7-7m0 0l7-7m-7 7h18"
                           />
                         </svg>
-                        Înapoi la coș
+                        {t("backToCart")}
                       </Link>
                       <button
                         type="submit"
                         className="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-md transition-colors cursor-pointer"
                       >
-                        Continuă la plată
+                        {t("continueToPayment")}
                       </button>
                     </div>
                   </form>
@@ -730,7 +732,7 @@ export default function CheckoutPage() {
               {step === 2 && (
                 <div className="bg-gray-light dark:bg-gray-800 rounded-lg overflow-hidden">
                   <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <h2 className="text-xl font-semibold">Metodă de plată</h2>
+                    <h2 className="text-xl font-semibold">{t("paymentMethod")}</h2>
                   </div>
                   <div className="p-6">
                     <div className="space-y-4 mb-8">
@@ -748,9 +750,9 @@ export default function CheckoutPage() {
                           className="mr-3"
                         />
                         <div className="flex-grow">
-                          <p className="font-medium">Card bancar</p>
+                          <p className="font-medium">{t("cardPayment")}</p>
                           <p className="text-sm text-foreground/70">
-                            Plătește în siguranță cu cardul tău
+                            {t("cardPaymentDesc")}
                           </p>
                         </div>
                         <svg
@@ -784,10 +786,10 @@ export default function CheckoutPage() {
                         />
                         <div className="flex-grow">
                           <p className="font-medium">
-                            Plată la livrare (Ramburs)
+                            {t("cashOnDelivery")}
                           </p>
                           <p className="text-sm text-foreground/70">
-                            Plătește la primirea coletului
+                            {t("cashOnDeliveryDesc")}
                           </p>
                         </div>
                         <svg
@@ -876,13 +878,13 @@ export default function CheckoutPage() {
                                 d="M10 19l-7-7m0 0l7-7m-7 7h18"
                               />
                             </svg>
-                            Înapoi la livrare
+                            {t("backToDelivery")}
                           </button>
                           <button
                             type="submit"
                             className="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-md transition-colors cursor-pointer"
                           >
-                            Finalizează comanda
+                            {t("placeOrder")}
                           </button>
                         </div>
                       </form>
@@ -895,7 +897,7 @@ export default function CheckoutPage() {
                 <div className="bg-gray-light dark:bg-gray-800 rounded-lg overflow-hidden">
                   <div className="p-6 border-b border-gray-200 dark:border-gray-700">
                     <h2 className="text-xl font-semibold">
-                      Confirmare comandă
+                      {t("orderConfirmation")}
                     </h2>
                   </div>
                   <div className="p-6 text-center">
@@ -916,17 +918,16 @@ export default function CheckoutPage() {
                       </svg>
                     </div>
                     <h3 className="text-2xl font-semibold mb-2">
-                      Mulțumim pentru comandă!
+                      {t("thankYou")}
                     </h3>
                     <p className="text-foreground/70 mb-6">
-                      Comanda ta a fost plasată cu succes și este în curs de
-                      procesare. Vei primi un email de confirmare în curând.
+                      {t("orderPlaced")}
                     </p>
 
                     <div className="bg-white dark:bg-gray-900 rounded-lg p-4 mb-6 max-w-md mx-auto">
-                      <p className="font-semibold">Număr comandă:</p>
+                      <p className="font-semibold">{t("orderNumber")}</p>
                       <p className="text-foreground/70 mb-2">{orderNumber}</p>
-                      <p className="font-semibold">Total:</p>
+                      <p className="font-semibold">{t("orderTotal")}</p>
                       <p className="text-foreground/70">
                         {finalTotal.toFixed(2)} lei
                       </p>
@@ -936,7 +937,7 @@ export default function CheckoutPage() {
                       href="/products"
                       className="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-md transition-colors inline-block"
                     >
-                      Continuă cumpărăturile
+                      {t("continueShopping")}
                     </Link>
                   </div>
                 </div>
@@ -947,7 +948,7 @@ export default function CheckoutPage() {
             <div className="lg:col-span-1">
               <div className="bg-gray-light dark:bg-gray-800 rounded-lg overflow-hidden sticky top-24">
                 <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                  <h2 className="text-xl font-semibold">Sumar comandă</h2>
+                  <h2 className="text-xl font-semibold">{t("orderSummary")}</h2>
                 </div>
 
                 <div className="p-6">
@@ -970,7 +971,7 @@ export default function CheckoutPage() {
                             />
                           ) : (
                             <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500">
-                              No image
+                              {t("noImage")}
                             </div>
                           )}
                         </Link>
@@ -1005,7 +1006,7 @@ export default function CheckoutPage() {
                                 <button
                                   onClick={() => removeItem(item.id)}
                                   className="text-red-500 hover:text-red-700 transition-colors p-1 cursor-pointer"
-                                  title="Elimină produsul"
+                                  title={t("removeItem")}
                                 >
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -1026,7 +1027,7 @@ export default function CheckoutPage() {
                             </div>
                           </div>
                           <span className="text-sm text-gray-500">
-                            Cantitate: {item.quantity}
+                            {t("quantity")} {item.quantity}
                           </span>
                         </div>
                       </div>
@@ -1053,7 +1054,7 @@ export default function CheckoutPage() {
                               />
                             </svg>
                             <span className="text-sm font-medium text-green-700 dark:text-green-400">
-                              Cod aplicat: {appliedPromoCode}
+                              {t("promoApplied")} {appliedPromoCode}
                             </span>
                           </div>
                           <button
@@ -1061,13 +1062,13 @@ export default function CheckoutPage() {
                             onClick={handleRemovePromoCode}
                             className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
                           >
-                            Elimină
+                            {t("removePromo")}
                           </button>
                         </div>
                       ) : (
                         <div>
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Cod promoțional
+                            {t("promoCode")}
                           </label>
                           <div className="flex gap-2">
                             <input
@@ -1083,7 +1084,7 @@ export default function CheckoutPage() {
                                   handleApplyPromoCode();
                                 }
                               }}
-                              placeholder="Introdu codul promoțional"
+                              placeholder={t("promoPlaceholder")}
                               className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800 text-gray-900 dark:text-white"
                             />
                             <button
@@ -1092,7 +1093,7 @@ export default function CheckoutPage() {
                               disabled={!promoCode.trim()}
                               className="px-4 py-2 bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-md transition-colors cursor-pointer"
                             >
-                              Aplică
+                              {t("applyPromo")}
                             </button>
                           </div>
                           {promoCodeError && (
@@ -1105,7 +1106,7 @@ export default function CheckoutPage() {
 
                   <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-4">
                     <div className="flex justify-between">
-                      <span className="text-foreground/70">Subtotal</span>
+                      <span className="text-foreground/70">{t("subtotal")}</span>
                       <span>
                         {step === 3
                           ? finalSubtotal.toFixed(2)
@@ -1117,7 +1118,7 @@ export default function CheckoutPage() {
                     {(discount > 0 || (step === 3 && appliedPromoCode)) && (
                       <div className="flex justify-between text-green-600 dark:text-green-400">
                         <span className="text-foreground/70">
-                          Reducere {appliedPromoCode && `(${appliedPromoCode})`}
+                          {t("discount")} {appliedPromoCode && `(${appliedPromoCode})`}
                         </span>
                         <span className="font-medium">
                           -{step === 3 
@@ -1129,16 +1130,16 @@ export default function CheckoutPage() {
 
                     <div className="flex justify-between">
                       <span className="text-foreground/70">
-                        Transport{" "}
+                        {t("shipping")}{" "}
                         {(step === 3 ? finalShipping : shipping) === 0 && (
                           <span className="text-green-600 dark:text-green-500 text-xs ml-1">
-                            (Gratuit)
+                            {t("shippingFree")}
                           </span>
                         )}
                       </span>
                       <span>
                         {(step === 3 ? finalShipping : shipping) === 0
-                          ? "Gratuit"
+                          ? t("shippingFreeValue")
                           : `${(step === 3 ? finalShipping : shipping).toFixed(
                               2
                             )} lei`}
@@ -1146,7 +1147,7 @@ export default function CheckoutPage() {
                     </div>
 
                     <div className="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between font-semibold">
-                      <span>Total</span>
+                      <span>{t("total")}</span>
                       <span className="text-primary">
                         {step === 3 ? finalTotal.toFixed(2) : total.toFixed(2)}{" "}
                         lei
