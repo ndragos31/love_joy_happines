@@ -14,7 +14,25 @@
   "cart": {},
   "checkout": {},
   "forms": {},
-  "footer": {},
+  "footer": {
+    "tagline": "Aducem culoare și bucurie în viața ta cu etichetele, gențile pentru uleiuri esențiale, flyerele, stickerele auto și produsele personalizate care răspândesc dragoste și fericire.",
+    "headings": {
+      "quickLinks": "Link-uri Rapide",
+      "customerService": "Servicii Clienți"
+    },
+    "links": {
+      "home": "Acasă",
+      "allProducts": "Toate Produsele",
+      "stickers": "Autocolante",
+      "labels": "Etichete",
+      "flyers": "Flyere",
+      "about": "Despre Noi",
+      "contact": "Contactează-ne",
+      "privacy": "Politica de Confidențialitate",
+      "terms": "Termeni și Condiții"
+    },
+    "copyright": "© {year} Love Joy Happiness. Toate drepturile rezervate."
+  },
   "legal": {},
   "errors": {},
   "email": {},

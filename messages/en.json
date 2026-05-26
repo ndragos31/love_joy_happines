@@ -14,7 +14,25 @@
   "cart": {},
   "checkout": {},
   "forms": {},
-  "footer": {},
+  "footer": {
+    "tagline": "We bring color and joy to your life with labels, essential oil bags, flyers, car stickers, and personalized products that spread love and happiness.",
+    "headings": {
+      "quickLinks": "Quick Links",
+      "customerService": "Customer Service"
+    },
+    "links": {
+      "home": "Home",
+      "allProducts": "All Products",
+      "stickers": "Stickers",
+      "labels": "Labels",
+      "flyers": "Flyers",
+      "about": "About Us",
+      "contact": "Contact Us",
+      "privacy": "Privacy Policy",
+      "terms": "Terms and Conditions"
+    },
+    "copyright": "© {year} Love Joy Happiness. All rights reserved."
+  },
   "legal": {},
   "errors": {},
   "email": {},

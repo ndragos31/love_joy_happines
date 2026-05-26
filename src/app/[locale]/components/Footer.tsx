@@ -1,8 +1,11 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 export default function Footer() {
+  const t = useTranslations("footer");
+
   return (
     <footer className="bg-gray-light dark:bg-gray-900">
       {/* Top decorative section with background */}
@@ -31,9 +34,7 @@ export default function Footer() {
               Love Joy Happiness
             </h3>
             <p className="text-foreground mb-4">
-              Aducem culoare și bucurie în viața ta cu etichetele, gențile
-              pentru uleiuri esențiale, flyerele, stickerele auto și produsele
-              personalizate care răspândesc dragoste și fericire.
+              {t("tagline")}
             </p>
             <div className="flex space-x-4">
               <a
@@ -56,14 +57,14 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div className="col-span-1">
-            <h3 className="text-lg font-semibold mb-4">Link-uri Rapide</h3>
+            <h3 className="text-lg font-semibold mb-4">{t("headings.quickLinks")}</h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Acasă
+                  {t("links.home")}
                 </Link>
               </li>
               <li>
@@ -71,7 +72,7 @@ export default function Footer() {
                   href="/products"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Toate Produsele
+                  {t("links.allProducts")}
                 </Link>
               </li>
               <li>
@@ -79,7 +80,7 @@ export default function Footer() {
                   href="/categories/autocolante"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Autocolante
+                  {t("links.stickers")}
                 </Link>
               </li>
               <li>
@@ -87,7 +88,7 @@ export default function Footer() {
                   href="/categories/etichete"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Etichete
+                  {t("links.labels")}
                 </Link>
               </li>
               <li>
@@ -95,7 +96,7 @@ export default function Footer() {
                   href="/categories/flyere"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Flyere
+                  {t("links.flyers")}
                 </Link>
               </li>
               <li>
@@ -103,7 +104,7 @@ export default function Footer() {
                   href="/about"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Despre Noi
+                  {t("links.about")}
                 </Link>
               </li>
             </ul>
@@ -111,14 +112,14 @@ export default function Footer() {
 
           {/* Customer Service */}
           <div className="col-span-1">
-            <h3 className="text-lg font-semibold mb-4">Servicii Clienți</h3>
+            <h3 className="text-lg font-semibold mb-4">{t("headings.customerService")}</h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/contact"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Contactează-ne
+                  {t("links.contact")}
                 </Link>
               </li>
               <li>
@@ -126,7 +127,7 @@ export default function Footer() {
                   href="/privacy"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Politica de Confidențialitate
+                  {t("links.privacy")}
                 </Link>
               </li>
               <li>
@@ -134,7 +135,7 @@ export default function Footer() {
                   href="/terms"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  Termeni și Condiții
+                  {t("links.terms")}
                 </Link>
               </li>
             </ul>
@@ -154,8 +155,7 @@ export default function Footer() {
 
         <div className="text-center">
           <p className="text-foreground">
-            &copy; {new Date().getFullYear()} Love Joy Happiness. Toate
-            drepturile rezervate.
+            {t("copyright", { year: new Date().getFullYear() })}
           </p>
         </div>
       </div>
