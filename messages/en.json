@@ -439,5 +439,20 @@
     "promoInvalid": "Invalid promo code. Please check the code and try again."
   },
   "email": {},
-  "meta": {}
+  "meta": {
+    "site": {
+      "title": "Love Joy Happiness | Labels, Flyers and Essential Oil Accessories",
+      "description": "Shop our collection of beautiful stickers, banners, and other products that bring love, joy, and happiness to your life.",
+      "keywords": "stickers, banners, products, love, joy, happiness, e-commerce"
+    },
+    "home": { "title": "Love Joy Happiness | Home", "description": "Discover our collection of personalized products that bring love, joy, and happiness to your life." },
+    "products": { "title": "Products | Love Joy Happiness", "description": "Browse all our personalized products: stickers, labels, flyers, bags, essential oil accessories, and more." },
+    "about": { "title": "About Us | Love Joy Happiness", "description": "Learn the Love Joy Happiness story — our mission to bring color and happiness to your life through personalized products." },
+    "contact": { "title": "Contact | Love Joy Happiness", "description": "Get in touch with the Love Joy Happiness team for questions, custom orders, or collaborations." },
+    "cart": { "title": "Your Cart | Love Joy Happiness", "description": "View the items in your shopping cart and complete your order." },
+    "checkout": { "title": "Checkout | Love Joy Happiness", "description": "Securely complete your order at Love Joy Happiness." },
+    "checkoutSuccess": { "title": "Order Placed | Love Joy Happiness", "description": "Thank you for your order at Love Joy Happiness." },
+    "privacy": { "title": "Privacy Policy | Love Joy Happiness", "description": "Love Joy Happiness privacy policy — how we collect, use, and protect your data." },
+    "terms": { "title": "Terms and Conditions | Love Joy Happiness", "description": "Terms and conditions of use for the Love Joy Happiness online store." }
+  }
 }

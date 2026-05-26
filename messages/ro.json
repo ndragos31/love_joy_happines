@@ -439,5 +439,20 @@
     "promoInvalid": "Cod promoțional invalid. Te rugăm să verifici codul și să încerci din nou."
   },
   "email": {},
-  "meta": {}
+  "meta": {
+    "site": {
+      "title": "Love Joy Happiness | Etichete, Flyere și Accesorii Uleiuri Esențiale",
+      "description": "Cumpără din colecția noastră de autocolante frumoase, bannere și alte produse care aduc dragoste, bucurie și fericire în viața ta.",
+      "keywords": "autocolante, bannere, produse, dragoste, bucurie, fericire, e-commerce"
+    },
+    "home": { "title": "Love Joy Happiness | Acasă", "description": "Descoperă colecția noastră de produse personalizate care aduc dragoste, bucurie și fericire în viața ta." },
+    "products": { "title": "Produse | Love Joy Happiness", "description": "Răsfoiește toate produsele noastre personalizate: autocolante, etichete, flyere, genți, accesorii pentru uleiuri esențiale și multe altele." },
+    "about": { "title": "Despre Noi | Love Joy Happiness", "description": "Află povestea Love Joy Happiness — misiunea noastră de a aduce culoare și fericire în viața ta prin produse personalizate." },
+    "contact": { "title": "Contact | Love Joy Happiness", "description": "Contactează echipa Love Joy Happiness pentru întrebări, comenzi personalizate sau colaborări." },
+    "cart": { "title": "Coșul tău | Love Joy Happiness", "description": "Vezi produsele din coșul tău de cumpărături și finalizează comanda." },
+    "checkout": { "title": "Finalizare comandă | Love Joy Happiness", "description": "Finalizează comanda ta în siguranță la Love Joy Happiness." },
+    "checkoutSuccess": { "title": "Comandă plasată | Love Joy Happiness", "description": "Mulțumim pentru comanda ta la Love Joy Happiness." },
+    "privacy": { "title": "Politica de Confidențialitate | Love Joy Happiness", "description": "Politica de confidențialitate Love Joy Happiness — cum colectăm, folosim și protejăm datele tale." },
+    "terms": { "title": "Termeni și Condiții | Love Joy Happiness", "description": "Termenii și condițiile de utilizare a magazinului online Love Joy Happiness." }
+  }
 }

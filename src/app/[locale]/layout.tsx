@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { CartProvider } from "@/lib/context/CartContext";
@@ -21,13 +21,19 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export const metadata: Metadata = {
-  title: "Love Joy Happiness | Etichete, Flyere și Accesorii Uleiuri Esențiale",
-  description:
-    "Cumpără din colecția noastră de autocolante frumoase, bannere și alte produse care aduc dragoste, bucurie și fericire în viața ta.",
-  keywords:
-    "autocolante, bannere, produse, dragoste, bucurie, fericire, e-commerce",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta.site" });
+  return {
+    title: t("title"),
+    description: t("description"),
+    keywords: t("keywords"),
+  };
+}
 
 export default async function LocaleLayout({
   children,
