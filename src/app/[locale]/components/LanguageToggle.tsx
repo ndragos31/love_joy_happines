@@ -4,30 +4,46 @@ import { useLocale } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { useTransition } from 'react';
 
+const flags = [
+  { code: 'ro', label: 'Română', flag: '🇷🇴' },
+  { code: 'en', label: 'English', flag: '🇬🇧' },
+] as const;
+
 export default function LanguageToggle() {
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const other = locale === 'ro' ? 'en' : 'ro';
-  const label = other.toUpperCase();
-
-  const onClick = () => {
+  const switchTo = (code: 'ro' | 'en') => {
+    if (code === locale) return;
     startTransition(() => {
-      router.replace(pathname, { locale: other });
+      router.replace(pathname, { locale: code });
     });
   };
 
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={isPending}
-      aria-label={`Switch language to ${label}`}
-      className="px-2 py-1 text-sm font-semibold text-gray-700 hover:text-[#b200ff] transition-colors disabled:opacity-50 dark:text-gray-200 dark:hover:text-[#b200ff]"
-    >
-      {label}
-    </button>
+    <div className="flex items-center gap-1">
+      {flags.map(({ code, label, flag }) => {
+        const active = code === locale;
+        return (
+          <button
+            key={code}
+            type="button"
+            onClick={() => switchTo(code)}
+            disabled={isPending || active}
+            aria-label={`Switch language to ${label}`}
+            aria-pressed={active}
+            className={`text-xl leading-none p-1 rounded transition-all ${
+              active
+                ? 'opacity-100 ring-2 ring-[#b200ff]'
+                : 'opacity-50 hover:opacity-100 cursor-pointer'
+            } disabled:cursor-default`}
+          >
+            <span aria-hidden>{flag}</span>
+          </button>
+        );
+      })}
+    </div>
   );
 }

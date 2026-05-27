@@ -76,7 +76,8 @@ export default function Navbar() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center gap-3">
+            <LanguageToggle />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label={isMenuOpen ? t("menuClose") : t("menuOpen")}
@@ -118,7 +119,6 @@ export default function Navbar() {
                 </Link>
               ))}
               <div className="flex space-x-4 pt-2">
-                <LanguageToggle />
                 {userNavItems.map((item) => (
                   <Link
                     key={item.href}
