@@ -65,8 +65,8 @@ const categoryColors = [
   "from-green-500/20 to-green-500/40",
 ];
 
-// Custom order: 1.Etichete RO, 2.Etichete UK, 3.Flyere, 4.Tricouri, 5.Genți, 6.Autocolante, 7.Agende, 8.Cărți, 9.Suport, 10.Accesorii, 11.Sticluțe
-const PRIORITY_ORDER = [22, 32, 24, 30, 25, 23, 29, 31, 27, 26, 28];
+// Custom order: 1.Etichete RO, 2.Etichete EN, 3.Etichete HU, 4.Flyere, 5.Tricouri, 6.Autocolante, 7.Agende, 8.Cărți, 9.Accesorii, 10.Sticluțe
+const PRIORITY_ORDER = [22, 32, 33, 24, 30, 23, 29, 31, 26, 28];
 
 export default function Categories({ categories: rawCategories }: { categories: Category[] }) {
   const t = useTranslations("home.categories");

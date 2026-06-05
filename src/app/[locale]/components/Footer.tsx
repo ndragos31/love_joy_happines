@@ -93,7 +93,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/categories/flyere"
+                  href="/categories/flyere-si-pliante"
                   className="text-foreground hover:text-primary transition-colors"
                 >
                   {t("links.flyers")}
