@@ -6,7 +6,7 @@ import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { Category } from "@/lib/types/category";
 
-const HERO_PRIORITY_ORDER = [22, 25, 27, 23]; // Etichete, Genți, Suport, Autocolante
+const HERO_PRIORITY_ORDER = [22, 32, 33, 23]; // Etichete RO, Etichete EN, Etichete HU, Autocolante
 
 export default function Hero({ initialCategories }: { initialCategories: Category[] }) {
   const t = useTranslations("home.hero");
