@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Fraunces, Dancing_Script } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -9,12 +9,20 @@ import "../globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin", "latin-ext"],
+  style: ["normal", "italic"],
+  axes: ["SOFT", "opsz"],
+});
+
+const dancingScript = Dancing_Script({
+  variable: "--font-dancing-script",
+  subsets: ["latin", "latin-ext"],
+  weight: "700",
 });
 
 export function generateStaticParams() {
@@ -49,12 +57,10 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${fraunces.variable} ${dancingScript.variable} antialiased`}
       >
         <NextIntlClientProvider>
-          <CartProvider>
-            <main className="pt-16">{children}</main>
-          </CartProvider>
+          <CartProvider>{children}</CartProvider>
         </NextIntlClientProvider>
       </body>
     </html>

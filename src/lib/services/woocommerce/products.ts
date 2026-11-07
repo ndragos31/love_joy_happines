@@ -1,4 +1,19 @@
+import { unstable_cache } from "next/cache";
 import wooCommerceClient from "./client";
+import { Product } from "@/lib/types/product";
+
+export const getPopularProducts = unstable_cache(
+  async (limit: number): Promise<Product[]> => {
+    const response = await wooCommerceClient.get("products", {
+      per_page: limit,
+      orderby: "popularity",
+      status: "publish",
+    });
+    return response.data as Product[];
+  },
+  ["popular-products"],
+  { revalidate: 3600 }
+);
 
 /**
  * Fetches all products from WooCommerce

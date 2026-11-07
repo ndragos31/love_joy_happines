@@ -1,4 +1,5 @@
 import { CartItem } from "@/lib/context/CartContext";
+import { Product } from "@/lib/types/product";
 
 /**
  * Returns the effective per-unit price for a cart item based on its quantity.
@@ -54,3 +55,11 @@ export function getItemEffectivePrice(item: CartItem): number {
   // Fallback to the product base price
   return parseFloat(item.product.price);
 }
+
+const FREE_ITEM_PRODUCT_IDS = [1580];
+export const PAID_ITEMS_PER_FREE_ITEM = 9;
+
+export const hasFreeItemOffer = (product: Product) => FREE_ITEM_PRODUCT_IDS.includes(product.id);
+
+export const getFreeQuantity = (product: Product, quantity: number) =>
+  hasFreeItemOffer(product) ? Math.floor(quantity / PAID_ITEMS_PER_FREE_ITEM) : 0;

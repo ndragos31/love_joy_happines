@@ -35,6 +35,7 @@ interface OrderDetails {
   items: Array<{
     name: string;
     quantity: number;
+    freeQuantity?: number;
     price: number;
     attributes?: Record<string, string>;
   }>;
@@ -77,7 +78,7 @@ export async function sendCustomerOrderConfirmation(
               (item) => `
             <div style="margin: 10px 0;">
               <p style="margin: 5px 0; font-weight: 600;">
-                ${item.name} x ${item.quantity} - ${(item.price * item.quantity).toFixed(2)} lei
+                ${item.name} x ${item.quantity}${item.freeQuantity ? ` + ${item.freeQuantity} ${t("freeLabel")}` : ""} - ${(item.price * item.quantity).toFixed(2)} lei
               </p>
               ${item.attributes && Object.keys(item.attributes).length > 0
                 ? `<p style="margin: 5px 0; padding-left: 15px; color: #666; font-size: 14px;">
@@ -176,7 +177,7 @@ export async function sendCompanyOrderNotification(order: OrderDetails) {
               (item) => `
             <div style="margin: 10px 0;">
               <p style="margin: 5px 0; font-weight: 600;">
-                ${item.name} x ${item.quantity} - ${(item.price * item.quantity).toFixed(2)} lei
+                ${item.name} x ${item.quantity}${item.freeQuantity ? ` + ${item.freeQuantity} gratis` : ""} - ${(item.price * item.quantity).toFixed(2)} lei
               </p>
               ${item.attributes && Object.keys(item.attributes).length > 0
                 ? `<p style="margin: 5px 0; padding-left: 15px; color: #666; font-size: 14px;">

@@ -1,261 +1,183 @@
-"use client";
-
 import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { Link } from "@/i18n/navigation";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import Image from "next/image";
+import { getProductCategories } from "@/lib/services/woocommerce/categories";
+import { Category } from "@/lib/types/category";
 
-export default function AboutPage() {
-  const t = useTranslations("legal.about");
+// Etichete, Flyere, Tricouri, Autocolante, Agende
+const SHOWCASE_CATEGORY_IDS = [22, 24, 30, 23, 29];
+const beliefKeys = ["mission", "values", "vision"] as const;
+
+export default async function AboutPage() {
+  const categories = await getProductCategories({ per_page: 100 }).catch((): Category[] => []);
+  const showcaseCategories = SHOWCASE_CATEGORY_IDS.map((id) =>
+    categories.find((category) => category.id === id)
+  ).filter((category): category is Category => Boolean(category?.image?.src));
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
-      <main className="flex-grow pt-8 md:pt-24 pb-16">
-        <section className="py-8">
-          <div className="container-custom">
-            <h1 className="text-3xl md:text-4xl font-bold mb-8">{t("heading")}</h1>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-16 items-center">
-              <div className="order-2 lg:order-1">
-                <h2 className="text-2xl font-semibold mb-6 text-primary">
-                  {t("story.heading")}
-                </h2>
-                <p className="text-foreground/80 mb-4 leading-relaxed">
-                  {t("story.p1")}
-                </p>
-                <p className="text-foreground/80 mb-4 leading-relaxed">
-                  {t("story.p2")}
-                </p>
-                <p className="text-foreground/80 leading-relaxed">
-                  {t("story.p3")}
-                </p>
-              </div>
-
-              <div className="order-1 lg:order-2">
-                <div className="relative h-96 md:h-[500px] rounded-lg overflow-hidden shadow-lg">
-                  <Image
-                    src="/aboutus.jpeg"
-                    alt={t("story.imageAlt")}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-              <div className="bg-gray-light dark:bg-gray-800 p-6 rounded-lg text-center">
-                <div className="w-16 h-16 mx-auto mb-4 bg-primary/20 rounded-full flex items-center justify-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-8 w-8 text-primary"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{t("mission.heading")}</h3>
-                <p className="text-foreground/80">
-                  {t("mission.text")}
-                </p>
-              </div>
-
-              <div className="bg-gray-light dark:bg-gray-800 p-6 rounded-lg text-center">
-                <div className="w-16 h-16 mx-auto mb-4 bg-secondary/20 rounded-full flex items-center justify-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-8 w-8 text-secondary"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{t("values.heading")}</h3>
-                <p className="text-foreground/80">
-                  {t("values.text")}
-                </p>
-              </div>
-
-              <div className="bg-gray-light dark:bg-gray-800 p-6 rounded-lg text-center">
-                <div className="w-16 h-16 mx-auto mb-4 bg-accent/20 rounded-full flex items-center justify-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-8 w-8 text-accent dark:text-yellow-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 10V3L4 14h7v7l9-11h-7z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{t("vision.heading")}</h3>
-                <p className="text-foreground/80">
-                  {t("vision.text")}
-                </p>
-              </div>
-            </div>
-
-            {/* Title with decorative elements */}
-            <div className="text-center mb-12 relative">
-              <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-24 h-24 bg-primary/5 rounded-full blur-xl"></div>
-              <div className="absolute left-1/4 top-1/2 -translate-y-1/2 w-16 h-16 bg-secondary/5 rounded-full blur-lg"></div>
-              <div className="absolute right-1/4 top-1/2 -translate-y-1/2 w-20 h-20 bg-accent/5 rounded-full blur-xl"></div>
-
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground relative">
-                {t("whyUs.heading")}{" "}
-                <span className="text-primary">Love Joy Happiness</span>
-              </h2>
-              <div className="w-24 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
-            </div>
-
-            <div className="bg-gray-light dark:bg-gray-800 p-8 rounded-lg mb-16 relative overflow-hidden">
-              {/* Background decorative elements */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-secondary/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl"></div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 relative">
-                <div className="flex items-start space-x-4 bg-white/50 dark:bg-gray-700/50 p-6 rounded-lg backdrop-blur-sm transition-transform hover:scale-105">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6 text-primary"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2 text-lg">
-                      {t("whyUs.quality.heading")}
-                    </h3>
-                    <p className="text-foreground/70">
-                      {t("whyUs.quality.text")}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4 bg-white/50 dark:bg-gray-700/50 p-6 rounded-lg backdrop-blur-sm transition-transform hover:scale-105">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6 text-primary"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2 text-lg">
-                      {t("whyUs.delivery.heading")}
-                    </h3>
-                    <p className="text-foreground/70">
-                      {t("whyUs.delivery.text")}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4 bg-white/50 dark:bg-gray-700/50 p-6 rounded-lg backdrop-blur-sm transition-transform hover:scale-105">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6 text-primary"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2 text-lg">
-                      {t("whyUs.satisfaction.heading")}
-                    </h3>
-                    <p className="text-foreground/70">
-                      {t("whyUs.satisfaction.text")}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4 bg-white/50 dark:bg-gray-700/50 p-6 rounded-lg backdrop-blur-sm transition-transform hover:scale-105">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6 text-primary"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2 text-lg">
-                      {t("whyUs.prices.heading")}
-                    </h3>
-                    <p className="text-foreground/70">
-                      {t("whyUs.prices.text")}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+      <main className="grow pb-20 md:pb-28">
+        <AboutHeader />
+        <PhotoMosaic />
+        <Timeline />
+        {showcaseCategories.length > 0 && <Showcase categories={showcaseCategories} />}
+        <Beliefs />
       </main>
       <Footer />
     </div>
+  );
+}
+
+function AboutHeader() {
+  const t = useTranslations("legal.about");
+  const home = useTranslations("home.story");
+
+  return (
+    <header className="container-custom grid items-end gap-8 pt-14 pb-12 md:pt-20 md:pb-16 lg:grid-cols-12">
+      <div className="flex flex-col items-start gap-5 lg:col-span-5">
+        <p className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface py-1.5 pr-4 pl-3 text-sm text-muted">
+          <span className="h-2 w-3 -rotate-12 rounded-full bg-primary" />
+          {home("eyebrow")}
+        </p>
+        <h1 className="font-display text-6xl leading-none font-medium tracking-tight text-balance md:text-8xl">
+          {t("heading")}
+        </h1>
+      </div>
+      <p className="font-display text-2xl leading-snug text-pretty lg:col-span-6 lg:col-start-7 lg:text-3xl">
+        {t("story.lead")}
+      </p>
+    </header>
+  );
+}
+
+function PhotoMosaic() {
+  const t = useTranslations("legal.about");
+
+  return (
+    <div className="container-custom grid grid-cols-2 gap-3 md:h-105 md:grid-cols-[1fr_1.6fr_1fr] md:gap-4">
+      <div className="relative aspect-4/5 overflow-hidden rounded-4xl bg-sand md:aspect-auto">
+        <Image
+          src="/aboutus.jpeg"
+          alt={t("story.imageAlt")}
+          fill
+          priority
+          sizes="(max-width: 768px) 50vw, 25vw"
+          className="object-cover"
+        />
+      </div>
+      <div className="relative order-first col-span-2 aspect-video overflow-hidden rounded-4xl bg-sand md:order-none md:col-span-1 md:aspect-auto">
+        <Image
+          src="/images/roller-bottles-row.jpg"
+          alt=""
+          fill
+          priority
+          sizes="(max-width: 768px) 100vw, 45vw"
+          className="object-cover"
+        />
+      </div>
+      <div className="relative aspect-4/5 overflow-hidden rounded-4xl bg-sand md:aspect-auto">
+        <Image
+          src="/images/dropper-lavender.jpg"
+          alt=""
+          fill
+          sizes="(max-width: 768px) 50vw, 25vw"
+          className="object-cover"
+        />
+      </div>
+    </div>
+  );
+}
+
+function SectionTitle({ title, subtitle }: { title: string; subtitle: string }) {
+  return (
+    <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
+      <h2 className="font-display text-4xl font-medium tracking-tight text-balance md:text-5xl">
+        {title}
+      </h2>
+      <p className="max-w-md text-lg text-pretty text-muted">{subtitle}</p>
+    </div>
+  );
+}
+
+function Timeline() {
+  const t = useTranslations("legal.about.timeline");
+  const steps = t.raw("steps") as { when: string; title: string; text: string }[];
+
+  return (
+    <section className="container-custom pt-20 md:pt-28">
+      <SectionTitle title={t("heading")} subtitle={t("subheading")} />
+      <ol className="mt-10 grid gap-y-10 border-t border-line sm:grid-cols-2 lg:grid-cols-4">
+        {steps.map((step, index) => (
+          <li key={step.title} className="relative flex flex-col gap-2.5 pt-8 pr-6">
+            <span
+              className={`absolute -top-1.5 left-0 size-3 rounded-full border-2 border-primary ${
+                index === 0 ? "bg-primary" : "bg-background"
+              }`}
+            />
+            <span className="font-display text-primary tabular-nums">{step.when}</span>
+            <h3 className="font-display text-2xl leading-tight font-medium">{step.title}</h3>
+            <p className="leading-relaxed text-pretty text-muted">{step.text}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+function Showcase({ categories }: { categories: Category[] }) {
+  const t = useTranslations("legal.about.products");
+  const count = useTranslations("home.categories");
+
+  return (
+    <section className="container-custom pt-20 md:pt-28">
+      <SectionTitle title={t("heading")} subtitle={t("subheading")} />
+      <ul className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
+        {categories.map((category) => (
+          <li key={category.id}>
+            <Link
+              href={`/categories/${category.slug}`}
+              className="group relative flex aspect-3/4 items-end overflow-hidden rounded-3xl p-4 text-white"
+            >
+              <Image
+                src={category.image.src}
+                alt=""
+                fill
+                sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+              <span className="absolute inset-0 bg-linear-to-t from-foreground/90 via-foreground/65 via-45% to-transparent to-85%" />
+              <span className="relative">
+                <span className="block font-display text-xl leading-tight font-medium">
+                  {category.name}
+                </span>
+                <span className="mt-1 block text-xs opacity-80">
+                  {count("productCount", { count: category.count })}
+                </span>
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function Beliefs() {
+  const t = useTranslations("legal.about");
+
+  return (
+    <section className="container-custom grid gap-3 pt-20 md:pt-28 lg:grid-cols-3">
+      {beliefKeys.map((key) => (
+        <div key={key} className="flex flex-col gap-3 rounded-3xl bg-surface p-7">
+          <h3 className="text-sm font-semibold text-primary">{t(`${key}.heading`)}</h3>
+          <p className="font-display text-xl leading-snug text-pretty md:text-2xl">
+            {t(`${key}.text`)}
+          </p>
+        </div>
+      ))}
+    </section>
   );
 }

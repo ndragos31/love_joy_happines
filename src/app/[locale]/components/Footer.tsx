@@ -1,162 +1,129 @@
 "use client";
 
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import LanguageToggle from "./LanguageToggle";
+
+const shopLinks = [
+  { href: "/products", key: "allProducts" },
+  { href: "/categories/etichete", key: "labels" },
+  { href: "/categories/autocolante", key: "stickers" },
+  { href: "/categories/flyere-si-pliante", key: "flyers" },
+] as const;
+
+const helpLinks = [
+  { href: "/about", key: "about" },
+  { href: "/contact", key: "contact" },
+  { href: "/privacy", key: "privacy" },
+  { href: "/terms", key: "terms" },
+] as const;
+
+const linkClassName = "text-background transition-colors hover:text-primary-soft";
 
 export default function Footer() {
   const t = useTranslations("footer");
+  const callout = useTranslations("home.cta");
 
   return (
-    <footer className="bg-gray-light dark:bg-gray-900">
-      {/* Top decorative section with background */}
-      <div className="bg-primary/5 dark:bg-primary/10 py-6 relative overflow-hidden">
-        <div className="container-custom relative z-10">
-          <div className="flex justify-center">
-            <div className="flex items-center space-x-2">
-              <div className="h-px w-12 bg-primary/30"></div>
-              <div className="w-3 h-3 rotate-45 bg-primary/20"></div>
-              <div className="text-primary font-medium">Love Joy Happiness</div>
-              <div className="w-3 h-3 rotate-45 bg-primary/20"></div>
-              <div className="h-px w-12 bg-primary/30"></div>
-            </div>
-          </div>
-        </div>
-        {/* Decorative circles */}
-        <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-primary/5 dark:bg-primary/5"></div>
-        <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-primary/5 dark:bg-primary/5"></div>
-      </div>
-
-      <div className="container-custom pt-12 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Company Info */}
-          <div className="col-span-1">
-            <h3 className="text-xl font-bold text-primary mb-4">
-              Love Joy Happiness
-            </h3>
-            <p className="text-foreground mb-4">
-              {t("tagline")}
-            </p>
-            <div className="flex space-x-4">
-              <a
-                href="https://www.facebook.com/people/Love-Joy-Happiness/61571091636918/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-foreground hover:text-primary"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div className="col-span-1">
-            <h3 className="text-lg font-semibold mb-4">{t("headings.quickLinks")}</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/"
-                  className="text-foreground hover:text-primary transition-colors"
-                >
-                  {t("links.home")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/products"
-                  className="text-foreground hover:text-primary transition-colors"
-                >
-                  {t("links.allProducts")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/categories/autocolante"
-                  className="text-foreground hover:text-primary transition-colors"
-                >
-                  {t("links.stickers")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/categories/etichete"
-                  className="text-foreground hover:text-primary transition-colors"
-                >
-                  {t("links.labels")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/categories/flyere-si-pliante"
-                  className="text-foreground hover:text-primary transition-colors"
-                >
-                  {t("links.flyers")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="text-foreground hover:text-primary transition-colors"
-                >
-                  {t("links.about")}
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Customer Service */}
-          <div className="col-span-1">
-            <h3 className="text-lg font-semibold mb-4">{t("headings.customerService")}</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-foreground hover:text-primary transition-colors"
-                >
-                  {t("links.contact")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/privacy"
-                  className="text-foreground hover:text-primary transition-colors"
-                >
-                  {t("links.privacy")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/terms"
-                  className="text-foreground hover:text-primary transition-colors"
-                >
-                  {t("links.terms")}
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Decorative Divider */}
-        <div className="mt-12 mb-8 flex items-center justify-center">
-          <div className="flex-grow h-px bg-gray-200 dark:bg-gray-700 max-w-xs"></div>
-          <div className="mx-4 flex space-x-2">
-            <span className="h-2 w-2 rounded-full bg-primary"></span>
-            <span className="h-2 w-2 rounded-full bg-primary opacity-75"></span>
-            <span className="h-2 w-2 rounded-full bg-primary opacity-50"></span>
-          </div>
-          <div className="flex-grow h-px bg-gray-200 dark:bg-gray-700 max-w-xs"></div>
-        </div>
-
-        <div className="text-center">
-          <p className="text-foreground">
-            {t("copyright", { year: new Date().getFullYear() })}
+    <footer className="rounded-t-4xl bg-foreground text-background">
+      <div className="container-custom flex flex-col gap-12 pt-14 pb-8 md:pt-16">
+        <div className="flex flex-col items-start justify-between gap-6 border-b border-background/15 pb-10 md:flex-row md:items-end">
+          <p className="max-w-xl font-display text-4xl leading-tight font-medium tracking-tight text-balance md:text-5xl">
+            {callout("heading")}
           </p>
+          <Link
+            href="/contact"
+            className="group inline-flex h-14 shrink-0 items-center gap-3 rounded-full bg-background pr-2 pl-7 font-medium text-foreground transition duration-200 hover:bg-primary-soft active:scale-98"
+          >
+            {callout("button")}
+            <span className="grid size-10 place-items-center rounded-full bg-foreground/10 transition-transform duration-200 group-hover:translate-x-0.5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="size-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </span>
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-2 gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1.3fr]">
+          <div className="col-span-2 flex flex-col items-start gap-4 lg:col-span-1">
+            <Image
+              src="/logo dreptunghi.jpg"
+              alt="Love Joy Happiness"
+              width={2836}
+              height={676}
+              sizes="140px"
+              className="h-8 w-auto mix-blend-screen brightness-110 contrast-125 invert hue-rotate-180"
+            />
+            <p className="max-w-xs text-background/60">{t("tagline")}</p>
+          </div>
+
+          <nav aria-label={t("headings.shop")}>
+            <h3 className="text-sm text-background/50">{t("headings.shop")}</h3>
+            <ul className="mt-4 space-y-3">
+              {shopLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className={linkClassName}>
+                    {t(`links.${link.key}`)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label={t("headings.help")}>
+            <h3 className="text-sm text-background/50">{t("headings.help")}</h3>
+            <ul className="mt-4 space-y-3">
+              {helpLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className={linkClassName}>
+                    {t(`links.${link.key}`)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="col-span-2 lg:col-span-1">
+            <h3 className="text-sm text-background/50">{t("headings.contact")}</h3>
+            <ul className="mt-4 space-y-3">
+              <li>
+                <a href="tel:+40750485858" className={linkClassName}>
+                  +40 750 485 858
+                </a>
+              </li>
+              <li>
+                <a href="mailto:lovejoyhappinesscontact@yahoo.com" className={`[overflow-wrap:anywhere] ${linkClassName}`}>
+                  lovejoyhappinesscontact<wbr />@yahoo.com
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.facebook.com/people/Love-Joy-Happiness/61571091636918/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={linkClassName}
+                >
+                  Facebook
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="flex flex-col items-start gap-4 border-t border-background/15 pt-6 text-sm text-background/60 sm:flex-row sm:items-center sm:justify-between">
+          <p>{t("copyright", { year: new Date().getFullYear() })}</p>
+          <LanguageToggle onDark />
         </div>
       </div>
     </footer>

@@ -4,9 +4,12 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Product } from "@/lib/types/product";
+import { Category } from "@/lib/types/category";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProductCard from "@/app/[locale]/components/ProductCard";
+import CategoryChips from "@/app/[locale]/components/CategoryChips";
+import ProductGridSkeleton from "@/app/[locale]/components/ProductGridSkeleton";
 
 interface PaginatedResponse {
   products: Product[];
@@ -17,6 +20,7 @@ interface PaginatedResponse {
 export default function ProductsPage() {
   const t = useTranslations("products");
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState("");
@@ -141,46 +145,53 @@ export default function ProductsPage() {
     }
   }, [fetchProducts]);
 
+  useEffect(() => {
+    fetch("/api/categories?per_page=100")
+      .then((response) => (response.ok ? response.json() : []))
+      .then(setCategories)
+      .catch(() => setCategories([]));
+  }, []);
+
   const retryFetch = () => {
     setError("");
     fetchProducts(1, true);
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
-      <main className="flex-grow py-8 bg-gray-50 dark:bg-gray-900">
-        <div className="container-custom">
-          <div className="mb-10">
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              {t("listingHeading")}
-            </h1>
-            <p className="text-foreground/70 max-w-3xl">
-              {t("listingSubheading")}
-            </p>
+      <main className="grow">
+        <header className="container-custom pt-14 pb-8 md:pt-20 md:pb-10">
+          <h1 className="font-display text-5xl font-medium tracking-tight text-balance md:text-7xl">
+            {t("listingHeading")}
+          </h1>
+          <p className="mt-5 max-w-2xl text-lg text-pretty text-muted">
+            {t("listingSubheading")}
+          </p>
+        </header>
+
+        <div className="container-custom pb-20 md:pb-28">
+          <div className="mb-10 md:mb-12">
+            <CategoryChips categories={categories} showAllProducts />
           </div>
 
           {loading ? (
-            <div className="flex flex-col justify-center items-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-              <p className="text-foreground/70">{t("loading")}</p>
-            </div>
+            <ProductGridSkeleton label={t("loading")} />
           ) : error ? (
-            <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-lg text-center">
-              <h2 className="text-xl font-semibold text-red-600 dark:text-red-400 mb-2">
-                {t("error.heading")}
-              </h2>
-              <p className="text-red-500 dark:text-red-300 mb-4">{error}</p>
-              <div className="flex justify-center gap-4">
+            <div className="rounded-4xl bg-error/10 px-6 py-14 text-center">
+              <h2 className="font-display text-3xl font-medium">{t("error.heading")}</h2>
+              <p className="mt-3 text-error">{error}</p>
+              <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <button
+                  type="button"
                   onClick={retryFetch}
-                  className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md transition-colors"
+                  className="inline-flex h-12 cursor-pointer items-center rounded-full bg-foreground px-7 font-medium text-background transition duration-200 hover:bg-primary active:scale-98"
                 >
                   {t("error.retry")}
                 </button>
                 <Link
                   href="/"
-                  className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors"
+                  className="inline-flex h-12 items-center rounded-full border border-foreground/20 px-7 font-medium transition-colors hover:border-foreground"
                 >
                   {t("backToHome")}
                 </Link>
@@ -188,54 +199,46 @@ export default function ProductsPage() {
             </div>
           ) : products.length > 0 ? (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <ul className="grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 lg:grid-cols-3 lg:gap-y-14 xl:grid-cols-4">
                 {products.map((product, index) => (
-                  <ProductCard
-                    key={`${product.id}-${index}`}
-                    product={product}
-                  />
+                  <li key={`${product.id}-${index}`}>
+                    <ProductCard product={product} />
+                  </li>
                 ))}
-              </div>
+              </ul>
 
               {loadingMore && (
-                <div className="flex justify-center items-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                  <span className="ml-2 text-foreground/70">
-                    {t("loadingMore")}
-                  </span>
+                <div className="mt-14">
+                  <ProductGridSkeleton label={t("loadingMore")} count={4} />
                 </div>
               )}
 
               {!loadingMore && hasMore && (
-                <div className="flex justify-center mt-8">
+                <div className="mt-14 flex justify-center">
                   <button
+                    type="button"
                     onClick={loadMoreProducts}
-                    className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-md font-medium transition-colors"
+                    className="inline-flex h-14 cursor-pointer items-center rounded-full border border-foreground/20 px-8 font-medium transition-colors hover:border-foreground hover:bg-foreground hover:text-background"
                   >
                     {t("loadMoreButton")}
                   </button>
                 </div>
               )}
 
-              {!hasMore && products.length > 0 && (
-                <div className="text-center py-8">
-                  <p className="text-foreground/70">
-                    {t("allProductsSeen", { count: products.length })}
-                  </p>
-                </div>
+              {!hasMore && (
+                <p className="mt-16 flex items-center justify-center gap-3 text-sm text-muted">
+                  <span className="h-2 w-3 -rotate-12 rounded-full bg-primary" />
+                  {t("allProductsSeen", { count: products.length })}
+                </p>
               )}
             </>
           ) : (
-            <div className="text-center py-20 bg-gray-100 dark:bg-gray-800/50 rounded-lg">
-              <h3 className="text-xl font-medium text-gray-600 dark:text-gray-300">
-                {t("noProducts")}
-              </h3>
-              <p className="text-gray-500 dark:text-gray-400 mt-2">
-                {t("noProductsSubtext")}
-              </p>
+            <div className="rounded-4xl bg-sand px-6 py-20 text-center">
+              <h2 className="font-display text-3xl font-medium">{t("noProducts")}</h2>
+              <p className="mt-3 text-muted">{t("noProductsSubtext")}</p>
               <Link
                 href="/"
-                className="mt-6 inline-block bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md"
+                className="mt-8 inline-flex h-12 items-center rounded-full bg-foreground px-7 font-medium text-background transition-colors hover:bg-primary"
               >
                 {t("backToHome")}
               </Link>
