@@ -1,0 +1,300 @@
+.scene {
+  position: relative;
+  aspect-ratio: 520 / 560;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 2rem;
+  background:
+    radial-gradient(70% 55% at 40% 85%, rgb(255 255 255 / 0.65), transparent 70%),
+    radial-gradient(60% 50% at 85% 10%, var(--primary-soft), transparent 70%),
+    var(--sand);
+}
+
+.stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 520px;
+  height: 560px;
+  transform-origin: 0 0;
+  transform: scale(var(--scale, 1));
+}
+
+.table {
+  position: absolute;
+  inset: 476px 0 0;
+  background: linear-gradient(180deg, #e2d3bd, #d7c4a8);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6);
+}
+
+.table::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, rgb(120 80 40 / 0.05) 0 2px, transparent 2px 22px);
+}
+
+.sheet {
+  position: absolute;
+  left: 300px;
+  top: 90px;
+  width: 170px;
+  height: 250px;
+  border-radius: 10px;
+  background: #fffdf9;
+  box-shadow: var(--shadow-lift);
+  transform: rotate(6deg);
+}
+
+.sheetNote {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 12px;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.slot {
+  position: absolute;
+  width: 56px;
+  height: 88px;
+  border-radius: 4px;
+  outline: 1px dashed rgb(111 102 92 / 0.45);
+  outline-offset: 2px;
+}
+
+.slot .label {
+  left: 0;
+  top: 0;
+  transform: scale(0.4667);
+  transform-origin: 0 0;
+}
+
+.bottleShadow {
+  position: absolute;
+  left: 112px;
+  top: 462px;
+  width: 196px;
+  height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(60 35 15 / 0.35), transparent);
+}
+
+.bottle {
+  position: absolute;
+  left: 150px;
+  top: 70px;
+  width: 120px;
+  height: 406px;
+}
+
+.cap {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  top: 0;
+  height: 150px;
+  border-radius: 16px 16px 6px 6px;
+  background: linear-gradient(90deg, #0b0b0b 0%, #2c2c2c 16%, #5a5a5a 24%, #1b1b1b 38%, #0e0e0e 70%, #343434 88%, #0b0b0b 100%);
+}
+
+.glass {
+  position: absolute;
+  inset: 144px 0 0;
+  border-radius: 8px 8px 20px 20px;
+  background: linear-gradient(90deg, #2c1506 0%, #6e3611 14%, #b46a2c 26%, #8a4818 40%, #5a2c0c 66%, #7a3d14 84%, #2c1506 100%);
+}
+
+.glint {
+  position: absolute;
+  left: 20px;
+  top: 16px;
+  bottom: 28px;
+  width: 8px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.08));
+}
+
+.label {
+  position: absolute;
+  width: 120px;
+  height: 190px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #fffdf9;
+}
+
+.wash {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(55% 32% at 30% 88%, color-mix(in srgb, var(--tone) 50%, transparent), transparent 72%),
+    radial-gradient(40% 22% at 75% 98%, color-mix(in srgb, var(--tone) 35%, transparent), transparent 72%),
+    radial-gradient(30% 18% at 18% 12%, color-mix(in srgb, var(--tone) 18%, transparent), transparent 72%);
+}
+
+.text {
+  position: absolute;
+  left: -35px;
+  top: 35px;
+  width: 190px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 18px;
+  transform: rotate(-90deg);
+}
+
+.name {
+  min-height: 38px;
+  font-family: var(--font-dancing-script), cursive;
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--tone);
+}
+
+.subtitle {
+  font-size: 7.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.brand {
+  font-size: 7px;
+  letter-spacing: 0.06em;
+  color: #9a9086;
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(90deg, rgb(70 35 10 / 0.32) 0%, rgb(70 35 10 / 0) 24%, rgb(255 255 255 / 0.18) 40%, rgb(70 35 10 / 0) 62%, rgb(70 35 10 / 0.36) 100%);
+}
+
+.shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(110deg, transparent 38%, rgb(255 255 255 / 0.85) 50%, transparent 62%);
+  background-size: 260% 100%;
+  background-position: 160% 0;
+}
+
+.typing .name::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 30px;
+  margin-left: 2px;
+  vertical-align: -4px;
+  background: var(--tone);
+  animation: caret 0.8s steps(1) infinite;
+}
+
+.flying {
+  left: 150px;
+  top: 250px;
+  transform-origin: 50% 50%;
+  box-shadow: 0 2px 4px rgb(60 30 10 / 0.18);
+  will-change: transform;
+}
+
+.scene[data-phase="sheet"] .flying {
+  opacity: 1;
+  transform: translate(216px, -185px) rotate(6deg) scale(0.4667);
+  transition: none;
+}
+
+.scene[data-phase="peel"] .flying {
+  transform: translate(222px, -206px) rotate(-5deg) scale(0.52);
+  box-shadow: 0 18px 26px -10px rgb(60 30 10 / 0.35);
+  transition: transform 0.6s cubic-bezier(0.3, 0.7, 0.3, 1), box-shadow 0.6s;
+}
+
+.scene[data-phase="fly"] .flying {
+  transform: translate(104px, -150px) rotate(-14deg) scale(0.8);
+  box-shadow: 0 30px 40px -16px rgb(60 30 10 / 0.35);
+  transition: transform 0.65s cubic-bezier(0.5, 0, 0.3, 1);
+}
+
+.scene[data-phase="flat"] .flying {
+  transform: scale(1.24, 1);
+  box-shadow: 0 8px 14px -8px rgb(60 30 10 / 0.3);
+  transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.scene[data-phase="wrapped"] .flying,
+.scene[data-phase="shine"] .flying {
+  transform: none;
+  transition: transform 0.45s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.scene[data-phase="wrapped"] .shade,
+.scene[data-phase="shine"] .shade,
+.scene[data-phase="leave"] .shade {
+  opacity: 1;
+  transition: opacity 0.45s;
+}
+
+.scene[data-phase="shine"] .shine {
+  animation: shine 1s ease-out forwards;
+}
+
+.scene[data-phase="leave"] .flying {
+  opacity: 0;
+  transform: translateY(-14px);
+  transition: opacity 0.45s, transform 0.45s;
+}
+
+.spark {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0;
+  transform: scale(0);
+}
+
+.sparkTopLeft { left: 130px; top: 262px; }
+.sparkTopRight { left: 282px; top: 300px; width: 7px; height: 7px; animation-delay: 0.08s; }
+.sparkBottomLeft { left: 120px; top: 410px; width: 6px; height: 6px; animation-delay: 0.16s; }
+.sparkBottomRight { left: 290px; top: 418px; animation-delay: 0.24s; }
+
+.scene[data-phase="shine"] .spark {
+  animation-name: pop;
+  animation-duration: 0.9s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes caret {
+  50% { opacity: 0; }
+}
+
+@keyframes shine {
+  from { opacity: 1; background-position: 160% 0; }
+  to { opacity: 1; background-position: -60% 0; }
+}
+
+@keyframes pop {
+  0% { opacity: 0; transform: scale(0); }
+  35% { opacity: 1; transform: scale(1.3); }
+  100% { opacity: 0; transform: scale(0.6) translateY(-14px); }
+}
+
+.slotTopLeft { left: 22px; top: 22px; }
+.slotTopRight { left: 92px; top: 22px; }
+.slotBottomLeft { left: 22px; top: 124px; }
+.slotBottomRight { left: 92px; top: 124px; }

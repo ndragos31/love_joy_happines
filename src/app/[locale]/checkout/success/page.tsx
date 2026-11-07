@@ -23,6 +23,7 @@ interface OrderData {
   items: Array<{
     name: string;
     quantity: number;
+    freeQuantity?: number;
     price: number;
     attributes?: Record<string, string>;
   }>;
@@ -36,6 +37,7 @@ interface OrderData {
 
 export default function SuccessPage() {
   const t = useTranslations("checkout");
+  const tNav = useTranslations("nav");
   const locale = useLocale();
   const { clearCart } = useCart();
   const [emailsSent, setEmailsSent] = useState(false);
@@ -97,42 +99,63 @@ export default function SuccessPage() {
   }, [emailsSent, cartCleared, clearCart, locale]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
-      <main className="flex-grow pt-24 pb-16">
-        <div className="container-custom py-8">
-          <div className="max-w-2xl mx-auto bg-gray-light dark:bg-gray-800 rounded-lg overflow-hidden">
-            <div className="p-8 text-center">
-              <div className="mb-6">
+      <main className="grow">
+        <div className="container-custom pt-10 pb-20 md:pt-16 md:pb-28">
+          <section className="relative mx-auto max-w-3xl overflow-hidden rounded-4xl bg-sand px-6 py-14 text-center sm:px-12 md:py-20">
+            <span className="pointer-events-none absolute -top-24 -right-24 h-72 w-96 -rotate-12 rounded-full bg-primary-soft blur-2xl" />
+            <div className="relative flex flex-col items-center">
+              <span className="grid size-24 place-items-center rounded-full bg-success/10 text-success">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-16 w-16 text-green-500 mx-auto"
+                  className="size-12"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  strokeWidth={1.8}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
+                  <path d="m5 12.5 4.5 4.5L19 7.5" />
                 </svg>
-              </div>
-              <h1 className="text-3xl font-bold mb-4">
+              </span>
+              <h1 className="mt-8 font-display text-4xl font-medium tracking-tight text-balance md:text-6xl">
                 {t("success.heading")}
               </h1>
-              <p className="text-foreground/70 mb-8">
+              <p className="mt-5 max-w-lg text-lg text-pretty text-muted">
                 {t("success.message")}
               </p>
-              <Link
-                href="/products"
-                className="inline-block bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
-              >
-                {t("success.continueShopping")}
-              </Link>
+              <div className="mt-10 flex flex-wrap justify-center gap-3">
+                <Link
+                  href="/products"
+                  className="group inline-flex h-14 items-center justify-center gap-2 rounded-full bg-foreground px-8 font-medium text-background transition duration-200 hover:bg-primary active:scale-98"
+                >
+                  {t("success.continueShopping")}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                  >
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </Link>
+                <Link
+                  href="/"
+                  className="inline-flex h-14 items-center justify-center rounded-full border border-foreground/20 px-8 font-medium transition-colors duration-200 hover:border-foreground"
+                >
+                  {tNav("home")}
+                </Link>
+              </div>
             </div>
-          </div>
+          </section>
         </div>
       </main>
       <Footer />

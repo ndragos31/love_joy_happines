@@ -1,206 +1,82 @@
-"use client";
-
-import { useState, useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import Image from "next/image";
-import { Category } from "@/lib/types/category";
+import LabelScene from "./LabelScene";
 
-const HERO_PRIORITY_ORDER = [22, 32, 33, 23]; // Etichete RO, Etichete EN, Etichete HU, Autocolante
-
-export default function Hero({ initialCategories }: { initialCategories: Category[] }) {
+export default function Hero() {
   const t = useTranslations("home.hero");
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const categories = useMemo(() => {
-    const withImages = initialCategories.filter((c) => c.image && c.image.src);
-    return [...withImages].sort((a, b) => {
-      const aIndex = HERO_PRIORITY_ORDER.indexOf(a.id);
-      const bIndex = HERO_PRIORITY_ORDER.indexOf(b.id);
-      if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
-      if (aIndex !== -1) return -1;
-      if (bIndex !== -1) return 1;
-      return a.menu_order - b.menu_order;
-    });
-  }, [initialCategories]);
-
-  // Carousel rotation
-  useEffect(() => {
-    if (categories.length === 0) return;
-
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) =>
-        prevIndex === categories.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 5000); // Change image every 5 seconds
-
-    return () => clearInterval(interval);
-  }, [categories]);
-
-  // Fallback image if no categories with images
-  const fallbackImage = "/images/hero-image.jpg";
+  const shipping = useTranslations("products.detail");
+  const shippingItems = [
+    shipping("shippingItem1"),
+    shipping("shippingItem2"),
+    shipping("shippingItem3"),
+  ];
 
   return (
-    <div className="relative bg-white dark:bg-gray-900 overflow-hidden">
-      {/* Subtle background elements */}
-      <div className="absolute top-20 right-20 w-32 h-32 rounded-full bg-[#ff6b6b]/5 blur-2xl"></div>
-      <div className="absolute bottom-20 left-20 w-40 h-40 rounded-full bg-[#4ecdc4]/5 blur-3xl"></div>
-      <div className="absolute top-40 left-1/4 w-24 h-24 rounded-full bg-[#ffdd67]/5 blur-xl"></div>
+    <section className="container-custom grid items-center gap-12 pt-8 pb-16 md:pt-12 lg:grid-cols-12 lg:gap-10 lg:pb-24">
+      <div className="flex flex-col items-start gap-7 lg:col-span-6">
+        <p className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface py-1.5 pr-4 pl-3 text-sm text-muted">
+          <span className="h-2 w-3 -rotate-12 rounded-full bg-primary" />
+          {t("eyebrow")}
+        </p>
 
-      <div className="container-custom py-8 md:py-16 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center px-4 md:px-10">
-          <div className="flex flex-col space-y-3 md:space-y-4">
-            <div className="w-full max-w-[400px] md:max-w-[550px] logo-container">
-              <style jsx global>{`
-                @media (min-width: 768px) {
-                  .logo-image {
-                    object-position: -60px 50% !important;
-                  }
-                }
-                @media (max-width: 767px) {
-                  .logo-image {
-                    object-position: -35px 50% !important;
-                  }
-                  .logo-container {
-                    margin-left: 0;
-                    transform: scale(1);
-                    transform-origin: center center;
-                  }
-                }
-              `}</style>
-              <Image
-                src="/new_logo.jpeg"
-                alt="Love Joy Happiness Logo"
-                width={550}
-                height={183}
-                priority
-                className="w-full h-auto object-cover logo-image"
-                style={{
-                  objectPosition: "center center",
-                }}
-              />
-            </div>
+        <h1 className="font-display text-5xl leading-none font-medium tracking-tight text-balance sm:text-6xl xl:text-7xl">
+          {t.rich("heading", {
+            accent: (chunks) => <em className="text-primary">{chunks}</em>,
+          })}
+        </h1>
 
-            <p className="text-base md:text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
-              {t("tagline")}
-            </p>
+        <p className="max-w-md text-lg leading-relaxed text-pretty text-muted">{t("tagline")}</p>
 
-            <div className="flex flex-row pt-2">
-              <Link href="/categories">
-                <button className="bg-[#ff6b6b] hover:bg-[#ff5252] text-white font-medium rounded-md px-6 md:px-8 py-2 md:py-3 text-base md:text-lg transition-colors cursor-pointer">
-                  {t("exploreCollection")}
-                </button>
-              </Link>
-            </div>
-          </div>
-
-          <div className="relative h-[400px] md:h-[500px] rounded-lg overflow-hidden shadow-lg">
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent to-white/5 z-10 pointer-events-none"></div>
-
-            {/* Carousel navigation buttons */}
-            {categories.length > 1 && (
-              <>
-                <button
-                  onClick={() =>
-                    setCurrentImageIndex((prev) =>
-                      prev === 0 ? categories.length - 1 : prev - 1
-                    )
-                  }
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/30 hover:bg-white/50 rounded-full p-2"
-                  aria-label={t("previousImage")}
-                >
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15 18L9 12L15 6"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-                <button
-                  onClick={() =>
-                    setCurrentImageIndex((prev) =>
-                      prev === categories.length - 1 ? 0 : prev + 1
-                    )
-                  }
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/30 hover:bg-white/50 rounded-full p-2"
-                  aria-label={t("nextImage")}
-                >
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M9 6L15 12L9 18"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-              </>
-            )}
-
-            {/* Carousel indicators */}
-            {categories.length > 1 && (
-              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2">
-                {categories.map((category, index) => (
-                  <button
-                    key={`indicator-${category.id}-${index}`}
-                    onClick={() => setCurrentImageIndex(index)}
-                    className={`w-2 h-2 rounded-full ${
-                      index === currentImageIndex ? "bg-white" : "bg-white/50"
-                    }`}
-                    aria-label={t("goToSlide", { number: index + 1 })}
-                  />
-                ))}
-              </div>
-            )}
-
-            {/* Images */}
-            {categories.length > 0 ? (
-              categories.map((category, index) => (
-                <div
-                  key={category.id}
-                  className={`absolute inset-0 transition-opacity duration-500 ${
-                    index === currentImageIndex ? "opacity-100" : "opacity-0"
-                  }`}
-                >
-                  <Image
-                    src={category.image.src}
-                    alt={category.image.alt || category.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover bg-white dark:bg-gray-900"
-                    priority={index === 0}
-                  />
-                </div>
-              ))
-            ) : (
-              <Image
-                src={fallbackImage}
-                alt={t("fallbackAlt")}
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-                priority
-              />
-            )}
-          </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            href="/categories"
+            className="group inline-flex h-14 items-center gap-3 rounded-full bg-foreground pr-2 pl-7 font-medium text-background transition duration-200 hover:bg-primary active:scale-98"
+          >
+            {t("exploreCollection")}
+            <span className="grid size-10 place-items-center rounded-full bg-background/15 transition-transform duration-200 group-hover:translate-x-0.5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="size-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </span>
+          </Link>
+          <Link
+            href="/products"
+            className="inline-flex h-14 items-center px-4 font-medium underline decoration-foreground/20 decoration-2 underline-offset-8 transition-colors hover:decoration-primary"
+          >
+            {t("allProducts")}
+          </Link>
         </div>
+
+        <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted">
+          {shippingItems.map((item) => (
+            <li key={item} className="flex items-center gap-2">
+              <span className="size-1.5 rounded-full bg-primary" />
+              {item}
+            </li>
+          ))}
+        </ul>
       </div>
-    </div>
+
+      <div className="lg:col-span-6">
+        <LabelScene
+          labelNames={t.raw("labelNames") as string[]}
+          caption={t("labelCaption")}
+          subtitle={t("labelSubtitle")}
+          miniSubtitle={t("miniLabelSubtitle")}
+          sheetNote={t("sheetNote")}
+          description={t("animationLabel")}
+        />
+      </div>
+    </section>
   );
 }

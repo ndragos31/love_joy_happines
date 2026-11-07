@@ -31,74 +31,70 @@ export default function ProductImageGallery({
     setZoomPosition({ x, y });
   };
 
-  const handleMouseEnter = () => {
-    setIsZoomed(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsZoomed(false);
-  };
-
   if (!images || images.length === 0) {
     return (
-      <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
-        <span className="text-gray-400">{t("gallery.noImage")}</span>
+      <div className="grid aspect-square place-items-center rounded-4xl bg-sand">
+        <span className="text-muted">{t("gallery.noImage")}</span>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
-      {/* Main product image with zoom */}
+    <div className="flex flex-col gap-3 md:flex-row-reverse">
       <div
         ref={imageContainerRef}
-        className="aspect-square relative bg-white rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700"
+        className="relative aspect-square grow cursor-zoom-in overflow-hidden rounded-4xl bg-surface"
         onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        style={{ cursor: "zoom-in" }}
+        onMouseEnter={() => setIsZoomed(true)}
+        onMouseLeave={() => setIsZoomed(false)}
       >
         <Image
           src={images[currentImageIndex].src}
           alt={images[currentImageIndex].alt || productName}
           fill
-          className={`object-contain p-4 transition-opacity duration-300 ${
+          className={`object-cover transition-opacity duration-300 ${
             isZoomed ? "opacity-0" : "opacity-100"
           }`}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+          sizes="(max-width: 1024px) 100vw, 55vw"
           priority
         />
         {isZoomed && (
           <div
-            className="absolute inset-0 bg-white"
+            className="absolute inset-0 bg-surface bg-no-repeat"
             style={{
               backgroundImage: `url(${images[currentImageIndex].src})`,
               backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
               backgroundSize: "250%",
-              backgroundRepeat: "no-repeat",
             }}
           />
         )}
+        {images.length > 1 && (
+          <span className="absolute bottom-4 left-4 rounded-full bg-background/90 px-3 py-1 text-xs font-medium tabular-nums backdrop-blur">
+            {currentImageIndex + 1} / {images.length}
+          </span>
+        )}
       </div>
 
-      {/* Thumbnail gallery */}
       {images.length > 1 && (
-        <div className="flex space-x-2 overflow-x-auto pb-2">
+        <div className="flex shrink-0 gap-2 overflow-x-auto pb-1 md:max-h-150 md:w-20 md:flex-col md:overflow-y-auto md:pb-0">
           {images.map((image, index) => (
             <button
               key={image.id}
+              type="button"
               onClick={() => setCurrentImageIndex(index)}
-              className={`relative h-16 w-16 flex-shrink-0 rounded-md border-2 transition-all ${
+              aria-label={t("gallery.thumbnailAlt", { number: index + 1 })}
+              aria-current={currentImageIndex === index}
+              className={`relative size-20 shrink-0 cursor-pointer overflow-hidden rounded-2xl bg-surface transition ${
                 currentImageIndex === index
-                  ? "border-primary"
-                  : "border-gray-200 dark:border-gray-700 hover:border-primary/50"
+                  ? "ring-2 ring-foreground ring-offset-2 ring-offset-background"
+                  : "opacity-70 hover:opacity-100"
               }`}
             >
               <Image
                 src={image.src}
-                alt={image.alt || t("gallery.thumbnailAlt", { number: index + 1 })}
+                alt=""
                 fill
-                className="object-contain p-1"
+                className="object-cover"
                 sizes="80px"
               />
             </button>

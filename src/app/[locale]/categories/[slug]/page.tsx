@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -9,13 +10,17 @@ import { Product } from "@/lib/types/product";
 import Navbar from "@/app/[locale]/components/Navbar";
 import Footer from "@/app/[locale]/components/Footer";
 import ProductCard from "@/app/[locale]/components/ProductCard";
+import CategoryChips from "@/app/[locale]/components/CategoryChips";
+import ProductGridSkeleton from "@/app/[locale]/components/ProductGridSkeleton";
 
 export default function CategoryPage() {
   const params = useParams();
   const categorySlug = params.slug as string;
   const t = useTranslations("categories");
+  const productsText = useTranslations("products");
 
   const [category, setCategory] = useState<Category | null>(null);
+  const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -25,13 +30,13 @@ export default function CategoryPage() {
       try {
         setLoading(true);
 
-        // First fetch all categories to find the one with matching slug
         const categoriesResponse = await fetch("/api/categories?per_page=100");
         if (!categoriesResponse.ok) {
           throw new Error(`HTTP error! status: ${categoriesResponse.status}`);
         }
 
         const categoriesData: Category[] = await categoriesResponse.json();
+        setAllCategories(categoriesData);
         const currentCategory = categoriesData.find(
           (cat) => cat.slug === categorySlug
         );
@@ -42,7 +47,6 @@ export default function CategoryPage() {
 
         setCategory(currentCategory);
 
-        // Now fetch products for this category
         const productsResponse = await fetch(
           `/api/products?category=${currentCategory.id}`
         );
@@ -67,64 +71,97 @@ export default function CategoryPage() {
     }
   }, [categorySlug]);
 
+  const hasImage = Boolean(category?.image?.src);
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
-      <main className="flex-grow py-8 bg-gray-50 dark:bg-gray-900">
+      <main className="grow pt-6 pb-20 md:pt-8 md:pb-28">
         <div className="container-custom">
           {loading ? (
-            <div className="flex justify-center items-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-            </div>
+            <>
+              <div className="h-80 animate-pulse rounded-4xl bg-sand md:h-96" />
+              <div className="mt-12">
+                <ProductGridSkeleton label={productsText("loading")} />
+              </div>
+            </>
           ) : error ? (
-            <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-lg text-center">
-              <h2 className="text-xl font-semibold text-red-600 dark:text-red-400 mb-2">
-                {t("errorHeading")}
-              </h2>
-              <p className="text-red-500 dark:text-red-300">{error}</p>
+            <div className="rounded-4xl bg-error/10 px-6 py-14 text-center">
+              <h1 className="font-display text-3xl font-medium">{t("errorHeading")}</h1>
+              <p className="mt-3 text-error">{error}</p>
               <Link
                 href="/"
-                className="mt-4 inline-block text-primary hover:underline"
+                className="mt-8 inline-flex h-12 items-center rounded-full bg-foreground px-7 font-medium text-background transition-colors hover:bg-primary"
               >
                 {t("returnToHome")}
               </Link>
             </div>
           ) : (
             <>
-              {/* Category Header */}
-              <div className="mb-12">
-                <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
-                  <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-                    {category?.name}
-                  </h1>
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mt-2 md:mt-0">
+              <header className="relative overflow-hidden rounded-4xl bg-sand">
+                {hasImage && category && (
+                  <>
+                    <Image
+                      src={category.image.src}
+                      alt={category.image.alt || category.name}
+                      fill
+                      priority
+                      sizes="(max-width: 1280px) 100vw, 1216px"
+                      className="object-cover"
+                    />
+                    <span className="absolute inset-0 bg-linear-to-t from-foreground/85 via-foreground/35 to-foreground/5" />
+                  </>
+                )}
+                <div
+                  className={`relative flex min-h-80 flex-col justify-end p-7 sm:p-10 md:min-h-96 md:p-14 ${
+                    hasImage ? "text-white" : ""
+                  }`}
+                >
+                  <span
+                    className={`mb-5 inline-flex w-fit items-center rounded-full px-3.5 py-1.5 text-sm font-medium ${
+                      hasImage ? "bg-white/15 backdrop-blur" : "bg-background"
+                    }`}
+                  >
                     {t("productCount", { count: products.length })}
                   </span>
+                  <h1 className="max-w-4xl font-display text-5xl leading-none font-medium tracking-tight text-balance md:text-7xl">
+                    {category?.name}
+                  </h1>
+                  {category?.description && (
+                    <p
+                      className={`mt-5 max-w-2xl text-lg text-pretty ${
+                        hasImage ? "text-white/80" : "text-muted"
+                      }`}
+                    >
+                      {category.description}
+                    </p>
+                  )}
                 </div>
-                {category?.description && (
-                  <p className="text-foreground/70 max-w-3xl">
-                    {category.description}
-                  </p>
-                )}
+              </header>
+
+              <div className="mt-8 mb-12">
+                <CategoryChips
+                  categories={allCategories}
+                  activeSlug={categorySlug}
+                  showAllProducts
+                />
               </div>
 
               {products.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <ul className="grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 lg:grid-cols-3 lg:gap-y-14 xl:grid-cols-4">
                   {products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                    <li key={product.id}>
+                      <ProductCard product={product} />
+                    </li>
                   ))}
-                </div>
+                </ul>
               ) : (
-                <div className="text-center py-20 bg-gray-100 dark:bg-gray-800/50 rounded-lg">
-                  <h3 className="text-xl font-medium text-gray-600 dark:text-gray-300">
-                    {t("emptyHeading")}
-                  </h3>
-                  <p className="text-gray-500 dark:text-gray-400 mt-2">
-                    {t("emptyMessage")}
-                  </p>
+                <div className="rounded-4xl bg-sand px-6 py-20 text-center">
+                  <h2 className="font-display text-3xl font-medium">{t("emptyHeading")}</h2>
+                  <p className="mt-3 text-muted">{t("emptyMessage")}</p>
                   <Link
                     href="/"
-                    className="mt-6 inline-block bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md"
+                    className="mt-8 inline-flex h-12 items-center rounded-full bg-foreground px-7 font-medium text-background transition-colors hover:bg-primary"
                   >
                     {t("emptyCta")}
                   </Link>

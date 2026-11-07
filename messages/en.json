@@ -12,36 +12,50 @@
   "home": {
     "hero": {
       "tagline": "Labels, essential oil bags, flyers, car stickers, and personalized products that spread love and happiness",
-      "exploreCollection": "Explore the Collection",
-      "fallbackAlt": "Colorful stickers and banners",
-      "previousImage": "Previous image",
-      "nextImage": "Next image",
-      "goToSlide": "Go to slide {number}"
+      "eyebrow": "Labels, flyers and personalized prints",
+      "heading": "Small details that spread <accent>love and joy</accent>",
+      "exploreCollection": "Explore the collection",
+      "allProducts": "See all products",
+      "animationLabel": "Animation: a custom label is applied to a roller bottle",
+      "labelCaption": "Custom label:",
+      "labelSubtitle": "Essential oil blend · 10 ml",
+      "miniLabelSubtitle": "Blend · 10 ml",
+      "sheetNote": "Sheet · 10 ml",
+      "labelNames": ["Lavender", "Love", "Calm", "Energy"]
     },
     "categories": {
-      "heading": "Shop by Category",
+      "heading": "Shop by category",
       "subheading": "Browse our collection of products designed to bring joy to your life",
-      "productCount": "{count} products",
-      "fallbackDescription": "Discover our collection of {name}",
-      "viewAll": "View All"
+      "productCount": "{count, plural, one {# product} other {# products}}",
+      "allProducts": "All products"
+    },
+    "popular": {
+      "heading": "Customer favorites",
+      "subheading": "Our most ordered products right now",
+      "viewAll": "See all products"
+    },
+    "story": {
+      "eyebrow": "Since 2025",
+      "cta": "Read our story"
+    },
+    "cta": {
+      "heading": "Have an idea for a custom label?",
+      "button": "Write to us"
     },
     "testimonials": {
-      "heading": "What Our Customers Say",
+      "heading": "What our customers say",
       "subheading": "Don't just take our word for it — hear from our happy customers who have experienced the joy of our products.",
       "items": [
         {
           "author": "Ana Popescu",
-          "initials": "AP",
           "quote": "The custom stickers for my laptop are fantastic! The colors are vibrant and the quality is way above expectations. Even after months of use, they haven't deteriorated at all. I recommend them to all my friends!"
         },
         {
           "author": "Mihai Ionescu",
-          "initials": "MI",
           "quote": "I ordered custom labels for our company event and the result was impeccable. The elegant design and fine details impressed everyone. Delivery was fast and customer service excellent. We'll definitely be back!"
         },
         {
           "author": "Elena Cojocaru",
-          "initials": "EC",
           "quote": "The birthday banner for my daughter's party was wonderful! Everyone took photos with it. The print quality was exceptional and the material very durable. I greatly appreciate the attention to detail and the promptness of delivery."
         }
       ]
@@ -50,7 +64,7 @@
   "categories": {
     "errorHeading": "Error",
     "returnToHome": "Return to home",
-    "productCount": "{count} products",
+    "productCount": "{count, plural, one {# product} other {# products}}",
     "emptyHeading": "No products in this category",
     "emptyMessage": "Please check back later or explore other categories",
     "emptyCta": "Back to home"
@@ -61,7 +75,7 @@
     "loading": "Loading products...",
     "loadingMore": "Loading more products...",
     "loadMoreButton": "Load more products",
-    "allProductsSeen": "You've seen all available products ({count} products)",
+    "allProductsSeen": "You've seen all available products ({count, plural, one {# product} other {# products}})",
     "noProducts": "No products found",
     "noProductsSubtext": "Please check back later",
     "backToHome": "Back to home",
@@ -70,10 +84,7 @@
       "retry": "Try again"
     },
     "card": {
-      "addToCartAriaLabel": "Add to Cart",
-      "addToCartTooltip": "Add to cart",
-      "viewProductAriaLabel": "View Product",
-      "viewProductTooltip": "View"
+      "addToCartAriaLabel": "Add to cart"
     },
     "detail": {
       "loading": "Loading product...",
@@ -87,12 +98,12 @@
       "selectAttribute": "Select {name}",
       "selectRequired": "Please select: {attributes}",
       "quantity": "Quantity:",
+      "decreaseQuantity": "Decrease quantity",
+      "increaseQuantity": "Increase quantity",
       "adding": "Adding...",
       "added": "Added to cart",
       "addToCart": "Add to cart",
       "description": "Description",
-      "shippingTab": "Shipping",
-      "shippingHeading": "Shipping information",
       "shippingItem1": "Delivery in 24-48 business hours",
       "shippingItem2": "Free shipping on orders over 200 Lei",
       "shippingItem3": "Cash on delivery or online payment"
@@ -112,6 +123,9 @@
     "products": "Products ({count})",
     "continueShopping": "Continue shopping",
     "clearCart": "Clear cart",
+    "decreaseQuantity": "Decrease quantity",
+    "increaseQuantity": "Increase quantity",
+    "removeItem": "Remove item",
     "summary": {
       "heading": "Order summary",
       "subtotal": "Subtotal",
@@ -185,19 +199,19 @@
     "postalCode": "Postal code"
   },
   "footer": {
-    "tagline": "We bring color and joy to your life with labels, essential oil bags, flyers, car stickers, and personalized products that spread love and happiness.",
+    "tagline": "Labels, flyers and personalized prints that spread love and happiness.",
     "headings": {
-      "quickLinks": "Quick Links",
-      "customerService": "Customer Service"
+      "shop": "Shop",
+      "help": "Help",
+      "contact": "Contact"
     },
     "links": {
-      "home": "Home",
-      "allProducts": "All Products",
+      "allProducts": "All products",
       "stickers": "Stickers",
       "labels": "Labels",
       "flyers": "Flyers",
-      "about": "About Us",
-      "contact": "Contact Us",
+      "about": "About us",
+      "contact": "Contact us",
       "privacy": "Privacy Policy",
       "terms": "Terms and Conditions"
     },
@@ -207,22 +221,35 @@
     "about": {
       "heading": "About Us",
       "story": {
-        "heading": "Our Story",
+        "heading": "Our story",
         "p1": "Love Joy Happiness was born in 2025 from a desire to bring color and personality to people's lives through unique, personalized creations. It all started with a printer and a simple idea: to turn our customers' visions into reality.",
-        "p2": "From eye-catching flyers to creative stickers and elegant essential oil labels, we have grown steadily to offer complete personalization solutions. Every project is a new opportunity to bring joy and give life to our customers' ideas.",
-        "p3": "Today, we are proud of our modern workshop equipped with state-of-the-art machinery, enabling us to deliver high-quality products. Whether it's flyers for special events, custom stickers, or labels for essential oil brands, we put passion and attention to detail into every project.",
+        "lead": "It all started with a printer and a simple idea: to turn our customers' visions into reality.",
         "imageAlt": "Our products — labels, essential oils, and custom items"
       },
+      "timeline": {
+        "heading": "How we grew",
+        "subheading": "From one printer to a modern workshop.",
+        "steps": [
+          { "when": "2025", "title": "A printer and an idea", "text": "We started out to bring color and personality into people's lives." },
+          { "when": "Next", "title": "Flyers and stickers", "text": "Eye-catching flyers and creative stickers." },
+          { "when": "Next", "title": "Essential oil labels", "text": "Elegant essential oil labels in Romanian, English and Hungarian." },
+          { "when": "Today", "title": "A modern workshop", "text": "New equipment, the same attention to detail in every project." }
+        ]
+      },
+      "products": {
+        "heading": "What we make",
+        "subheading": "Personalized products, ready to order."
+      },
       "mission": {
-        "heading": "Our Mission",
+        "heading": "Our mission",
         "text": "To bring love, joy, and happiness into people's homes through creative, quality products."
       },
       "values": {
-        "heading": "Our Values",
+        "heading": "Our values",
         "text": "Quality, creativity, sustainability, and customer satisfaction are at the heart of everything we do."
       },
       "vision": {
-        "heading": "Our Vision",
+        "heading": "Our vision",
         "text": "To become the go-to source for decorative products that inspire and bring joy to everyday life."
       },
       "whyUs": {
@@ -433,6 +460,13 @@
       "lastUpdated": "Last updated:"
     }
   },
+  "freeItemOffer": {
+    "badge": "{paid} + 1 free",
+    "title": "Buy {paid}, get 1 free",
+    "missing": "Add {count} more and get 1 free.",
+    "earned": "You get {free} free, {total} in total.",
+    "freeLine": "+ {count} free"
+  },
   "errors": {
     "paymentFailed": "An error occurred while processing the payment.",
     "promoRequired": "Please enter a promo code",
@@ -446,6 +480,7 @@
       "intro": "We have successfully received your order number <strong>#{orderNumber}</strong>.",
       "detailsHeading": "Order details #{orderNumber}:",
       "productsHeading": "Ordered products:",
+      "freeLabel": "free",
       "subtotalLabel": "Subtotal:",
       "discountLabel": "Discount:",
       "shippingLabel": "Shipping:",

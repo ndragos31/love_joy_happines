@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useCart, CartItem } from "@/lib/context/CartContext";
-import { getItemEffectivePrice } from "@/lib/utils/price";
+import { getFreeQuantity, getItemEffectivePrice } from "@/lib/utils/price";
 import { Elements } from "@stripe/react-stripe-js";
 import {
   PaymentElement,
@@ -29,6 +29,11 @@ const promoCodeConfig: Record<string, { discount: number; filter: (item: CartIte
   JOY10: { discount: 0.1, filter: isJoy10Eligible },
 };
 
+const inputClassName =
+  "h-12 w-full rounded-2xl border border-line bg-surface px-4 transition outline-none placeholder:text-muted/70 focus:border-primary focus:ring-4 focus:ring-primary-soft";
+
+const labelClassName = "mb-2 block text-sm font-medium";
+
 // Payment form component
 interface OrderData {
   orderNumber: string;
@@ -46,6 +51,7 @@ interface OrderData {
   items: Array<{
     name: string;
     quantity: number;
+    freeQuantity?: number;
     price: number;
     attributes?: Record<string, string>;
   }>;
@@ -111,13 +117,17 @@ function CheckoutForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="grid gap-6">
       <PaymentElement />
-      {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
+      {error && (
+        <p role="alert" className="text-sm text-error">
+          {error}
+        </p>
+      )}
       <button
         type="submit"
         disabled={!stripe || processing}
-        className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        className="inline-flex h-14 w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-primary px-8 font-medium text-white transition duration-200 hover:bg-primary-hover active:scale-98 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {processing ? t("processing") : t("pay")}
       </button>
@@ -129,6 +139,7 @@ export default function CheckoutPage() {
   const t = useTranslations("checkout");
   const tForms = useTranslations("forms");
   const tErrors = useTranslations("errors");
+  const tOffer = useTranslations("freeItemOffer");
   const locale = useLocale();
   const [step, setStep] = useState(1);
   const { items, subtotal, clearCart, removeItem } = useCart();
@@ -288,6 +299,7 @@ export default function CheckoutPage() {
         items: items.map((item) => ({
           name: item.product.name,
           quantity: item.quantity,
+          freeQuantity: getFreeQuantity(item.product, item.quantity),
           price: Number(item.product.price),
           attributes: item.selectedAttributes || undefined,
         })),
@@ -383,256 +395,176 @@ export default function CheckoutPage() {
   }, [step, orderNumber, clearCart, sendOrderEmails]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
-      <main className="flex-grow pt-24 pb-16">
-        <div className="container-custom py-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-8 cursor-pointer">
+      <main className="grow">
+        <header className="container-custom pt-14 pb-10 md:pt-20 md:pb-14">
+          <h1 className="font-display text-5xl font-medium tracking-tight text-balance md:text-7xl">
             {t("heading")}
           </h1>
+          <ol className="mt-8 grid max-w-xl grid-cols-3 gap-3">
+            {[t("steps.delivery"), t("steps.payment"), t("steps.confirmation")].map((label, index) => (
+              <li
+                key={label}
+                aria-current={step === index + 1 ? "step" : undefined}
+                className={`border-t-2 pt-3 text-sm font-medium transition-colors ${
+                  index < step ? "border-primary" : "border-line text-muted"
+                }`}
+              >
+                <span className={`block font-display tabular-nums ${index < step ? "text-primary" : ""}`}>
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                {label}
+              </li>
+            ))}
+          </ol>
+        </header>
 
-          {/* Checkout Steps */}
-          <div className="flex justify-center mb-8">
-            <div className="grid grid-cols-3 gap-4 w-full max-w-xl">
-              <div
-                className={`text-center ${
-                  step >= 1
-                    ? "text-primary font-semibold"
-                    : "text-foreground/50"
-                }`}
-              >
-                <div
-                  className={`w-8 h-8 mx-auto rounded-full flex items-center justify-center ${
-                    step >= 1
-                      ? "bg-primary text-white"
-                      : "bg-gray-200 dark:bg-gray-700"
-                  }`}
-                >
-                  1
-                </div>
-                <span className="text-sm mt-1 block">{t("steps.delivery")}</span>
-              </div>
-              <div
-                className={`text-center ${
-                  step >= 2
-                    ? "text-primary font-semibold"
-                    : "text-foreground/50"
-                }`}
-              >
-                <div
-                  className={`w-8 h-8 mx-auto rounded-full flex items-center justify-center ${
-                    step >= 2
-                      ? "bg-primary text-white"
-                      : "bg-gray-200 dark:bg-gray-700"
-                  }`}
-                >
-                  2
-                </div>
-                <span className="text-sm mt-1 block">{t("steps.payment")}</span>
-              </div>
-              <div
-                className={`text-center ${
-                  step >= 3
-                    ? "text-primary font-semibold"
-                    : "text-foreground/50"
-                }`}
-              >
-                <div
-                  className={`w-8 h-8 mx-auto rounded-full flex items-center justify-center ${
-                    step >= 3
-                      ? "bg-primary text-white"
-                      : "bg-gray-200 dark:bg-gray-700"
-                  }`}
-                >
-                  3
-                </div>
-                <span className="text-sm mt-1 block">{t("steps.confirmation")}</span>
-              </div>
-            </div>
-          </div>
+        <div className="container-custom grid gap-10 pb-20 md:pb-28 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-7">
+            {step === 1 && (
+              <form onSubmit={handleSubmit}>
+                <section className="rounded-4xl bg-surface p-6 sm:p-8">
+                  <h2 className="font-display text-2xl font-medium">{t("deliveryInfo")}</h2>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Form */}
-            <div className="lg:col-span-2">
-              {step === 1 && (
-                <div className="bg-gray-light dark:bg-gray-800 rounded-lg overflow-hidden">
-                  <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <h2 className="text-xl font-semibold">
-                      {t("deliveryInfo")}
-                    </h2>
-                  </div>
-                  <form onSubmit={handleSubmit} className="p-6">
-                    <div className="mb-8">
-                      <label className="block text-sm font-medium mb-3">
-                        {t("customerType")}
+                  <fieldset className="mt-6">
+                    <legend className={labelClassName}>{t("customerType")}</legend>
+                    <div className="grid gap-3 sm:grid-cols-2 sm:gap-5">
+                      <label className="flex h-12 cursor-pointer items-center gap-3 rounded-2xl border border-line px-4 transition-colors hover:border-foreground/40 has-checked:border-primary has-checked:bg-primary-soft">
+                        <input
+                          type="radio"
+                          name="customerType"
+                          value="individual"
+                          checked={formData.customerType === "individual"}
+                          onChange={handleChange}
+                          className="size-4 accent-primary"
+                        />
+                        {t("individual")}
                       </label>
-                      <div className="flex gap-4">
-                        <label className="flex items-center cursor-pointer">
-                          <input
-                            type="radio"
-                            name="customerType"
-                            value="individual"
-                            checked={formData.customerType === "individual"}
-                            onChange={handleChange}
-                            className="w-4 h-4 text-primary border-gray-300 focus:ring-primary"
-                          />
-                          <span className="ml-2">{t("individual")}</span>
-                        </label>
-                        <label className="flex items-center cursor-pointer">
-                          <input
-                            type="radio"
-                            name="customerType"
-                            value="company"
-                            checked={formData.customerType === "company"}
-                            onChange={handleChange}
-                            className="w-4 h-4 text-primary border-gray-300 focus:ring-primary"
-                          />
-                          <span className="ml-2">{t("company")}</span>
-                        </label>
-                      </div>
+                      <label className="flex h-12 cursor-pointer items-center gap-3 rounded-2xl border border-line px-4 transition-colors hover:border-foreground/40 has-checked:border-primary has-checked:bg-primary-soft">
+                        <input
+                          type="radio"
+                          name="customerType"
+                          value="company"
+                          checked={formData.customerType === "company"}
+                          onChange={handleChange}
+                          className="size-4 accent-primary"
+                        />
+                        {t("company")}
+                      </label>
                     </div>
+                  </fieldset>
 
-                    {formData.customerType === "company" && (
-                      <div className="space-y-6 mb-6 border-b border-gray-200 dark:border-gray-700 pb-6">
-                        <div>
-                          <label
-                            htmlFor="companyName"
-                            className="block text-sm font-medium mb-1"
-                          >
-                            {tForms("companyName")} <span className="text-[#ff6b6b]">*</span>
-                          </label>
-                          <input
-                            type="text"
-                            id="companyName"
-                            name="companyName"
-                            value={formData.companyName}
-                            onChange={handleChange}
-                            required={formData.customerType === "company"}
-                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
-                          />
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div>
-                            <label
-                              htmlFor="cui"
-                              className="block text-sm font-medium mb-1"
-                            >
-                              {tForms("cui")} <span className="text-[#ff6b6b]">*</span>
-                            </label>
-                            <input
-                              type="text"
-                              id="cui"
-                              name="cui"
-                              value={formData.cui}
-                              onChange={handleChange}
-                              required={formData.customerType === "company"}
-                              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
-                            />
-                          </div>
-                          <div>
-                            <label
-                              htmlFor="regCom"
-                              className="block text-sm font-medium mb-1"
-                            >
-                              {tForms("regCom")} <span className="text-[#ff6b6b]">*</span>
-                            </label>
-                            <input
-                              type="text"
-                              id="regCom"
-                              name="regCom"
-                              value={formData.regCom}
-                              onChange={handleChange}
-                              required={formData.customerType === "company"}
-                              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                      <div>
-                        <label
-                          htmlFor="firstName"
-                          className="block text-sm font-medium mb-1"
-                        >
-                          {tForms("firstName")} <span className="text-[#ff6b6b]">*</span>
+                  {formData.customerType === "company" && (
+                    <div className="mt-6 grid gap-5 rounded-3xl bg-sand p-5 sm:grid-cols-2 sm:p-6">
+                      <div className="sm:col-span-2">
+                        <label htmlFor="companyName" className={labelClassName}>
+                          {tForms("companyName")} <span className="text-primary">*</span>
                         </label>
                         <input
                           type="text"
-                          id="firstName"
-                          name="firstName"
-                          value={formData.firstName}
+                          id="companyName"
+                          name="companyName"
+                          value={formData.companyName}
                           onChange={handleChange}
-                          required
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
+                          required={formData.customerType === "company"}
+                          className={inputClassName}
                         />
                       </div>
                       <div>
-                        <label
-                          htmlFor="lastName"
-                          className="block text-sm font-medium mb-1"
-                        >
-                          {tForms("lastName")} <span className="text-[#ff6b6b]">*</span>
+                        <label htmlFor="cui" className={labelClassName}>
+                          {tForms("cui")} <span className="text-primary">*</span>
                         </label>
                         <input
                           type="text"
-                          id="lastName"
-                          name="lastName"
-                          value={formData.lastName}
+                          id="cui"
+                          name="cui"
+                          value={formData.cui}
                           onChange={handleChange}
-                          required
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                      <div>
-                        <label
-                          htmlFor="email"
-                          className="block text-sm font-medium mb-1"
-                        >
-                          {tForms("email")} <span className="text-[#ff6b6b]">*</span>
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          onBlur={(e) => {
-                            handleChange(e);
-                          }}
-                          required
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
+                          required={formData.customerType === "company"}
+                          className={inputClassName}
                         />
                       </div>
                       <div>
-                        <label
-                          htmlFor="phone"
-                          className="block text-sm font-medium mb-1"
-                        >
-                          {tForms("phone")} <span className="text-[#ff6b6b]">*</span>
+                        <label htmlFor="regCom" className={labelClassName}>
+                          {tForms("regCom")} <span className="text-primary">*</span>
                         </label>
                         <input
-                          type="tel"
-                          id="phone"
-                          name="phone"
-                          value={formData.phone}
+                          type="text"
+                          id="regCom"
+                          name="regCom"
+                          value={formData.regCom}
                           onChange={handleChange}
-                          required
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
+                          required={formData.customerType === "company"}
+                          className={inputClassName}
                         />
                       </div>
                     </div>
+                  )}
 
-                    <div className="mb-6">
-                      <label
-                        htmlFor="address"
-                        className="block text-sm font-medium mb-1"
-                      >
-                        {tForms("address")} <span className="text-[#ff6b6b]">*</span>
+                  <div className="mt-6 grid gap-5 sm:grid-cols-6">
+                    <div className="sm:col-span-3">
+                      <label htmlFor="firstName" className={labelClassName}>
+                        {tForms("firstName")} <span className="text-primary">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        required
+                        className={inputClassName}
+                      />
+                    </div>
+                    <div className="sm:col-span-3">
+                      <label htmlFor="lastName" className={labelClassName}>
+                        {tForms("lastName")} <span className="text-primary">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        required
+                        className={inputClassName}
+                      />
+                    </div>
+                    <div className="sm:col-span-3">
+                      <label htmlFor="email" className={labelClassName}>
+                        {tForms("email")} <span className="text-primary">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        onBlur={(e) => {
+                          handleChange(e);
+                        }}
+                        required
+                        className={inputClassName}
+                      />
+                    </div>
+                    <div className="sm:col-span-3">
+                      <label htmlFor="phone" className={labelClassName}>
+                        {tForms("phone")} <span className="text-primary">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        required
+                        className={inputClassName}
+                      />
+                    </div>
+                    <div className="sm:col-span-6">
+                      <label htmlFor="address" className={labelClassName}>
+                        {tForms("address")} <span className="text-primary">*</span>
                       </label>
                       <input
                         type="text"
@@ -641,525 +573,416 @@ export default function CheckoutPage() {
                         value={formData.address}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
+                        className={inputClassName}
                       />
                     </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                      <div>
-                        <label
-                          htmlFor="city"
-                          className="block text-sm font-medium mb-1"
-                        >
-                          {tForms("city")} <span className="text-[#ff6b6b]">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          id="city"
-                          name="city"
-                          value={formData.city}
-                          onChange={handleChange}
-                          required
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
-                        />
-                      </div>
-                      <div>
-                        <label
-                          htmlFor="county"
-                          className="block text-sm font-medium mb-1"
-                        >
-                          {tForms("county")} <span className="text-[#ff6b6b]">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          id="county"
-                          name="county"
-                          value={formData.county}
-                          onChange={handleChange}
-                          required
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
-                        />
-                      </div>
-                      <div>
-                        <label
-                          htmlFor="postalCode"
-                          className="block text-sm font-medium mb-1"
-                        >
-                          {tForms("postalCode")} <span className="text-[#ff6b6b]">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          id="postalCode"
-                          name="postalCode"
-                          value={formData.postalCode}
-                          onChange={handleChange}
-                          required
-                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6b6b] focus:border-transparent dark:bg-gray-800"
-                        />
-                      </div>
+                    <div className="sm:col-span-2">
+                      <label htmlFor="city" className={labelClassName}>
+                        {tForms("city")} <span className="text-primary">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="city"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleChange}
+                        required
+                        className={inputClassName}
+                      />
                     </div>
-
-                    <div className="flex justify-between mt-8">
-                      <Link
-                        href="/cart"
-                        className="text-primary hover:underline flex items-center"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 mr-1"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                          />
-                        </svg>
-                        {t("backToCart")}
-                      </Link>
-                      <button
-                        type="submit"
-                        className="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-md transition-colors cursor-pointer"
-                      >
-                        {t("continueToPayment")}
-                      </button>
+                    <div className="sm:col-span-2">
+                      <label htmlFor="county" className={labelClassName}>
+                        {tForms("county")} <span className="text-primary">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="county"
+                        name="county"
+                        value={formData.county}
+                        onChange={handleChange}
+                        required
+                        className={inputClassName}
+                      />
                     </div>
-                  </form>
-                </div>
-              )}
-
-              {step === 2 && (
-                <div className="bg-gray-light dark:bg-gray-800 rounded-lg overflow-hidden">
-                  <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <h2 className="text-xl font-semibold">{t("paymentMethod")}</h2>
+                    <div className="sm:col-span-2">
+                      <label htmlFor="postalCode" className={labelClassName}>
+                        {tForms("postalCode")} <span className="text-primary">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="postalCode"
+                        name="postalCode"
+                        value={formData.postalCode}
+                        onChange={handleChange}
+                        required
+                        className={inputClassName}
+                      />
+                    </div>
                   </div>
-                  <div className="p-6">
-                    <div className="space-y-4 mb-8">
-                      <label className="flex items-center p-4 border border-gray-300 dark:border-gray-700 rounded-md cursor-pointer hover:border-[#ff6b6b] transition-colors">
-                        <input
-                          type="radio"
-                          name="paymentMethod"
-                          value="card"
-                          checked={paymentMethod === "card"}
-                          onChange={(e) =>
-                            setPaymentMethod(
-                              e.target.value as "card" | "ramburs"
-                            )
-                          }
-                          className="mr-3"
-                        />
-                        <div className="flex-grow">
-                          <p className="font-medium">{t("cardPayment")}</p>
-                          <p className="text-sm text-foreground/70">
-                            {t("cardPaymentDesc")}
-                          </p>
-                        </div>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6 text-[#ff6b6b]"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                          />
-                        </svg>
-                      </label>
+                </section>
 
-                      <label className="flex items-center p-4 border border-gray-300 dark:border-gray-700 rounded-md cursor-pointer hover:border-[#ff6b6b] transition-colors">
-                        <input
-                          type="radio"
-                          name="paymentMethod"
-                          value="ramburs"
-                          checked={paymentMethod === "ramburs"}
-                          onChange={(e) =>
-                            setPaymentMethod(
-                              e.target.value as "card" | "ramburs"
-                            )
-                          }
-                          className="mr-3"
-                        />
-                        <div className="flex-grow">
-                          <p className="font-medium">
-                            {t("cashOnDelivery")}
-                          </p>
-                          <p className="text-sm text-foreground/70">
-                            {t("cashOnDeliveryDesc")}
-                          </p>
-                        </div>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6 text-[#ff6b6b]"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
-                          />
-                        </svg>
-                      </label>
-                    </div>
+                <div className="mt-6 flex flex-col-reverse items-center gap-5 sm:flex-row sm:justify-between">
+                  <Link href="/cart" className="group inline-flex items-center gap-2 font-medium">
+                    <ArrowLeftIcon />
+                    <span className="underline decoration-foreground/20 decoration-2 underline-offset-8 transition-colors group-hover:decoration-primary">
+                      {t("backToCart")}
+                    </span>
+                  </Link>
+                  <button
+                    type="submit"
+                    className="group inline-flex h-14 w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-primary px-8 font-medium text-white transition duration-200 hover:bg-primary-hover active:scale-98 sm:w-auto"
+                  >
+                    {t("continueToPayment")}
+                    <ArrowRightIcon />
+                  </button>
+                </div>
+              </form>
+            )}
 
-                    {paymentMethod === "card" && clientSecret && (
-                      <Elements
-                        stripe={stripePromise}
-                        options={{
-                          clientSecret,
-                          locale: locale === "en" ? "en" : "ro",
-                          appearance: {
-                            theme: "stripe",
-                            variables: {
-                              colorPrimary: "#ff6b6b",
-                            },
+            {step === 2 && (
+              <section className="rounded-4xl bg-surface p-6 sm:p-8">
+                <h2 className="font-display text-2xl font-medium">{t("paymentMethod")}</h2>
+
+                <div className="mt-6 grid gap-3">
+                  <label className="flex cursor-pointer items-center gap-4 rounded-3xl border border-line p-4 transition-colors hover:border-foreground/40 has-checked:border-primary has-checked:bg-primary-soft sm:p-5">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="card"
+                      checked={paymentMethod === "card"}
+                      onChange={(e) =>
+                        setPaymentMethod(
+                          e.target.value as "card" | "ramburs"
+                        )
+                      }
+                      className="size-4 shrink-0 accent-primary"
+                    />
+                    <span className="grow">
+                      <span className="block font-medium">{t("cardPayment")}</span>
+                      <span className="mt-0.5 block text-sm text-muted">{t("cardPaymentDesc")}</span>
+                    </span>
+                    <span className="grid size-11 shrink-0 place-items-center rounded-full bg-sand text-primary">
+                      <CardIcon />
+                    </span>
+                  </label>
+
+                  <label className="flex cursor-pointer items-center gap-4 rounded-3xl border border-line p-4 transition-colors hover:border-foreground/40 has-checked:border-primary has-checked:bg-primary-soft sm:p-5">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="ramburs"
+                      checked={paymentMethod === "ramburs"}
+                      onChange={(e) =>
+                        setPaymentMethod(
+                          e.target.value as "card" | "ramburs"
+                        )
+                      }
+                      className="size-4 shrink-0 accent-primary"
+                    />
+                    <span className="grow">
+                      <span className="block font-medium">{t("cashOnDelivery")}</span>
+                      <span className="mt-0.5 block text-sm text-muted">{t("cashOnDeliveryDesc")}</span>
+                    </span>
+                    <span className="grid size-11 shrink-0 place-items-center rounded-full bg-sand text-primary">
+                      <CashIcon />
+                    </span>
+                  </label>
+                </div>
+
+                {paymentMethod === "card" && clientSecret && (
+                  <div className="mt-8 border-t border-line pt-8">
+                    <Elements
+                      stripe={stripePromise}
+                      options={{
+                        clientSecret,
+                        locale: locale === "en" ? "en" : "ro",
+                        appearance: {
+                          theme: "stripe",
+                          variables: {
+                            colorPrimary: "#7a2bbf",
+                            colorBackground: "#ffffff",
+                            colorText: "#1f1b16",
+                            colorDanger: "#b42318",
+                            borderRadius: "16px",
+                            fontFamily: "Geist, system-ui, sans-serif",
                           },
+                        },
+                      }}
+                    >
+                      <CheckoutForm
+                        orderData={{
+                          orderNumber: `LJH-${uuidv4().slice(
+                            0,
+                            8
+                          )}-${new Date().getFullYear()}`,
+                          customerName: `${formData.firstName} ${formData.lastName}`,
+                          customerType: formData.customerType,
+                          companyName: formData.companyName,
+                          cui: formData.cui,
+                          regCom: formData.regCom,
+                          email: formData.email,
+                          phone: formData.phone,
+                          address: formData.address,
+                          city: formData.city,
+                          county: formData.county,
+                          postalCode: formData.postalCode,
+                          items: items.map((item) => ({
+                            name: item.product.name,
+                            quantity: item.quantity,
+                            freeQuantity: getFreeQuantity(item.product, item.quantity),
+                            price: Number(item.product.price),
+                          })),
+                          subtotal,
+                          shipping,
+                          total,
+                          paymentMethod: "Card",
                         }}
-                      >
-                        <CheckoutForm
-                          orderData={{
-                            orderNumber: `LJH-${uuidv4().slice(
-                              0,
-                              8
-                            )}-${new Date().getFullYear()}`,
-                            customerName: `${formData.firstName} ${formData.lastName}`,
-                            customerType: formData.customerType,
-                            companyName: formData.companyName,
-                            cui: formData.cui,
-                            regCom: formData.regCom,
-                            email: formData.email,
-                            phone: formData.phone,
-                            address: formData.address,
-                            city: formData.city,
-                            county: formData.county,
-                            postalCode: formData.postalCode,
-                            items: items.map((item) => ({
-                              name: item.product.name,
-                              quantity: item.quantity,
-                              price: Number(item.product.price),
-                            })),
-                            subtotal,
-                            shipping,
-                            total,
-                            paymentMethod: "Card",
-                          }}
-                          onSuccess={() => {
-                            // Payment successful callback (may not execute due to redirect)
-                          }}
-                        />
-                      </Elements>
-                    )}
-
-                    {paymentMethod === "ramburs" && (
-                      <form onSubmit={handleSubmit} className="mt-6">
-                        <div className="flex justify-between">
-                          <button
-                            type="button"
-                            onClick={() => setStep(1)}
-                            className="text-primary hover:underline flex items-center cursor-pointer"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 mr-1"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                              />
-                            </svg>
-                            {t("backToDelivery")}
-                          </button>
-                          <button
-                            type="submit"
-                            className="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-md transition-colors cursor-pointer"
-                          >
-                            {t("placeOrder")}
-                          </button>
-                        </div>
-                      </form>
-                    )}
+                        onSuccess={() => {
+                          // Payment successful callback (may not execute due to redirect)
+                        }}
+                      />
+                    </Elements>
                   </div>
-                </div>
-              )}
+                )}
 
-              {step === 3 && (
-                <div className="bg-gray-light dark:bg-gray-800 rounded-lg overflow-hidden">
-                  <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <h2 className="text-xl font-semibold">
-                      {t("orderConfirmation")}
-                    </h2>
+                {paymentMethod === "ramburs" && (
+                  <form
+                    onSubmit={handleSubmit}
+                    className="mt-8 flex flex-col-reverse items-center gap-5 border-t border-line pt-8 sm:flex-row sm:justify-between"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setStep(1)}
+                      className="group inline-flex cursor-pointer items-center gap-2 font-medium"
+                    >
+                      <ArrowLeftIcon />
+                      <span className="underline decoration-foreground/20 decoration-2 underline-offset-8 transition-colors group-hover:decoration-primary">
+                        {t("backToDelivery")}
+                      </span>
+                    </button>
+                    <button
+                      type="submit"
+                      className="inline-flex h-14 w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-primary px-8 font-medium text-white transition duration-200 hover:bg-primary-hover active:scale-98 sm:w-auto"
+                    >
+                      {t("placeOrder")}
+                    </button>
+                  </form>
+                )}
+              </section>
+            )}
+
+            {step === 3 && (
+              <section className="flex flex-col items-center rounded-4xl bg-surface px-6 py-12 text-center sm:px-10 md:py-16">
+                <span className="grid size-20 place-items-center rounded-full bg-success/10 text-success">
+                  <CheckIcon className="size-10" />
+                </span>
+                <p className="mt-6 text-sm font-medium text-muted">{t("orderConfirmation")}</p>
+                <h2 className="mt-2 font-display text-4xl font-medium tracking-tight text-balance md:text-5xl">
+                  {t("thankYou")}
+                </h2>
+                <p className="mt-4 max-w-md text-pretty text-muted">{t("orderPlaced")}</p>
+
+                <dl className="mt-8 grid w-full max-w-md gap-5 rounded-3xl bg-sand p-6 text-left sm:grid-cols-2">
+                  <div>
+                    <dt className="text-sm text-muted">{t("orderNumber")}</dt>
+                    <dd className="mt-1 font-medium break-all">{orderNumber}</dd>
                   </div>
-                  <div className="p-6 text-center">
-                    <div className="mb-6">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-16 w-16 text-green-500 mx-auto"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <h3 className="text-2xl font-semibold mb-2">
-                      {t("thankYou")}
-                    </h3>
-                    <p className="text-foreground/70 mb-6">
-                      {t("orderPlaced")}
-                    </p>
+                  <div>
+                    <dt className="text-sm text-muted">{t("orderTotal")}</dt>
+                    <dd className="mt-1 font-display text-2xl tabular-nums">{finalTotal.toFixed(2)} lei</dd>
+                  </div>
+                </dl>
 
-                    <div className="bg-white dark:bg-gray-900 rounded-lg p-4 mb-6 max-w-md mx-auto">
-                      <p className="font-semibold">{t("orderNumber")}</p>
-                      <p className="text-foreground/70 mb-2">{orderNumber}</p>
-                      <p className="font-semibold">{t("orderTotal")}</p>
-                      <p className="text-foreground/70">
-                        {finalTotal.toFixed(2)} lei
+                <Link
+                  href="/products"
+                  className="mt-8 inline-flex h-14 items-center justify-center gap-2 rounded-full bg-foreground px-8 font-medium text-background transition duration-200 hover:bg-primary active:scale-98"
+                >
+                  {t("continueShopping")}
+                </Link>
+              </section>
+            )}
+          </div>
+
+          <div className="lg:col-span-5">
+            <aside className="rounded-4xl bg-sand p-6 sm:p-8 lg:sticky lg:top-28">
+              <h2 className="font-display text-2xl font-medium">{t("orderSummary")}</h2>
+
+              <ul className="mt-6 grid gap-4">
+                {(step === 3 ? orderItems : items).map((item) => (
+                  <li key={item.id} className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-0.5 sm:flex">
+                    <Link
+                      href={`/products/${item.id}`}
+                      className="relative row-span-2 size-12 shrink-0 overflow-hidden rounded-2xl bg-surface transition-opacity hover:opacity-80 sm:size-16"
+                    >
+                      {item.product.images &&
+                      item.product.images.length > 0 ? (
+                        <Image
+                          src={item.product.images[0].src}
+                          alt={
+                            item.product.images[0].alt || item.product.name
+                          }
+                          fill
+                          sizes="64px"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <span className="grid h-full place-items-center px-1 text-center text-xs text-muted">
+                          {t("noImage")}
+                        </span>
+                      )}
+                    </Link>
+                    <div className="min-w-0 grow">
+                      <Link
+                        href={`/products/${item.product.id}`}
+                        className="line-clamp-2 text-sm font-medium transition-colors hover:text-primary"
+                      >
+                        {item.product.name}
+                      </Link>
+                      {item.selectedAttributes && Object.keys(item.selectedAttributes).length > 0 && (
+                        <p className="mt-0.5 text-xs text-muted">
+                          {Object.entries(item.selectedAttributes).map(([key, value], index) => (
+                            <span key={`${item.id}-attr-${key}-${index}`}>
+                              {index > 0 && ", "}
+                              <span className="font-medium text-foreground">{key}:</span> {value}
+                            </span>
+                          ))}
+                        </p>
+                      )}
+                      <p className="mt-0.5 text-xs text-muted">
+                        {t("quantity")} {item.quantity}
+                        {getFreeQuantity(item.product, item.quantity) > 0 && (
+                          <span className="font-medium whitespace-nowrap text-success">
+                            {" "}
+                            {tOffer("freeLine", { count: getFreeQuantity(item.product, item.quantity) })}
+                          </span>
+                        )}
                       </p>
                     </div>
+                    <p className="col-start-2 shrink-0 font-display tabular-nums">
+                      {(
+                        Number(item.product.price) * item.quantity
+                      ).toFixed(2)}{" "}
+                      lei
+                    </p>
+                    {step < 3 && (
+                      <button
+                        type="button"
+                        onClick={() => removeItem(item.id)}
+                        title={t("removeItem")}
+                        aria-label={t("removeItem")}
+                        className="col-start-3 row-span-2 row-start-1 -mr-2 grid size-8 shrink-0 cursor-pointer place-items-center rounded-full text-muted transition-colors hover:bg-error/10 hover:text-error"
+                      >
+                        <CloseIcon />
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ul>
 
-                    <Link
-                      href="/products"
-                      className="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-md transition-colors inline-block"
-                    >
-                      {t("continueShopping")}
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Order Summary */}
-            <div className="lg:col-span-1">
-              <div className="bg-gray-light dark:bg-gray-800 rounded-lg overflow-hidden sticky top-24">
-                <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                  <h2 className="text-xl font-semibold">{t("orderSummary")}</h2>
-                </div>
-
-                <div className="p-6">
-                  <div className="space-y-4 mb-6">
-                    {(step === 3 ? orderItems : items).map((item) => (
-                      <div key={item.id} className="flex items-center gap-3">
-                        <Link
-                          href={`/products/${item.id}`}
-                          className="relative w-16 h-16 flex-shrink-0 rounded-md overflow-hidden hover:opacity-80 transition-opacity"
+              {step < 3 && (
+                <div className="mt-6 border-t border-line pt-6">
+                  {appliedPromoCode ? (
+                    <div className="flex items-center justify-between gap-3 rounded-2xl bg-success/10 px-4 py-3">
+                      <span className="flex items-center gap-2 text-sm font-medium text-success">
+                        <CheckIcon className="size-5" />
+                        {t("promoApplied")} {appliedPromoCode}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={handleRemovePromoCode}
+                        className="cursor-pointer text-sm font-medium text-muted underline decoration-foreground/20 decoration-2 underline-offset-4 transition-colors hover:text-error hover:decoration-error"
+                      >
+                        {t("removePromo")}
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <label htmlFor="promoCode" className={labelClassName}>
+                        {t("promoCode")}
+                      </label>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          id="promoCode"
+                          value={promoCode}
+                          onChange={(e) => {
+                            setPromoCode(e.target.value.toUpperCase());
+                            setPromoCodeError("");
+                          }}
+                          onKeyPress={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              handleApplyPromoCode();
+                            }
+                          }}
+                          placeholder={t("promoPlaceholder")}
+                          className={`${inputClassName} min-w-0`}
+                        />
+                        <button
+                          type="button"
+                          onClick={handleApplyPromoCode}
+                          disabled={!promoCode.trim()}
+                          className="inline-flex h-12 shrink-0 cursor-pointer items-center justify-center rounded-full bg-foreground px-5 text-sm font-medium text-background transition duration-200 enabled:hover:bg-primary enabled:active:scale-98 disabled:cursor-not-allowed disabled:opacity-50"
                         >
-                          {item.product.images &&
-                          item.product.images.length > 0 ? (
-                            <Image
-                              src={item.product.images[0].src}
-                              alt={
-                                item.product.images[0].alt || item.product.name
-                              }
-                              fill
-                              className="object-cover"
-                            />
-                          ) : (
-                            <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500">
-                              {t("noImage")}
-                            </div>
-                          )}
-                        </Link>
-                        <div className="flex-grow min-w-0">
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="min-w-0 flex-1">
-                              <Link
-                                href={`/products/${item.product.id}`}
-                                className="text-sm font-medium truncate hover:text-primary transition-colors block"
-                              >
-                                {item.product.name}
-                              </Link>
-                              {item.selectedAttributes && Object.keys(item.selectedAttributes).length > 0 && (
-                                <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                                  {Object.entries(item.selectedAttributes).map(([key, value], index) => (
-                                    <span key={`${item.id}-attr-${key}-${index}`}>
-                                      {index > 0 && ", "}
-                                      <strong>{key}:</strong> {value}
-                                    </span>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm whitespace-nowrap">
-                                {(
-                                  Number(item.product.price) * item.quantity
-                                ).toFixed(2)}{" "}
-                                lei
-                              </span>
-                              {step < 3 && (
-                                <button
-                                  onClick={() => removeItem(item.id)}
-                                  className="text-red-500 hover:text-red-700 transition-colors p-1 cursor-pointer"
-                                  title={t("removeItem")}
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-4 w-4"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M6 18L18 6M6 6l12 12"
-                                    />
-                                  </svg>
-                                </button>
-                              )}
-                            </div>
-                          </div>
-                          <span className="text-sm text-gray-500">
-                            {t("quantity")} {item.quantity}
-                          </span>
-                        </div>
+                          {t("applyPromo")}
+                        </button>
                       </div>
-                    ))}
-                  </div>
-
-                  {/* Promo Code Section */}
-                  {step < 3 && (
-                    <div className="border-t border-gray-200 dark:border-gray-700 pt-4 pb-4">
-                      {appliedPromoCode ? (
-                        <div className="flex items-center justify-between bg-green-50 dark:bg-green-900/20 p-3 rounded-lg">
-                          <div className="flex items-center">
-                            <svg
-                              className="w-5 h-5 text-green-600 dark:text-green-400 mr-2"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg>
-                            <span className="text-sm font-medium text-green-700 dark:text-green-400">
-                              {t("promoApplied")} {appliedPromoCode}
-                            </span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={handleRemovePromoCode}
-                            className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
-                          >
-                            {t("removePromo")}
-                          </button>
-                        </div>
-                      ) : (
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            {t("promoCode")}
-                          </label>
-                          <div className="flex gap-2">
-                            <input
-                              type="text"
-                              value={promoCode}
-                              onChange={(e) => {
-                                setPromoCode(e.target.value.toUpperCase());
-                                setPromoCodeError("");
-                              }}
-                              onKeyPress={(e) => {
-                                if (e.key === "Enter") {
-                                  e.preventDefault();
-                                  handleApplyPromoCode();
-                                }
-                              }}
-                              placeholder={t("promoPlaceholder")}
-                              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800 text-gray-900 dark:text-white"
-                            />
-                            <button
-                              type="button"
-                              onClick={handleApplyPromoCode}
-                              disabled={!promoCode.trim()}
-                              className="px-4 py-2 bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-md transition-colors cursor-pointer"
-                            >
-                              {t("applyPromo")}
-                            </button>
-                          </div>
-                          {promoCodeError && (
-                            <p className="mt-1 text-sm text-red-500">{promoCodeError}</p>
-                          )}
-                        </div>
+                      {promoCodeError && (
+                        <p className="mt-2 text-sm text-error">{promoCodeError}</p>
                       )}
                     </div>
                   )}
-
-                  <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-4">
-                    <div className="flex justify-between">
-                      <span className="text-foreground/70">{t("subtotal")}</span>
-                      <span>
-                        {step === 3
-                          ? finalSubtotal.toFixed(2)
-                          : subtotal.toFixed(2)}{" "}
-                        lei
-                      </span>
-                    </div>
-
-                    {(discount > 0 || (step === 3 && appliedPromoCode)) && (
-                      <div className="flex justify-between text-green-600 dark:text-green-400">
-                        <span className="text-foreground/70">
-                          {t("discount")} {appliedPromoCode && `(${appliedPromoCode})`}
-                        </span>
-                        <span className="font-medium">
-                          -{step === 3 
-                            ? (appliedPromoCode ? calculateDiscount(appliedPromoCode, orderItems) : 0).toFixed(2)
-                            : discount.toFixed(2)} lei
-                        </span>
-                      </div>
-                    )}
-
-                    <div className="flex justify-between">
-                      <span className="text-foreground/70">
-                        {t("shipping")}{" "}
-                        {(step === 3 ? finalShipping : shipping) === 0 && (
-                          <span className="text-green-600 dark:text-green-500 text-xs ml-1">
-                            {t("shippingFree")}
-                          </span>
-                        )}
-                      </span>
-                      <span>
-                        {(step === 3 ? finalShipping : shipping) === 0
-                          ? t("shippingFreeValue")
-                          : `${(step === 3 ? finalShipping : shipping).toFixed(
-                              2
-                            )} lei`}
-                      </span>
-                    </div>
-
-                    <div className="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between font-semibold">
-                      <span>{t("total")}</span>
-                      <span className="text-primary">
-                        {step === 3 ? finalTotal.toFixed(2) : total.toFixed(2)}{" "}
-                        lei
-                      </span>
-                    </div>
-                  </div>
                 </div>
-              </div>
-            </div>
+              )}
+
+              <dl className="mt-6 grid gap-3 border-t border-line pt-6">
+                <div className="flex items-baseline justify-between gap-4">
+                  <dt className="text-muted">{t("subtotal")}</dt>
+                  <dd className="font-display text-lg tabular-nums">
+                    {step === 3
+                      ? finalSubtotal.toFixed(2)
+                      : subtotal.toFixed(2)}{" "}
+                    lei
+                  </dd>
+                </div>
+
+                {(discount > 0 || (step === 3 && appliedPromoCode)) && (
+                  <div className="flex items-baseline justify-between gap-4">
+                    <dt className="text-muted">
+                      {t("discount")} {appliedPromoCode && `(${appliedPromoCode})`}
+                    </dt>
+                    <dd className="font-display text-lg text-success tabular-nums">
+                      -{step === 3
+                        ? (appliedPromoCode ? calculateDiscount(appliedPromoCode, orderItems) : 0).toFixed(2)
+                        : discount.toFixed(2)} lei
+                    </dd>
+                  </div>
+                )}
+
+                <div className="flex items-baseline justify-between gap-4">
+                  <dt className="text-muted">{t("shipping")}</dt>
+                  <dd
+                    className={`font-display text-lg tabular-nums ${
+                      (step === 3 ? finalShipping : shipping) === 0 ? "text-success" : ""
+                    }`}
+                  >
+                    {(step === 3 ? finalShipping : shipping) === 0
+                      ? t("shippingFreeValue")
+                      : `${(step === 3 ? finalShipping : shipping).toFixed(
+                          2
+                        )} lei`}
+                  </dd>
+                </div>
+
+                <div className="mt-2 flex items-baseline justify-between gap-4 border-t border-line pt-5">
+                  <dt className="font-medium">{t("total")}</dt>
+                  <dd className="font-display text-3xl font-medium tabular-nums">
+                    {step === 3 ? finalTotal.toFixed(2) : total.toFixed(2)}{" "}
+                    lei
+                  </dd>
+                </div>
+              </dl>
+            </aside>
           </div>
         </div>
       </main>
@@ -1167,3 +990,101 @@ export default function CheckoutPage() {
     </div>
   );
 }
+
+const ArrowRightIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <path d="M5 12h14M13 6l6 6-6 6" />
+  </svg>
+);
+
+const ArrowLeftIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="size-4 transition-transform duration-200 group-hover:-translate-x-0.5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <path d="M19 12H5M11 6l-6 6 6 6" />
+  </svg>
+);
+
+const CheckIcon = ({ className }: { className: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <path d="m5 12.5 4.5 4.5L19 7.5" />
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="size-4"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    aria-hidden
+  >
+    <path d="M6 6l12 12M18 6 6 18" />
+  </svg>
+);
+
+const CardIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="size-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={1.8}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <rect x="3" y="5" width="18" height="14" rx="2.5" />
+    <path d="M3 10h18M7 15h3" />
+  </svg>
+);
+
+const CashIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="size-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={1.8}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <rect x="2.5" y="6" width="19" height="12" rx="2.5" />
+    <circle cx="12" cy="12" r="2.5" />
+    <path d="M6 10v4M18 10v4" />
+  </svg>
+);

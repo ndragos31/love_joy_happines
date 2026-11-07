@@ -5,214 +5,111 @@ import { Link } from "@/i18n/navigation";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
+const sectionKeys = ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10", "s11"];
+const subsectionNumbers = [1, 2, 3];
+const paragraphClassName = "mt-4 max-w-prose leading-relaxed text-pretty text-muted";
+
 export default function TermsPage() {
   const t = useTranslations("legal.terms");
   const locale = useLocale();
-  const s2Items = t.raw("s2.items") as string[];
+  const sections = sectionKeys.map((sectionKey, index) => ({
+    key: sectionKey,
+    id: `section-${index + 1}`,
+    number: String(index + 1).padStart(2, "0"),
+    title: t(`${sectionKey}.heading`).replace(/^\d+\.\s*/, ""),
+  }));
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Navbar />
-      <div className="min-h-screen bg-background">
-        <div className="container-custom pt-24 pb-16">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl font-bold text-center mb-8 text-primary">
-              {t("heading")}
-            </h1>
+      <main className="grow">
+        <header className="container-custom pt-14 pb-10 md:pt-20 md:pb-14">
+          <h1 className="font-display text-4xl font-medium tracking-tight text-balance sm:text-5xl md:text-7xl">
+            {t("heading")}
+          </h1>
+          <p className="mt-5 text-lg text-muted">
+            {t("lastUpdated")} {new Date().toLocaleDateString(locale === "en" ? "en-GB" : "ro-RO")}
+          </p>
+        </header>
 
-            <div className="prose prose-lg max-w-none space-y-8">
-              <div className="bg-card p-6 rounded-lg shadow-sm">
-                <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  {t("s1.heading")}
-                </h2>
-                <p className="text-foreground leading-relaxed">
-                  {t("s1.text")}
-                </p>
-              </div>
+        <div className="container-custom grid gap-12 pb-20 md:pb-28 lg:grid-cols-12">
+          <nav aria-label={t("heading")} className="hidden lg:col-span-4 lg:block">
+            <ol className="space-y-3 text-sm text-muted lg:sticky lg:top-28">
+              {sections.map((section) => (
+                <li key={section.key}>
+                  <a
+                    href={`#${section.id}`}
+                    className="flex items-baseline gap-3 transition-colors hover:text-foreground"
+                  >
+                    <span className="font-display text-primary tabular-nums">{section.number}</span>
+                    {section.title}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
 
-              <div className="bg-card p-6 rounded-lg shadow-sm">
-                <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  {t("s2.heading")}
+          <div className="lg:col-span-8 lg:col-start-5">
+            {sections.map((section) => (
+              <section
+                key={section.key}
+                id={section.id}
+                className="scroll-mt-28 border-t border-line pt-8 pb-10"
+              >
+                <h2 className="font-display text-2xl font-medium md:text-3xl">
+                  <span className="mb-2 block text-base text-primary tabular-nums">
+                    {section.number}
+                  </span>
+                  {section.title}
                 </h2>
-                <p className="text-foreground leading-relaxed mb-4">
-                  {t("s2.intro")}
-                </p>
-                <ul className="list-disc pl-6 space-y-2 text-foreground">
-                  {s2Items.map((item, i) => (
-                    <li key={i}>{item}</li>
+
+                {t.has(`${section.key}.text`) && (
+                  <p className={paragraphClassName}>{t(`${section.key}.text`)}</p>
+                )}
+
+                {t.has(`${section.key}.items`) && (
+                  <>
+                    <p className={paragraphClassName}>{t(`${section.key}.intro`)}</p>
+                    <ul className="mt-4 list-disc space-y-2 pl-5 text-muted marker:text-primary">
+                      {(t.raw(`${section.key}.items`) as string[]).map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+
+                {subsectionNumbers
+                  .map((subsectionNumber) => `${section.key}.${section.key}_${subsectionNumber}`)
+                  .filter((subsectionKey) => t.has(subsectionKey))
+                  .map((subsectionKey) => (
+                    <div key={subsectionKey} className="mt-6">
+                      <h3 className="font-semibold text-foreground">{t(`${subsectionKey}.heading`)}</h3>
+                      <p className="mt-2 max-w-prose leading-relaxed text-pretty text-muted">
+                        {t(`${subsectionKey}.text`)}
+                      </p>
+                    </div>
                   ))}
-                </ul>
-              </div>
 
-              <div className="bg-card p-6 rounded-lg shadow-sm">
-                <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  {t("s3.heading")}
-                </h2>
-                <p className="text-foreground leading-relaxed">
-                  {t("s3.text")}
-                </p>
-              </div>
-
-              <div className="bg-card p-6 rounded-lg shadow-sm">
-                <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  {t("s4.heading")}
-                </h2>
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-lg font-medium mb-2 text-primary">
-                      {t("s4.s4_1.heading")}
-                    </h3>
-                    <p className="text-foreground leading-relaxed">
-                      {t("s4.s4_1.text")}
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium mb-2 text-primary">
-                      {t("s4.s4_2.heading")}
-                    </h3>
-                    <p className="text-foreground leading-relaxed">
-                      {t("s4.s4_2.text")}
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium mb-2 text-primary">
-                      {t("s4.s4_3.heading")}
-                    </h3>
-                    <p className="text-foreground leading-relaxed">
-                      {t("s4.s4_3.text")}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-card p-6 rounded-lg shadow-sm">
-                <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  {t("s5.heading")}
-                </h2>
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-lg font-medium mb-2 text-primary">
-                      {t("s5.s5_1.heading")}
-                    </h3>
-                    <p className="text-foreground leading-relaxed">
-                      {t("s5.s5_1.text")}
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium mb-2 text-primary">
-                      {t("s5.s5_2.heading")}
-                    </h3>
-                    <p className="text-foreground leading-relaxed">
-                      {t("s5.s5_2.text")}
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium mb-2 text-primary">
-                      {t("s5.s5_3.heading")}
-                    </h3>
-                    <p className="text-foreground leading-relaxed">
-                      {t("s5.s5_3.text")}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-card p-6 rounded-lg shadow-sm">
-                <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  {t("s6.heading")}
-                </h2>
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-lg font-medium mb-2 text-primary">
-                      {t("s6.s6_1.heading")}
-                    </h3>
-                    <p className="text-foreground leading-relaxed">
-                      {t("s6.s6_1.text")}
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium mb-2 text-primary">
-                      {t("s6.s6_2.heading")}
-                    </h3>
-                    <p className="text-foreground leading-relaxed">
-                      {t("s6.s6_2.text")}
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium mb-2 text-primary">
-                      {t("s6.s6_3.heading")}
-                    </h3>
-                    <p className="text-foreground leading-relaxed">
-                      {t("s6.s6_3.text")}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-card p-6 rounded-lg shadow-sm">
-                <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  {t("s7.heading")}
-                </h2>
-                <p className="text-foreground leading-relaxed">
-                  {t("s7.text")}
-                </p>
-              </div>
-
-              <div className="bg-card p-6 rounded-lg shadow-sm">
-                <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  {t("s8.heading")}
-                </h2>
-                <p className="text-foreground leading-relaxed">
-                  {t("s8.text")}
-                </p>
-              </div>
-
-              <div className="bg-card p-6 rounded-lg shadow-sm">
-                <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  {t("s9.heading")}
-                </h2>
-                <p className="text-foreground leading-relaxed">
-                  {t("s9.text")}
-                </p>
-              </div>
-
-              <div className="bg-card p-6 rounded-lg shadow-sm">
-                <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  {t("s10.heading")}
-                </h2>
-                <p className="text-foreground leading-relaxed">
-                  {t("s10.text")}
-                </p>
-              </div>
-
-              <div className="bg-card p-6 rounded-lg shadow-sm">
-                <h2 className="text-2xl font-semibold mb-4 text-primary">
-                  {t("s11.heading")}
-                </h2>
-                <p className="text-foreground leading-relaxed">
-                  {t("s11.text")}
-                </p>
-                <ul className="list-disc pl-6 space-y-2 text-foreground mt-4">
-                  <li>{t("s11.emailItem")}</li>
-                  <li>
-                    {t("s11.contactLinkPrefix")}{" "}
-                    <Link href="/contact" className="text-primary hover:underline">
-                      {t("s11.contactLinkLabel")}
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="text-center mt-8 p-4 bg-primary/5 rounded-lg">
-                <p className="text-sm text-foreground">
-                  {t("lastUpdated")} {new Date().toLocaleDateString(locale === "en" ? "en-GB" : "ro-RO")}
-                </p>
-              </div>
-            </div>
+                {section.key === "s11" && (
+                  <ul className="mt-6 space-y-2 rounded-4xl bg-sand p-6 text-foreground sm:p-8">
+                    <li className="[overflow-wrap:anywhere]">{t("s11.emailItem")}</li>
+                    <li>
+                      {t("s11.contactLinkPrefix")}{" "}
+                      <Link
+                        href="/contact"
+                        className="text-primary underline underline-offset-4 transition-colors hover:text-primary-hover"
+                      >
+                        {t("s11.contactLinkLabel")}
+                      </Link>
+                    </li>
+                  </ul>
+                )}
+              </section>
+            ))}
           </div>
         </div>
-      </div>
+      </main>
       <Footer />
-    </>
+    </div>
   );
 }

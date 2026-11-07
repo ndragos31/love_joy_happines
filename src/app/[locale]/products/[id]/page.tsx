@@ -8,10 +8,15 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { Product } from "@/lib/types/product";
 import { useCart } from "@/lib/context/CartContext";
+import { getFreeQuantity, hasFreeItemOffer, PAID_ITEMS_PER_FREE_ITEM } from "@/lib/utils/price";
 import ProductImageGallery from "@/app/[locale]/components/ProductImageGallery";
+
+const descriptionClassName =
+  "leading-relaxed text-muted [&_a]:text-primary [&_a]:underline [&_li]:mt-1 [&_ol]:mt-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_p]:mt-3 [&_p:first-child]:mt-0 [&_strong]:font-semibold [&_strong]:text-foreground [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5";
 
 export default function ProductPage() {
   const t = useTranslations("products");
+  const tOffer = useTranslations("freeItemOffer");
   const params = useParams();
   const productId = params.id as string;
   const { addItem } = useCart();
@@ -22,6 +27,7 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [addingToCart, setAddingToCart] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [attributeError, setAttributeError] = useState("");
   const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -74,11 +80,12 @@ export default function ProductPage() {
         (attr) => !selectedAttributes[attr.name] || selectedAttributes[attr.name] === ""
       );
       if (missingAttributes.length > 0) {
-        alert(t("detail.selectRequired", { attributes: missingAttributes.map(attr => attr.name).join(", ") }));
+        setAttributeError(t("detail.selectRequired", { attributes: missingAttributes.map(attr => attr.name).join(", ") }));
         return;
       }
     }
 
+    setAttributeError("");
     setAddingToCart(true);
 
     addItem(product, quantity, Object.keys(selectedAttributes).length > 0 ? selectedAttributes : undefined);
@@ -105,37 +112,29 @@ export default function ProductPage() {
     }
   };
 
-  const renderPrice = () => {
-    if (!product) return null;
-
-    if (product.on_sale && product.sale_price) {
-      return (
-        <div className="flex items-center">
-          <span className="text-2xl font-bold text-primary mr-3">
-            {product.sale_price} Lei
-          </span>
-          <span className="text-lg text-gray-500 line-through">
-            {product.regular_price} Lei
-          </span>
-        </div>
-      );
-    }
-
-    return (
-      <span className="text-2xl font-bold text-primary">
-        {product.price} Lei
-      </span>
-    );
+  const selectAttribute = (name: string, value: string) => {
+    setAttributeError("");
+    setSelectedAttributes((prev) => ({ ...prev, [name]: value }));
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col">
+      <div className="flex min-h-screen flex-col">
         <Navbar />
-        <main className="flex-grow flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <h1 className="text-2xl font-bold">{t("detail.loading")}</h1>
+        <main className="grow pt-6 pb-20 md:pt-8">
+          <div
+            role="status"
+            aria-label={t("detail.loading")}
+            className="container-custom grid animate-pulse gap-10 lg:grid-cols-12 lg:gap-14"
+          >
+            <div className="aspect-square rounded-4xl bg-sand lg:col-span-7" />
+            <div className="space-y-4 pt-8 lg:col-span-5">
+              <div className="h-5 w-1/3 rounded-full bg-sand" />
+              <div className="h-12 w-4/5 rounded-2xl bg-sand" />
+              <div className="h-9 w-1/4 rounded-2xl bg-sand" />
+              <div className="h-24 rounded-3xl bg-sand" />
+              <div className="h-14 rounded-full bg-sand" />
+            </div>
           </div>
         </main>
         <Footer />
@@ -145,20 +144,20 @@ export default function ProductPage() {
 
   if (error || !product) {
     return (
-      <div className="min-h-screen flex flex-col">
+      <div className="flex min-h-screen flex-col">
         <Navbar />
-        <main className="flex-grow flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-          <div className="text-center max-w-md p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg">
-            <h1 className="text-3xl font-bold mb-4">{t("detail.notFound")}</h1>
-            <p className="mb-8 text-gray-600 dark:text-gray-300">
-              {t("detail.notFoundMessage")}
-            </p>
-            <Link
-              href="/products"
-              className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-md inline-block"
-            >
-              {t("detail.backToProducts")}
-            </Link>
+        <main className="grow py-16 md:py-24">
+          <div className="container-custom">
+            <div className="mx-auto max-w-xl rounded-4xl bg-sand px-6 py-16 text-center">
+              <h1 className="font-display text-4xl font-medium">{t("detail.notFound")}</h1>
+              <p className="mt-4 text-muted">{t("detail.notFoundMessage")}</p>
+              <Link
+                href="/products"
+                className="mt-8 inline-flex h-12 items-center rounded-full bg-foreground px-7 font-medium text-background transition-colors hover:bg-primary"
+              >
+                {t("detail.backToProducts")}
+              </Link>
+            </div>
           </div>
         </main>
         <Footer />
@@ -166,339 +165,301 @@ export default function ProductPage() {
     );
   }
 
+  const isInStock = product.stock_status === "instock";
+  const freeQuantity = getFreeQuantity(product, quantity);
+  const shippingItems = [
+    t("detail.shippingItem1"),
+    t("detail.shippingItem2"),
+    t("detail.shippingItem3"),
+  ];
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
-      <main className="flex-grow py-8 bg-gray-50 dark:bg-gray-900">
+      <main className="grow pt-6 pb-20 md:pt-8 md:pb-28">
         <div className="container-custom">
-          {/* Breadcrumbs */}
-          <div className="mb-8 text-sm text-foreground/70">
-            <Link href="/" className="hover:text-primary cursor-pointer">
+          <nav className="mb-6 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted md:mb-8">
+            <Link href="/" className="transition-colors hover:text-foreground">
               {t("detail.breadcrumbHome")}
-            </Link>{" "}
-            /{" "}
-            <Link
-              href="/products"
-              className="hover:text-primary cursor-pointer"
-            >
+            </Link>
+            <span aria-hidden>/</span>
+            <Link href="/products" className="transition-colors hover:text-foreground">
               {t("detail.breadcrumbProducts")}
-            </Link>{" "}
+            </Link>
             {product.categories && product.categories.length > 0 && (
               <>
-                /{" "}
+                <span aria-hidden>/</span>
                 <Link
                   href={`/categories/${product.categories[0].slug}`}
-                  className="hover:text-primary cursor-pointer"
+                  className="transition-colors hover:text-foreground"
                 >
                   {product.categories[0].name}
-                </Link>{" "}
+                </Link>
               </>
             )}
-            / <span className="text-foreground">{product.name}</span>
-          </div>
+          </nav>
 
-          {/* Product section */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-0">
-              {/* Product images */}
-              <div className="lg:col-span-5 p-6 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700">
-                {product.images && (
-                  <ProductImageGallery
-                    images={product.images}
-                    productName={product.name}
-                  />
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
+            <div className="lg:col-span-7">
+              <div className="lg:sticky lg:top-28">
+                <ProductImageGallery images={product.images} productName={product.name} />
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 lg:pt-4">
+              {product.categories && product.categories.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {product.categories.map((category) => (
+                    <Link
+                      key={category.id}
+                      href={`/categories/${category.slug}`}
+                      className="rounded-full bg-sand px-3 py-1 text-xs font-medium transition-colors hover:bg-line"
+                    >
+                      {category.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+
+              <h1 className="mt-5 font-display text-4xl leading-tight font-medium tracking-tight text-balance md:text-5xl lg:text-4xl xl:text-5xl">
+                {product.name}
+              </h1>
+
+              <div className="mt-6 flex flex-wrap items-center gap-4">
+                {product.on_sale && product.sale_price ? (
+                  <p className="flex items-baseline gap-3 font-display tabular-nums">
+                    <span className="text-3xl font-medium text-primary">{product.sale_price} Lei</span>
+                    <span className="text-lg text-muted line-through">{product.regular_price} Lei</span>
+                  </p>
+                ) : (
+                  <p className="font-display text-3xl font-medium tabular-nums">{product.price} Lei</p>
+                )}
+                <span
+                  className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium ${
+                    isInStock ? "bg-success/10 text-success" : "bg-error/10 text-error"
+                  }`}
+                >
+                  <span className={`size-1.5 rounded-full ${isInStock ? "bg-success" : "bg-error"}`} />
+                  {isInStock ? t("detail.inStock") : t("detail.outOfStock")}
+                </span>
+                {hasFreeItemOffer(product) && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-sm font-medium text-white">
+                    <GiftIcon className="size-3.5" />
+                    {tOffer("badge", { paid: PAID_ITEMS_PER_FREE_ITEM })}
+                  </span>
                 )}
               </div>
 
-              {/* Product info */}
-              <div className="lg:col-span-4 p-6 flex flex-col border-b lg:border-b-0 lg:border-r border-gray-200 dark:border-gray-700">
-                <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
-                  {product.name}
-                </h1>
+              {product.short_description && (
+                <div
+                  className={`mt-6 text-pretty ${descriptionClassName}`}
+                  dangerouslySetInnerHTML={{ __html: product.short_description }}
+                />
+              )}
 
-                {/* Categories */}
-                {product.categories && product.categories.length > 0 && (
-                  <div className="mb-4 flex flex-wrap gap-2">
-                    {product.categories.map((category) => (
-                      <Link
-                        key={category.id}
-                        href={`/categories/${category.slug}`}
-                        className="text-xs inline-block bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-2.5 py-1 rounded-full transition-colors cursor-pointer"
-                      >
-                        {category.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
+              {product.attributes && product.attributes.length > 0 && (
+                <div className="mt-8 space-y-6 border-t border-line pt-8">
+                  {product.attributes.map((attribute) => {
+                    const parsedOptions = attribute.options?.flatMap((option) => {
+                      const splitOptions = option
+                        .split(/\s*\|\s*/)
+                        .map((opt) => opt.trim())
+                        .filter((opt) => opt.length > 0);
+                      return splitOptions.length > 0 ? splitOptions : [option];
+                    }) || [];
 
-                {/* Price */}
-                <div className="mb-6">{renderPrice()}</div>
+                    const uniqueOptions = Array.from(new Set(parsedOptions));
+                    const selectedValue = selectedAttributes[attribute.name] || "";
 
-                {/* Stock status */}
-                <div className="mb-6">
-                  {product.stock_status === "instock" ? (
-                    <span className="px-3 py-1 text-sm font-medium text-green-700 bg-green-100 dark:bg-green-900/30 dark:text-green-500 rounded-full">
-                      {t("detail.inStock")}
-                    </span>
-                  ) : (
-                    <span className="px-3 py-1 text-sm font-medium text-red-700 bg-red-100 dark:bg-red-900/30 dark:text-red-500 rounded-full">
-                      {t("detail.outOfStock")}
-                    </span>
-                  )}
-                </div>
-
-                {/* Short description */}
-                <div className="mb-6">
-                  <div
-                    className="text-gray-600 dark:text-gray-300"
-                    dangerouslySetInnerHTML={{
-                      __html: product.short_description,
-                    }}
-                  />
-                </div>
-
-                {/* Attribute selection */}
-                {product.attributes && product.attributes.length > 0 && (
-                  <div className="mb-6 space-y-4">
-                    {product.attributes.map((attribute) => {
-                      const parsedOptions = attribute.options?.flatMap((option) => {
-                        const splitOptions = option
-                          .split(/\s*\|\s*/)
-                          .map((opt) => opt.trim())
-                          .filter((opt) => opt.length > 0);
-                        return splitOptions.length > 0 ? splitOptions : [option];
-                      }) || [];
-
-                      const uniqueOptions = Array.from(new Set(parsedOptions));
-
-                      return (
-                        <div key={`product-attr-${product?.id || 'unknown'}-attr-${attribute.id}-${attribute.name}`}>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2.5">
-                            {attribute.name} <span className="text-[#ff6b6b]">*</span>
-                          </label>
+                    return (
+                      <fieldset key={`product-attr-${product.id}-attr-${attribute.id}-${attribute.name}`}>
+                        <legend className="mb-3 text-sm font-medium">
+                          {attribute.name} <span className="text-primary">*</span>
+                        </legend>
+                        {uniqueOptions.length <= 8 ? (
+                          <div className="flex flex-wrap gap-2">
+                            {uniqueOptions.map((option, index) => (
+                              <label
+                                key={`product-${product.id}-attr-${attribute.id}-opt-${index}-${option}`}
+                                className="cursor-pointer"
+                              >
+                                <input
+                                  type="radio"
+                                  name={`attribute-${attribute.id}-${attribute.name}`}
+                                  value={option}
+                                  checked={selectedValue === option}
+                                  onChange={() => selectAttribute(attribute.name, option)}
+                                  className="peer sr-only"
+                                />
+                                <span className="inline-flex min-h-11 items-center rounded-full border border-line bg-surface px-4 py-2 text-sm transition-colors peer-checked:border-foreground peer-checked:bg-foreground peer-checked:text-background peer-focus-visible:ring-4 peer-focus-visible:ring-primary-soft hover:border-foreground/40">
+                                  {option}
+                                </span>
+                              </label>
+                            ))}
+                          </div>
+                        ) : (
                           <div className="relative">
                             <select
-                              value={selectedAttributes[attribute.name] || ""}
-                              onChange={(e) => {
-                                setSelectedAttributes((prev) => ({
-                                  ...prev,
-                                  [attribute.name]: e.target.value,
-                                }));
-                              }}
-                              className="w-full appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 pr-10 text-gray-900 dark:text-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all cursor-pointer hover:border-gray-400 dark:hover:border-gray-500"
+                              value={selectedValue}
+                              onChange={(event) => selectAttribute(attribute.name, event.target.value)}
+                              className="h-12 w-full cursor-pointer appearance-none rounded-2xl border border-line bg-surface pr-11 pl-4 text-sm transition outline-none hover:border-foreground/40 focus:border-primary focus:ring-4 focus:ring-primary-soft"
                               required
                             >
                               <option value="" disabled>
                                 {t("detail.selectAttribute", { name: attribute.name.toLowerCase() })}
                               </option>
                               {uniqueOptions.map((option, index) => (
-                                <option key={`product-${product?.id || 'unknown'}-attr-${attribute.id}-opt-${index}-${option}`} value={option} className="py-2">
+                                <option key={`product-${product.id}-attr-${attribute.id}-opt-${index}-${option}`} value={option}>
                                   {option}
                                 </option>
                               ))}
                             </select>
-                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                              <svg
-                                className="w-5 h-5 text-gray-400 dark:text-gray-500"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M19 9l-7 7-7-7"
-                                />
-                              </svg>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* Quantity and Add to cart */}
-                {product.stock_status === "instock" && (
-                  <div className="mt-auto">
-                    <div className="flex items-center mb-4">
-                      <label
-                        htmlFor="quantity"
-                        className="mr-4 font-medium text-gray-700 dark:text-gray-300"
-                      >
-                        {t("detail.quantity")}
-                      </label>
-                      <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-md">
-                        <button
-                          type="button"
-                          onClick={decrementQuantity}
-                          className="px-3 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
-                        >
-                          -
-                        </button>
-                        <input
-                          type="number"
-                          id="quantity"
-                          name="quantity"
-                          min="1"
-                          max="10"
-                          value={quantity}
-                          onChange={(e) =>
-                            setQuantity(parseInt(e.target.value) || 1)
-                          }
-                          className="w-12 border-0 text-center focus:ring-0 p-0 bg-transparent text-gray-900 dark:text-white cursor-text [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                        />
-                        <button
-                          type="button"
-                          onClick={incrementQuantity}
-                          className="px-3 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={handleAddToCart}
-                      disabled={addingToCart}
-                      className={`w-full py-3 px-4 rounded-md text-white font-medium transition-colors cursor-pointer ${
-                        addingToCart
-                          ? "bg-gray-400"
-                          : "bg-primary hover:bg-primary/90"
-                      }`}
-                    >
-                      {addingToCart ? (
-                        <span className="flex items-center justify-center">
-                          <svg
-                            className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
+                            <svg
+                              className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-muted"
+                              fill="none"
                               stroke="currentColor"
-                              strokeWidth="4"
-                            ></circle>
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                            ></path>
-                          </svg>
-                          {t("detail.adding")}
-                        </span>
-                      ) : addedToCart ? (
-                        <span className="flex items-center justify-center">
-                          <svg
-                            className="w-5 h-5 mr-2"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
+                              strokeWidth={2}
                               strokeLinecap="round"
                               strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M5 13l4 4L19 7"
-                            ></path>
-                          </svg>
-                          {t("detail.added")}
-                        </span>
-                      ) : (
-                        t("detail.addToCart")
-                      )}
+                              viewBox="0 0 24 24"
+                              aria-hidden
+                            >
+                              <path d="m6 9 6 6 6-6" />
+                            </svg>
+                          </div>
+                        )}
+                      </fieldset>
+                    );
+                  })}
+                </div>
+              )}
+
+              {attributeError && (
+                <p role="alert" className="mt-5 rounded-2xl bg-error/10 px-4 py-3 text-sm text-error">
+                  {attributeError}
+                </p>
+              )}
+
+              {isInStock && (
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <div className="flex h-14 items-center justify-between rounded-full border border-line bg-surface px-1.5 sm:w-40">
+                    <button
+                      type="button"
+                      onClick={decrementQuantity}
+                      aria-label={t("detail.decreaseQuantity")}
+                      className="grid size-11 cursor-pointer place-items-center rounded-full transition-colors hover:bg-sand"
+                    >
+                      <StrokeIcon path="M5 12h14" />
+                    </button>
+                    <label htmlFor="quantity" className="sr-only">
+                      {t("detail.quantity")}
+                    </label>
+                    <input
+                      type="number"
+                      id="quantity"
+                      name="quantity"
+                      min="1"
+                      max="10"
+                      value={quantity}
+                      onChange={(event) => setQuantity(parseInt(event.target.value) || 1)}
+                      className="w-10 [appearance:textfield] bg-transparent text-center font-medium tabular-nums outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={incrementQuantity}
+                      aria-label={t("detail.increaseQuantity")}
+                      className="grid size-11 cursor-pointer place-items-center rounded-full transition-colors hover:bg-sand"
+                    >
+                      <StrokeIcon path="M12 5v14M5 12h14" />
                     </button>
                   </div>
-                )}
-              </div>
 
-              {/* Product description */}
-              <div className="lg:col-span-3 p-6">
-                <div className="mb-4">
-                  <div className="text-lg font-medium text-primary pb-2 border-b border-gray-200 dark:border-gray-700">
-                    {t("detail.description")}
+                  <button
+                    type="button"
+                    onClick={handleAddToCart}
+                    disabled={addingToCart}
+                    className={`inline-flex h-14 grow cursor-pointer items-center justify-center gap-2 rounded-full px-8 font-medium text-white transition duration-200 active:scale-98 disabled:cursor-wait ${
+                      addedToCart ? "bg-success" : "bg-primary hover:bg-primary-hover"
+                    } ${addingToCart ? "opacity-70" : ""}`}
+                  >
+                    {addingToCart ? (
+                      <>
+                        <span className="size-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                        {t("detail.adding")}
+                      </>
+                    ) : addedToCart ? (
+                      <>
+                        <StrokeIcon path="m5 12.5 4.5 4.5L19 7.5" />
+                        {t("detail.added")}
+                      </>
+                    ) : (
+                      t("detail.addToCart")
+                    )}
+                  </button>
+                </div>
+              )}
+
+              {isInStock && hasFreeItemOffer(product) && (
+                <div className="mt-3 flex items-center gap-4 rounded-3xl bg-primary-soft px-5 py-4">
+                  <span className="grid size-10 shrink-0 place-items-center rounded-full bg-background text-primary">
+                    <GiftIcon className="size-5" />
+                  </span>
+                  <div aria-live="polite">
+                    <p className="font-medium">{tOffer("title", { paid: PAID_ITEMS_PER_FREE_ITEM })}</p>
+                    <p className="text-sm text-muted">
+                      {freeQuantity > 0
+                        ? tOffer("earned", { free: freeQuantity, total: quantity + freeQuantity })
+                        : tOffer("missing", { count: PAID_ITEMS_PER_FREE_ITEM - quantity })}
+                    </p>
                   </div>
                 </div>
-                <div
-                  className="prose prose-sm max-w-none text-gray-600 dark:text-gray-300"
-                  dangerouslySetInnerHTML={{ __html: product.description }}
-                />
-              </div>
-            </div>
-          </div>
+              )}
 
-          {/* Shipping information */}
-          <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
-            <div className="border-b border-gray-200 dark:border-gray-700">
-              <div className="flex">
-                <button className="px-6 py-3 text-sm font-medium cursor-pointer text-primary border-b-2 border-primary">
-                  {t("detail.shippingTab")}
-                </button>
-              </div>
-            </div>
-            <div className="p-6">
-              <div>
-                <h3 className="text-lg font-medium mb-4">
-                  {t("detail.shippingHeading")}
-                </h3>
-                <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-                  <li className="flex items-start">
-                    <svg
-                      className="h-5 w-5 text-green-500 mr-2 mt-0.5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
+              <ul className="mt-8 grid gap-3 rounded-3xl bg-sand p-5 text-sm sm:p-6">
+                {shippingItems.map((item) => (
+                  <li key={item} className="flex items-center gap-3">
+                    <span className="grid size-7 shrink-0 place-items-center rounded-full bg-background text-primary">
+                      <svg
+                        className="size-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    {t("detail.shippingItem1")}
+                        viewBox="0 0 24 24"
+                        aria-hidden
+                      >
+                        <path d="m5 12.5 4.5 4.5L19 7.5" />
+                      </svg>
+                    </span>
+                    {item}
                   </li>
-                  <li className="flex items-start">
+                ))}
+              </ul>
+
+              {product.description && (
+                <details open className="group mt-8 border-t border-line pt-6">
+                  <summary className="flex cursor-pointer list-none items-center justify-between font-display text-2xl font-medium [&::-webkit-details-marker]:hidden">
+                    {t("detail.description")}
                     <svg
-                      className="h-5 w-5 text-green-500 mr-2 mt-0.5"
+                      className="size-5 text-muted transition-transform group-open:rotate-180"
                       fill="none"
-                      viewBox="0 0 24 24"
                       stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    {t("detail.shippingItem2")}
-                  </li>
-                  <li className="flex items-start">
-                    <svg
-                      className="h-5 w-5 text-green-500 mr-2 mt-0.5"
-                      fill="none"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       viewBox="0 0 24 24"
-                      stroke="currentColor"
+                      aria-hidden
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M5 13l4 4L19 7"
-                      />
+                      <path d="m6 9 6 6 6-6" />
                     </svg>
-                    {t("detail.shippingItem3")}
-                  </li>
-                </ul>
-              </div>
+                  </summary>
+                  <div
+                    className={`mt-5 ${descriptionClassName}`}
+                    dangerouslySetInnerHTML={{ __html: product.description }}
+                  />
+                </details>
+              )}
             </div>
           </div>
         </div>
@@ -507,3 +468,33 @@ export default function ProductPage() {
     </div>
   );
 }
+
+const StrokeIcon = ({ path }: { path: string }) => (
+  <svg
+    className="size-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    viewBox="0 0 24 24"
+    aria-hidden
+  >
+    <path d={path} />
+  </svg>
+);
+
+const GiftIcon = ({ className }: { className: string }) => (
+  <svg
+    className={className}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    viewBox="0 0 24 24"
+    aria-hidden
+  >
+    <path d="M4 8h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1ZM12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5" />
+  </svg>
+);

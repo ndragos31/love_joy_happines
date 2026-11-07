@@ -22,6 +22,7 @@ interface OrderDetails {
   items: Array<{
     name: string;
     quantity: number;
+    freeQuantity?: number;
     price: number;
     attributes?: Record<string, string>;
   }>;

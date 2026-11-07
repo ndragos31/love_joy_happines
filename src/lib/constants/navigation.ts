@@ -6,7 +6,3 @@ export const navItems: NavItem[] = [
   { titleKey: "about", href: "/about" },
   { titleKey: "contact", href: "/contact" },
 ];
-
-export const userNavItems: NavItem[] = [
-  { titleKey: "cart", href: "/cart" },
-];
